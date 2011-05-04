@@ -5,16 +5,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 
 public class CanvasRenderer extends View {
 
 	private World _world;
 
 	private BitmapManager _bitmapManager;
+	
 	/* Privates for calibrating the screen to ASPECT_RATIO */
 
-	private boolean _calibrated;
 	private int _rWidth;
 	private int _rHeight;
 	private int _fWidth;
@@ -26,19 +28,23 @@ public class CanvasRenderer extends View {
 	private boolean _landscape;
 	float _ratio;
 
-	public CanvasRenderer(Context context) {
+	public CanvasRenderer(Context context, int rWidth, int rHeight) {
 		super(context);
 
-		_calibrated = false;
-		
+		calibrateScreen(rWidth, rHeight);
+
 		_bitmapManager = new BitmapManager(getResources());
 
-		_world = new World(_bitmapManager);
+		Utils.setBitmapManager(_bitmapManager);
+		Utils.setWidth(_width);
+		Utils.setHeight(_height);
+		
+		_world = new World();
 	}
 
 	@Override
 	public void onDraw(Canvas canvas) {
-		calibrateScreen(canvas);
+		
 
 		if (_landscape) {
 			canvas.rotate(90);
@@ -68,13 +74,10 @@ public class CanvasRenderer extends View {
 	}
 
 	/* Privates */
-	private void calibrateScreen(Canvas canvas)
-	{
-		if (_calibrated)
-			return;
-
-		_rWidth = canvas.getWidth();
-		_rHeight = canvas.getHeight();
+	private void calibrateScreen(int rWidth, int rHeight) {
+		
+		_rWidth = rWidth;
+		_rHeight = rHeight;
 
 		if (_rWidth < _rHeight)
 			_landscape = true;
@@ -104,11 +107,10 @@ public class CanvasRenderer extends View {
 		_top = (_fHeight - _height) / 2;
 		_left = (_fWidth - _width) / 2;
 
-		_calibrated = true;
-
 		Log.d("CANVAS", "rWidth = " + _rWidth + "; rHeight = " + _rHeight);
 		Log.d("CANVAS", "fWidth = " + _fWidth + "; fHeight = " + _fHeight);
 		Log.d("CANVAS", "landscape = " + _landscape + "; width = " + _width + "; height = " + _height);
 		Log.d("CANVAS", "left = " + _left + "; top = " + _top);
 	}
+	
 }
