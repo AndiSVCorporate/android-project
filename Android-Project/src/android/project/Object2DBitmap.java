@@ -6,20 +6,21 @@ import android.graphics.Canvas;
 public abstract class Object2DBitmap extends Object2D {
 
 	private int _id;
-	private BitmapManager _bitmapManager;
 	
-	protected Object2DBitmap(BitmapManager bitmapManager, int id,
+	protected Object2DBitmap(int id,
+			float top, float left, float bottom, float right,
 			CalibrationData calibrationData, CalibrationData position,
 			boolean isAbsolute, boolean drawCenter, boolean drawBorders) {
-		super(calibrationData, position, isAbsolute, drawCenter, drawBorders);
-		_bitmapManager = bitmapManager;
+		super(top, left, bottom, right, 
+				calibrationData, position, isAbsolute, drawCenter, drawBorders);
 		_id = id;
 	}
 	
 	@Override
 	protected void drawThis(Canvas c) {
-		Bitmap bitmap = _bitmapManager.getBitmap(_id);
-		CalibrationData calibrationData = _bitmapManager.getCalibrationData(_id);
+		BitmapManager bitmapManager = Utils.getBitmapManager();
+		Bitmap bitmap = bitmapManager.getBitmap(_id);
+		CalibrationData calibrationData = bitmapManager.getCalibrationData(_id);
 		if (bitmap == null)
 			return;
 		if (calibrationData == null)

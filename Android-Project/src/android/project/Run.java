@@ -1,7 +1,10 @@
 package android.project;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.WindowManager;
 
 public class Run extends Activity {
 	
@@ -9,6 +12,12 @@ public class Run extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new CanvasRenderer(this));
+
+
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int rWidth = display.getWidth();
+        int rHeight = display.getHeight();
+        
+        setContentView(new CanvasRenderer(this, rWidth, rHeight));
     }
 }
