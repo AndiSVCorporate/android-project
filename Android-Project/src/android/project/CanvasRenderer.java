@@ -5,9 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 
 public class CanvasRenderer extends View {
 
@@ -36,16 +34,13 @@ public class CanvasRenderer extends View {
 		_bitmapManager = new BitmapManager(getResources());
 
 		Utils.setBitmapManager(_bitmapManager);
-		Utils.setWidth(_width);
-		Utils.setHeight(_height);
-		
+
 		_world = new World();
 	}
 
 	@Override
 	public void onDraw(Canvas canvas) {
 		
-
 		if (_landscape) {
 			canvas.rotate(90);
 			canvas.translate(0, - _rWidth);
@@ -57,7 +52,12 @@ public class CanvasRenderer extends View {
 		canvas.drawRect(_left, _top, _left + _width, _top + _height, paint);
 		
 		canvas.save();
+		
 		canvas.translate(_left, _top);
+		
+		paint.setColor(Color.BLUE);
+		
+		canvas.scale(_width / Constants.ASPECT_WIDTH, _height / Constants.ASPECT_HEIGHT);
 		
 		_world.draw(canvas);
 		

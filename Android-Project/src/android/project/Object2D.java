@@ -10,7 +10,7 @@ public abstract class Object2D {
 
 	protected ArrayList<Object2D> _objects;
 
-	private boolean _isAbsolute;
+	// TODO: private boolean _isAbsolute;
 
 	private boolean _drawCenter;
 	private boolean _drawBorders;
@@ -29,14 +29,15 @@ public abstract class Object2D {
 			boolean isAbsolute, boolean drawCenter, boolean drawBorders) {
 		_objects = new ArrayList<Object2D>();
 
-		_isAbsolute = isAbsolute;
+		//_isAbsolute = isAbsolute;
 
 		_drawCenter = drawCenter;
+		_drawBorders = drawBorders;
 
-		_top = top * Utils.getHeight();
-		_left = left * Utils.getWidth();
-		_bottom = bottom * Utils.getHeight();
-		_right = right * Utils.getWidth();
+		_top = top;
+		_left = left;
+		_bottom = bottom;
+		_right = right;
 		
 		_calibrationData = calibrationData;
 		

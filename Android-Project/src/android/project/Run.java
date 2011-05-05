@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.Window;
 import android.view.WindowManager;
 
 public class Run extends Activity {
@@ -17,6 +18,10 @@ public class Run extends Activity {
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int rWidth = display.getWidth();
         int rHeight = display.getHeight();
+        
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         setContentView(new CanvasRenderer(this, rWidth, rHeight));
     }
