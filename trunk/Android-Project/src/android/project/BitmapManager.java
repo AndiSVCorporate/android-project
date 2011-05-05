@@ -12,7 +12,7 @@ public class BitmapManager {
 	public BitmapManager(Resources res) {
 		
 		_firemanBitmap = BitmapFactory.decodeResource(res, R.drawable.fireman);
-		_firemanCalibrationData = new CalibrationData(-13.0f, -20.0f, 1, 1, 0.0f);
+		_firemanCalibrationData = new CalibrationData(-13.0f, -20.0f, 1f, 1f, 0.0f);
 	}
 	
 	public Bitmap getBitmap(int bitmapCode) {

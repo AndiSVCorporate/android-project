@@ -2,31 +2,12 @@ package android.project;
 
 public class Utils {
 	
-	private static int _width = 0;
-	private static int _height = 0;
-	
 	private static BitmapManager _bitmapManager = null;
-	
-	public static void setWidth(int width) {
-		_width = width;
-	}
-	
-	public static void setHeight(int height) {
-		_height = height;
-	}
 	
 	public static void setBitmapManager(BitmapManager bitmapManager) {
 		_bitmapManager = bitmapManager;
 	}
-	
-	public static int getWidth() {
-		return _width;
-	}
-	
-	public static int getHeight() {
-		return _height;
-	}
-	
+		
 	public static BitmapManager getBitmapManager() {
 		return _bitmapManager;
 	}
