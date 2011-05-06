@@ -3,11 +3,11 @@ package android.project;
 public class ModelLeftFireman extends Object2DBitmap {
 
 	protected ModelLeftFireman() {
-		super(R.drawable.fireman,
-				0.08f, 0.03f, 0.08f, 0.03f,
-				new CalibrationData(-15, -25, 1, 1, 0),
-				new CalibrationData(360, 20, 1, 1, 0),
-				false, true, true);
+		super(R.drawable.fireman2,
+				new BoundsRect(33, 61),
+				new CalibrationData(-16, -31, 1, 1, 0),
+				new CalibrationData(-60, 0, 1, 1, 0),
+				false, false, false);
 	}
 
 }

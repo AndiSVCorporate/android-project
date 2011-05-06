@@ -3,8 +3,10 @@ package android.project;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class CanvasRenderer extends View {
@@ -13,7 +15,7 @@ public class CanvasRenderer extends View {
 
 	private BitmapManager _bitmapManager;
 	
-	/* Privates for calibrating the screen to ASPECT_RATIO */
+	/* Privates for calibrating the screen to ASPECT_RATIO. */
 
 	private int _rWidth;
 	private int _rHeight;
@@ -24,57 +26,49 @@ public class CanvasRenderer extends View {
 	private int _top;
 	private int _left;
 	private boolean _landscape;
-	float _ratio;
+	private float _ratio;
+	
+	private Matrix _canvasCalibrationMatrix;
+	private Matrix _canvasBaseMatrix;
+	
+	/* Privates for checking the frame rate. */
+	
+	private float _frameRate;
+	private long _frames;
+	private long _startTime;
+	private long _time;
 
 	public CanvasRenderer(Context context, int rWidth, int rHeight) {
 		super(context);
-
-		calibrateScreen(rWidth, rHeight);
+		
+		_canvasBaseMatrix = new Matrix();
+		_canvasCalibrationMatrix = new Matrix();
+		
+		calculateScreen(rWidth, rHeight);
 
 		_bitmapManager = new BitmapManager(getResources());
-
+		
 		Utils.setBitmapManager(_bitmapManager);
-
+		Utils.setCanvasCalibrationMatrix(_canvasCalibrationMatrix);
+		
 		_world = new World();
+		
+		_time = 0;
+		_frames = 0;
+		_startTime = 0;
+		_frameRate = 0;
 	}
 
 	@Override
 	public void onDraw(Canvas canvas) {
-		
-		if (_landscape) {
-			canvas.rotate(90);
-			canvas.translate(0, - _rWidth);
-		}
-
-		Paint paint = new Paint();
-		
-		paint.setColor(Color.WHITE);
-		canvas.drawRect(_left, _top, _left + _width, _top + _height, paint);
-		
-		canvas.save();
-		
-		canvas.translate(_left, _top);
-		
-		paint.setColor(Color.BLUE);
-		
-		canvas.scale(_width / Constants.ASPECT_WIDTH, _height / Constants.ASPECT_HEIGHT);
-		
-		_world.draw(canvas);
-		
-		canvas.restore();
-
-		/* Draw clipping borders. */
-		paint.setColor(Color.BLACK); // Border color.
-		canvas.drawRect(0, 0, _left - 1, _fHeight, paint); // Left border. 
-		canvas.drawRect(_left + _width + 1, 0, _fWidth, _fHeight, paint); // Right border.
-		canvas.drawRect(0, 0, _fWidth, _top - 1, paint); // Top border. 
-		canvas.drawRect(0, _top + _height + 1, _fWidth, _fHeight, paint); // Bottom border.
-		
-		
+		drawScreen(canvas);
+		calculateFrameRate();
+		postInvalidate();
 	}
 
 	/* Privates */
-	private void calibrateScreen(int rWidth, int rHeight) {
+	
+	private void calculateScreen(int rWidth, int rHeight) {
 		
 		_rWidth = rWidth;
 		_rHeight = rHeight;
@@ -111,6 +105,72 @@ public class CanvasRenderer extends View {
 		Log.d("CANVAS", "fWidth = " + _fWidth + "; fHeight = " + _fHeight);
 		Log.d("CANVAS", "landscape = " + _landscape + "; width = " + _width + "; height = " + _height);
 		Log.d("CANVAS", "left = " + _left + "; top = " + _top);
+		
+		if (_landscape) {
+			_canvasCalibrationMatrix.preRotate(90);
+			_canvasCalibrationMatrix.preTranslate(0, -_rWidth);
+		}
+		
+		_canvasCalibrationMatrix.preTranslate(_left, _top);
+		_canvasCalibrationMatrix.preScale(_width / Constants.ASPECT_WIDTH, _height / Constants.ASPECT_HEIGHT);
 	}
 	
+	private void calculateFrameRate() {
+		if (!Constants.CALCULATE_FRAME_RATE)
+			return;
+		if (_startTime == 0) {
+			_startTime = System.currentTimeMillis();
+			return;
+		}
+		_time = System.currentTimeMillis();
+		_frames++;
+		if (_time > _startTime + 1000) {
+			_frameRate = _frames / ((float) (_time - _startTime) / 1000);
+			Log.d("FRAME_RATE", "frameRate = " + _frameRate + "; frames = " + _frames);
+			_startTime = _time;
+			_frames = 0;
+		}
+	}
+	
+	private void drawScreen(Canvas canvas) {
+		Paint paint = new Paint();
+		
+		canvas.getMatrix(_canvasBaseMatrix);
+		
+		Utils.setCanvasBaseMatrix(_canvasBaseMatrix);
+		
+		canvas.concat(_canvasCalibrationMatrix);
+		
+		paint.setColor(Color.WHITE);
+		canvas.drawRect(0, 0, 800, 480, paint);
+		
+		_world.draw(canvas);
+
+		/* Draw clipping borders. */
+		paint.setColor(Color.BLACK); // Border color.
+		if (_left > 0) {
+			canvas.drawRect(- 1, 0, - 400, 480, paint); // Left border. 
+			canvas.drawRect(801, 0, 1200, 480, paint); // Right border.
+		}
+		if (_top > 0) {
+			canvas.drawRect(0, - 1, 800, - 241, paint); // Top border. 
+			canvas.drawRect(0, 481, 800, 721, paint); // Bottom border.
+		}
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		float[] point = new float[2];
+		point[0] = event.getRawX();
+		point[1] = event.getRawY();
+		
+		Matrix inverse = new Matrix();
+		_canvasCalibrationMatrix.invert(inverse);
+		Log.d("TOUCH", "rawX = " + point[0] + "; rawY = " + point[1]);
+		inverse.mapPoints(point);
+		Log.d("TOUCH", "x = " + point[0] + "; y = " + point[1]);
+		//event.
+		// TODO Auto-generated method stub
+		return super.onTouchEvent(event);
+	}
 }

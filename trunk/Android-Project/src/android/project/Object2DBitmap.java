@@ -8,11 +8,10 @@ public abstract class Object2DBitmap extends Object2D {
 	private int _id;
 	
 	protected Object2DBitmap(int id,
-			float top, float left, float bottom, float right,
+			Bounds bounds,
 			CalibrationData calibrationData, CalibrationData position,
 			boolean isAbsolute, boolean drawCenter, boolean drawBorders) {
-		super(top, left, bottom, right, 
-				calibrationData, position, isAbsolute, drawCenter, drawBorders);
+		super(bounds, calibrationData, position, isAbsolute, drawCenter, drawBorders);
 		_id = id;
 	}
 	
