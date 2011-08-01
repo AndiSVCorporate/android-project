@@ -6,7 +6,7 @@ import android.graphics.Paint;
 
 public class BoundsCircle implements Bounds {
 
-	float _radius;
+	private float _radius;
 	
 	public BoundsCircle(float radius) {
 		_radius = radius;
