@@ -1,15 +1,63 @@
 package android.project;
 
-public class ModelPlayer extends Object2DBitmap {
+import android.util.Log;
 
+public class ModelPlayer extends Object2DBitmap {
+	
+	private float _playerDestination;
+	
 	public ModelPlayer() {
-		super(0,
-				new BoundsRect(Constants.PLAYER_WIDTH, 66),
+		super(R.drawable.player2,
+				new BoundsRect(Constants.SCREEN_PLAYER_WIDTH, Constants.SCREEN_PLAYER_HEIGHT),
 				null,
-				new CalibrationData(0, 200, 1, 1, 0),
-				false, false, true);
-		_objects.add(new ModelLeftFireman());
-		_objects.add(new ModelRightFireman());
-		_objects.add(new ModelTrampoline());
+				new Positioning(Constants.SCREEN_PLAYER_MIDDLE_X, Constants.SCREEN_PLAYER_MIDDLE_Y, 1, 1, 0),
+				false, false, false);
+		_playerDestination = Constants.SCREEN_PLAYER_MIDDLE_X;
 	}
+	
+	public void calculate() {
+		setBitmap(R.drawable.player2);
+		
+		long timeDiff = Utils.getTime() - Utils.getTimePrev();
+		
+		if (timeDiff == 0)
+			return;
+		
+		float x = getX();
+
+		int dir = Utils.floatCompare(_playerDestination, x);
+				
+		Log.d("wtf", "x = " + x);
+		Log.d("wtf", "dest = " + _playerDestination);
+		
+		if (dir == 0)
+			return;
+		
+		float move = Constants.SCREEN_PLAYER_SPEED_PPS * ((float) timeDiff / 1000);
+		
+		float nextX = x + dir * move;
+		
+		if (dir * nextX > dir * _playerDestination) {
+			nextX = _playerDestination;
+		}
+		
+		translateX(nextX - x);
+		setBitmap(R.drawable.player2pu);
+	}
+	
+	public void move(float clickX, float clickY) {
+		if (clickY < 240)
+			return;
+		float x = getX();
+		if (x + (Constants.SCREEN_PLAYER_WIDTH / 2) < clickX)
+			if (Utils.floatCompare(x, Constants.SCREEN_PLAYER_RIGHT_X) < 0)
+				if (Utils.floatCompare(_playerDestination, x) <= 0)
+					_playerDestination = _playerDestination + Constants.SCREEN_PLAYER_MOVE_TOTAL_X;
+		if (x - (Constants.SCREEN_PLAYER_WIDTH / 2) > clickX)
+			if (Utils.floatCompare(x, Constants.SCREEN_PLAYER_LEFT_X) > 0)
+				if (Utils.floatCompare(_playerDestination, x) >= 0)
+					_playerDestination = _playerDestination - Constants.SCREEN_PLAYER_MOVE_TOTAL_X;
+			
+	}
+	
 }

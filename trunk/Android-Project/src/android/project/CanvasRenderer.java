@@ -5,14 +5,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class CanvasRenderer extends View {
-
-	private World _world;
-
+	
+	private Screen _activeScreen;
+	
 	private BitmapManager _bitmapManager;
 	
 	/* Privates for calibrating the screen to ASPECT_RATIO. */
@@ -48,22 +50,31 @@ public class CanvasRenderer extends View {
 
 		_bitmapManager = new BitmapManager(getResources());
 		
+		Typeface fontFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/amiga.ttf");
+		
+		Utils.setTypeface(fontFace);
 		Utils.setBitmapManager(_bitmapManager);
 		Utils.setCanvasCalibrationMatrix(_canvasCalibrationMatrix);
-		
-		_world = new World();
+		Utils.setCanvasRenderer(this);
 		
 		_time = 0;
 		_frames = 0;
 		_startTime = 0;
 		_frameRate = 0;
+		
+		_activeScreen = new GameScreen();
+		//_activeScreen = new CompanyLogoScreen();
 	}
 
 	@Override
 	public void onDraw(Canvas canvas) {
+		Utils.setTime(SystemClock.elapsedRealtime());
+		Utils.setCanvas(canvas);
+		
 		drawScreen(canvas);
 		calculateFrameRate();
 		postInvalidate();
+		
 	}
 
 	/* Privates */
@@ -116,38 +127,58 @@ public class CanvasRenderer extends View {
 	}
 	
 	private void calculateFrameRate() {
-		if (!Constants.CALCULATE_FRAME_RATE)
+		if (!Constants.PATH_CALCULATE_FRAME_RATE)
 			return;
 		if (_startTime == 0) {
-			_startTime = System.currentTimeMillis();
+			_startTime = Utils.getTime();
 			return;
 		}
-		_time = System.currentTimeMillis();
+		_time = Utils.getTime();
 		_frames++;
 		if (_time > _startTime + 1000) {
 			_frameRate = _frames / ((float) (_time - _startTime) / 1000);
-			Log.d("FRAME_RATE", "frameRate = " + _frameRate + "; frames = " + _frames);
 			_startTime = _time;
 			_frames = 0;
 		}
+		Log.d("rate", "" + _frameRate);
 	}
 	
+	private int first = 0;
+	
 	private void drawScreen(Canvas canvas) {
+		// remove this eventually
+		if (first < 5) {
+			first++;
+			//return;
+		}
+		
 		Paint paint = new Paint();
 		
-		canvas.getMatrix(_canvasBaseMatrix);
+		canvas.setMatrix(new Matrix());
+		
+		_canvasBaseMatrix = canvas.getMatrix();
 		
 		Utils.setCanvasBaseMatrix(_canvasBaseMatrix);
 		
 		canvas.concat(_canvasCalibrationMatrix);
 		
-		paint.setColor(Color.WHITE);
-		canvas.drawRect(0, 0, 800, 480, paint);
+		_activeScreen.calculate();
+		_activeScreen.draw(canvas);
 		
-		_world.draw(canvas);
+		if (Constants.PATH_CALCULATE_FRAME_RATE) {
+			paint.setColor(Color.BLACK);
+			paint.setTypeface(Utils.getTypeface());
+			paint.setTextSize(10);
+			
+		    canvas.drawText("FPS: " + Utils.floatRound(_frameRate), 725, 10, paint);
+		}
+		
 
 		/* Draw clipping borders. */
-		paint.setColor(Color.BLACK); // Border color.
+		if (_activeScreen == null)
+			paint.setColor(Color.BLACK); // Border color.
+		else
+			paint.setColor(_activeScreen.getBorderColor());
 		if (_left > 0) {
 			canvas.drawRect(- 1, 0, - 400, 480, paint); // Left border. 
 			canvas.drawRect(801, 0, 1200, 480, paint); // Right border.
@@ -160,17 +191,8 @@ public class CanvasRenderer extends View {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		float[] point = new float[2];
-		point[0] = event.getRawX();
-		point[1] = event.getRawY();
-		
-		Matrix inverse = new Matrix();
-		_canvasCalibrationMatrix.invert(inverse);
-		Log.d("TOUCH", "rawX = " + point[0] + "; rawY = " + point[1]);
-		inverse.mapPoints(point);
-		Log.d("TOUCH", "x = " + point[0] + "; y = " + point[1]);
-		//event.
-		// TODO Auto-generated method stub
-		return super.onTouchEvent(event);
+		if (_activeScreen == null)
+			return true;
+		return _activeScreen.onTouchEvent(event);
 	}
 }

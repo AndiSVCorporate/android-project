@@ -3,7 +3,7 @@ package android.project;
 /**
  * A container class of data needed for 2D calibration.
  */
-public class CalibrationData {
+public class Positioning {
 
 	/** Calibration by X - axis translation. */
 	private float _calibrationX;
@@ -26,7 +26,7 @@ public class CalibrationData {
 	 * @param calibrationScaleY - Scaling value Y - axis.
 	 * @param calibrationAngle - Rotation value.
 	 */
-	public CalibrationData(float calibrationX, float calibrationY,
+	public Positioning(float calibrationX, float calibrationY,
 			float calibrationScaleX, float calibrationScaleY,
 			float calibrationAngle) {
 		_calibrationX = calibrationX;
@@ -44,10 +44,26 @@ public class CalibrationData {
 	}
 	
 	/**
+	 * Sets X - axis translation value.
+	 * @param calibrationX X - axis translation value.
+	 */
+	public void setCalibrationX(float calibrationX) {
+		_calibrationX = calibrationX;
+	}
+	
+	/**
 	 * @return Returns Y - axis translation value.
 	 */
 	public float getCalibrationY() {
 		return _calibrationY;
+	}
+	
+	/**
+	 * Sets Y - axis translation value.
+	 * @param calibrationY Y - axis translation value.
+	 */
+	public void setCalibrationY(float calibrationY) {
+		_calibrationY = calibrationY;
 	}
 	
 	/**
@@ -58,6 +74,14 @@ public class CalibrationData {
 	}
 	
 	/**
+	 * Sets X - axis scaling value.
+	 * @param calibrationX X - axis scaling value.
+	 */
+	public void setCalibrationScaleX(float calibrationScaleX) {
+		_calibrationScaleX = calibrationScaleX;
+	}
+	
+	/**
 	 * @return Returns scaling value Y - axis.
 	 */
 	public float getCalibrationScaleY() {
@@ -65,10 +89,26 @@ public class CalibrationData {
 	}
 	
 	/**
+	 * Sets Y - axis scaling value.
+	 * @param calibrationY Y - axis scaling value.
+	 */
+	public void setCalibrationScaleY(float calibrationScaleY) {
+		_calibrationScaleY = calibrationScaleY;
+	}
+	
+	/**
 	 * @return Returns rotation value.
 	 */
 	public float getCalibrationAngle() {
 		return _calibrationAngle;
+	}
+	
+	/**
+	 * Sets X - axis scaling value.
+	 * @param calibrationX X - axis scaling value.
+	 */
+	public void setCalibrationAngle(float calibrationAngle) {
+		_calibrationAngle = calibrationAngle;
 	}
 	
 }

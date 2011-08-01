@@ -13,15 +13,15 @@ public class Run extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        int rWidth = display.getWidth();
-        int rHeight = display.getHeight();
         
+
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int rWidth = display.getWidth();
+        int rHeight = display.getHeight();
         
         setContentView(new CanvasRenderer(this, rWidth, rHeight));
     }
