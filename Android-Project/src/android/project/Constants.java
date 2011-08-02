@@ -31,4 +31,6 @@ public class Constants {
 	
 	public static final float ANIMATION_FRAME_RATE = 35;
 	
+	public static final long SMOKE_INTERVAL = 300;
+	
 }

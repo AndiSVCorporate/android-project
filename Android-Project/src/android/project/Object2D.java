@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.util.Log;
 
 public abstract class Object2D {
 
@@ -32,25 +31,22 @@ public abstract class Object2D {
 	private float _x;
 	private float _y;
 	
+	private Matrix _tempMatrix;
+	
 	protected Object2D(Bounds bounds,
 			Positioning calibrationData, Positioning position,
 			boolean isAbsolute, boolean drawCenter, boolean drawBorders, Object2D parent) {
 		
 		_objects = new ArrayList<Object2D>();
 		_matrixPosition = new Matrix();
-		_matrixCalibration = new Matrix();
+		_matrixCalibration = positioningToMatrix(calibrationData);
 		_isAbsolute = isAbsolute;
 		_drawCenter = drawCenter;
 		_drawBorders = drawBorders;
 		_bounds = bounds;
 		_position = position;
 		_parent = parent;
-		
-		if (calibrationData != null) {
-			_matrixCalibration.preTranslate(calibrationData.getCalibrationX(), calibrationData.getCalibrationY());
-			_matrixCalibration.preScale(calibrationData.getCalibrationScaleX(), calibrationData.getCalibrationScaleY());
-			_matrixCalibration.preRotate(calibrationData.getCalibrationAngle());
-		}
+		_tempMatrix = new Matrix();
 	}
 
 	public void draw(Canvas c) {
@@ -95,21 +91,8 @@ public abstract class Object2D {
 		if (!_isAbsolute)
 			if (_parent != null)
 				_matrixPosition.preConcat(_parent.getPositionMatrix());
-		if (_position != null) {
-			_matrixPosition.preTranslate(_position.getCalibrationX(), _position.getCalibrationY());
-			_matrixPosition.preScale(_position.getCalibrationScaleX(), _position.getCalibrationScaleY());
-			_matrixPosition.preRotate(_position.getCalibrationAngle());
-		}
-		
-		float[] point = {0, 0};
-		
-		_matrixPosition.mapPoints(point);
-		
-		_x = point[0];
-		_y = point[1];
-		
-		Log.d("MAAPPP", _x + " asasasasasasas " + _y);
-		
+		positioningToMatrix(_matrixPosition, _position);
+
 		objects.add(this);
 		for (Object2D object : _objects) {
 			object.getObjects(objects);
@@ -117,9 +100,16 @@ public abstract class Object2D {
 	}
 	
 	public void calculate() {
-		calculateThis();
+		long timeDiff = Utils.getTime() - Utils.getTimePrev();
+		if (timeDiff == 0)
+			return;
+		calculate(timeDiff);
+	}
+	
+	public void calculate(long timeDiff) {
+		calculateThis(timeDiff);
 		for (Object2D object : _objects) {
-			object.calculate();
+			object.calculate(timeDiff);
 		}
 	}
 	
@@ -135,12 +125,15 @@ public abstract class Object2D {
 		if (_position == null)
 			return;
 		_position.setCalibrationX(_position.getCalibrationX() + value);
+		updatePoints();
+		
 	}
 	
 	public void translateY(float value) {
 		if (_position == null)
 			return;
 		_position.setCalibrationY(_position.getCalibrationY() + value);
+		updatePoints();
 	}
 	
 	public float getX() {
@@ -159,9 +152,32 @@ public abstract class Object2D {
 		return 0;
 	}
 	
+	public void updatePoints() {
+		positioningToMatrix(_tempMatrix, _position);
+		float[] point = {0, 0};
+		_tempMatrix.mapPoints(point);
+		_x = point[0];
+		_y = point[1];	
+	}
+	
+	public static void positioningToMatrix(Matrix m, Positioning p) {
+		m.reset();
+		if (p == null)
+			return;
+		m.preTranslate(p.getCalibrationX(), p.getCalibrationY());
+		m.preScale(p.getCalibrationScaleX(), p.getCalibrationScaleY());
+		m.preRotate(p.getCalibrationAngle());		
+	}
+	
+	public static Matrix positioningToMatrix(Positioning p) {
+		Matrix m = new Matrix();
+		positioningToMatrix(m, p);
+		return m;		
+	}
+	
 	public abstract void drawThis(Canvas c);
 	
-	public void calculateThis() { }
+	public void calculateThis(long timeDiff) { }
 	
 	public static class DepthComparator implements Comparator<Object2D>{
 

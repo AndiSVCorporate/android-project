@@ -21,13 +21,10 @@ public class ModelPlayer extends Object2DBitmap {
 		_playerDestination = Constants.SCREEN_PLAYER_MIDDLE_X;
 	}
 	
-	public void calculate() {
+	public void calculateThis(long timeDiff) {
+		//Log.d("WTTTTTTTTTTF", "WHDSKHDKASHDKJADHKD");
+		
 		setBitmap(R.drawable.player2);
-		
-		long timeDiff = Utils.getTime() - Utils.getTimePrev();
-		
-		if (timeDiff == 0)
-			return;
 		
 		float x = getX();
 
