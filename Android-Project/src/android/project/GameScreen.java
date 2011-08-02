@@ -1,54 +1,25 @@
 package android.project;
 
-import java.util.ArrayList;
-
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
+import android.project.models.ModelBackground;
+import android.project.models.ModelGameSplash;
+import android.project.models.ModelPlayer;
 import android.util.Log;
 import android.view.MotionEvent;
 
-public class GameScreen implements Screen {
+public class GameScreen extends Screen {
 
 	private ModelPlayer _player;
-	private ModelGameSplash _logo;
+	 private ModelGameSplash _logo;
 	
-	private ArrayList<Object2D> _objects;
-	private ArrayList<Object2D> _toAdd;
-	private ArrayList<Object2D> _toRemove;
-	
-	public GameScreen() {
-		_objects = new ArrayList<Object2D>();
-		
+	public GameScreen(CalculateThread calculateThread) {
+		super(calculateThread);
 		_player = new ModelPlayer();
 		_logo = new ModelGameSplash();
 		
-		_objects.add(_player);
-		//_objects.add(_logo);
-	}
-	
-	@Override
-	public void draw(Canvas c) {
-		Paint paint = new Paint();
-		paint.setColor(Color.WHITE);
-		c.drawRect(0, 0, 800, 480, paint);
-		
-		for (Object2D object : _objects) {
-			object.draw(c);
-		}
-		
-	}
-	
-	public void calculate() {
-		_objects.removeAll(_toRemove);
-		_objects.addAll(_toAdd);
-		
-		_toRemove.clear();
-		_toAdd.clear();
-		
-		for (Object2D object : _objects) {
-			object.calculate();
-		}
+		_world.addObject(new ModelBackground(Color.WHITE));
+		_world.addObject(_player);
+		_world.addObject(_logo);
 	}
 
 	@Override
@@ -89,17 +60,5 @@ public class GameScreen implements Screen {
 			//	_player.getY() - Constants.SCREEN_PLAYER_HEIGHT / 2,
 				//_player.getX() + Constants.SCREEN_PLAYER_WIDTH / 2,
 				//_player.getY() + Constants.SCREEN_PLAYER_HEIGHT / 2);
-	}
-
-	@Override
-	public void addObject2D(Object2D o) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeObject2D(Object2D o) {
-		// TODO Auto-generated method stub
-		
 	}
 }

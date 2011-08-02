@@ -1,26 +1,20 @@
 package android.project;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
+import android.project.models.ModelBackground;
+import android.project.models.ModelCompanyLogo;
 import android.view.MotionEvent;
 
-public class CompanyLogoScreen implements Screen {
+public class CompanyLogoScreen extends Screen {
 
-	private ModelCompanyLogo _logo;
+	private World _world;
 	
-	public CompanyLogoScreen() {
-		_logo = new ModelCompanyLogo();
-	}
-	
-	@Override
-	public void calculate() {
-		// TODO Auto-generated method stub
+	public CompanyLogoScreen(CalculateThread calculateThread) {
+		super(calculateThread);
 		
-	}
-
-	@Override
-	public void draw(Canvas c) {
-		_logo.draw(c);
+		_world = new World();
+		_world.addObject(new ModelBackground(Color.WHITE));
+		_world.addObject(new ModelCompanyLogo());
 	}
 
 	@Override
@@ -38,11 +32,4 @@ public class CompanyLogoScreen implements Screen {
 	public void postInvalidate() {
 		
 	}
-
-	@Override
-	public void addObject2D(Object2D o) { }
-
-	@Override
-	public void removeObject2D(Object2D o) { }
-
 }

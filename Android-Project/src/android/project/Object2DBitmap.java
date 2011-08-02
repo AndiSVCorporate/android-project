@@ -10,8 +10,8 @@ public abstract class Object2DBitmap extends Object2D {
 	protected Object2DBitmap(int id,
 			Bounds bounds,
 			Positioning calibrationData, Positioning position,
-			boolean isAbsolute, boolean drawCenter, boolean drawBorders) {
-		super(bounds, calibrationData, position, isAbsolute, drawCenter, drawBorders);
+			boolean isAbsolute, boolean drawCenter, boolean drawBorders, Object2D parent) {
+		super(bounds, calibrationData, position, isAbsolute, drawCenter, drawBorders, parent);
 		_bitmapId = id;
 	}
 	
