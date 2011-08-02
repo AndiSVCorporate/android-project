@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.os.SystemClock;
+import android.project.screens.GameScreen;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -76,7 +76,6 @@ public class CanvasRenderer extends View {
 
 	@Override
 	public void onDraw(Canvas canvas) {
-		Utils.setTime(SystemClock.elapsedRealtime());
 		Utils.setCanvas(canvas);
 		
 		drawScreen(canvas);
@@ -169,7 +168,6 @@ public class CanvasRenderer extends View {
 		
 		canvas.concat(_canvasCalibrationMatrix);
 		
-		_activeScreen.calculate();
 		_activeScreen.draw(canvas);
 		
 		if (Constants.PATH_CALCULATE_FRAME_RATE) {
@@ -204,5 +202,13 @@ public class CanvasRenderer extends View {
 		if (_activeScreen == null)
 			return true;
 		return _activeScreen.onTouchEvent(event);
+	}
+	
+	public void onPause() {
+		_calculateThread.pause();
+	}
+	
+	public void onResume() {
+		_calculateThread.resume();
 	}
 }

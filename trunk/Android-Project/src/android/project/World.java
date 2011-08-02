@@ -2,7 +2,7 @@ package android.project;
 
 public class World extends Object2DBitmap {
 
-	protected World() {
+	public World() {
 		super(0,
 				null,
 				null,

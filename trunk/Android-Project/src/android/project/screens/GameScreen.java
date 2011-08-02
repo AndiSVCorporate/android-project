@@ -1,6 +1,9 @@
-package android.project;
+package android.project.screens;
 
 import android.graphics.Color;
+import android.project.CalculateThread;
+import android.project.Screen;
+import android.project.Utils;
 import android.project.models.ModelBackground;
 import android.project.models.ModelGameSplash;
 import android.project.models.ModelPlayer;
@@ -19,7 +22,7 @@ public class GameScreen extends Screen {
 		
 		_world.addObject(new ModelBackground(Color.WHITE));
 		_world.addObject(_player);
-		_world.addObject(_logo);
+		//_world.addObject(_logo);
 	}
 
 	@Override

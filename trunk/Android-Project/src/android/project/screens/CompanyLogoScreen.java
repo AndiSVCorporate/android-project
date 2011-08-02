@@ -1,6 +1,9 @@
-package android.project;
+package android.project.screens;
 
 import android.graphics.Color;
+import android.project.CalculateThread;
+import android.project.Screen;
+import android.project.World;
 import android.project.models.ModelBackground;
 import android.project.models.ModelCompanyLogo;
 import android.view.MotionEvent;

@@ -9,6 +9,8 @@ import android.view.WindowManager;
 
 public class Run extends Activity {
 	
+	CanvasRenderer _canvasRenderer;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,20 @@ public class Run extends Activity {
         int rWidth = display.getWidth();
         int rHeight = display.getHeight();
         
-        setContentView(new CanvasRenderer(this, rWidth, rHeight));
+        _canvasRenderer = new CanvasRenderer(this, rWidth, rHeight);
+        
+        setContentView(_canvasRenderer);
+    }
+    
+    @Override
+    protected void onPause() {
+    	_canvasRenderer.onPause();
+    	super.onPause();
+    }
+    
+    @Override
+    protected void onResume() {
+    	_canvasRenderer.onResume();
+    	super.onResume();
     }
 }
