@@ -40,6 +40,10 @@ public class CanvasRenderer extends View {
 	private long _startTime;
 	private long _time;
 
+	/* Privates for calculation making thread */
+	private CalculateThread _calculateThread;
+		
+	
 	public CanvasRenderer(Context context, int rWidth, int rHeight) {
 		super(context);
 		
@@ -62,7 +66,11 @@ public class CanvasRenderer extends View {
 		_startTime = 0;
 		_frameRate = 0;
 		
-		_activeScreen = new GameScreen();
+		_calculateThread = new CalculateThread(this);
+		_activeScreen = new GameScreen(_calculateThread);
+		
+		new Thread(_calculateThread).start();
+		
 		//_activeScreen = new CompanyLogoScreen();
 	}
 
@@ -74,7 +82,6 @@ public class CanvasRenderer extends View {
 		drawScreen(canvas);
 		calculateFrameRate();
 		postInvalidate();
-		
 	}
 
 	/* Privates */
@@ -147,14 +154,14 @@ public class CanvasRenderer extends View {
 	
 	private void drawScreen(Canvas canvas) {
 		// remove this eventually
-		if (first < 5) {
+		if (first < 0) {
 			first++;
-			//return;
+			return;
 		}
 		
 		Paint paint = new Paint();
 		
-		canvas.setMatrix(new Matrix());
+		//canvas.setMatrix(new Matrix());
 		
 		_canvasBaseMatrix = canvas.getMatrix();
 		
@@ -173,7 +180,6 @@ public class CanvasRenderer extends View {
 		    canvas.drawText("FPS: " + Utils.floatRound(_frameRate), 725, 10, paint);
 		}
 		
-
 		/* Draw clipping borders. */
 		if (_activeScreen == null)
 			paint.setColor(Color.BLACK); // Border color.
@@ -187,6 +193,10 @@ public class CanvasRenderer extends View {
 			canvas.drawRect(0, - 1, 800, - 241, paint); // Top border. 
 			canvas.drawRect(0, 481, 800, 721, paint); // Bottom border.
 		}
+	}
+	
+	public Screen getActiveScreen() {
+		return _activeScreen;
 	}
 	
 	@Override

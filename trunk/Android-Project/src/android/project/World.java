@@ -7,7 +7,7 @@ public class World extends Object2DBitmap {
 				null,
 				null,
 				new Positioning(0, 0, 1, 1, 0),
-				false, false, false);
+				false, false, false, null);
 		
 	}
 

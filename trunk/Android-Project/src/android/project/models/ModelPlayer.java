@@ -1,5 +1,11 @@
-package android.project;
+package android.project.models;
 
+import android.project.BoundsRect;
+import android.project.Constants;
+import android.project.Object2DBitmap;
+import android.project.Positioning;
+import android.project.R;
+import android.project.Utils;
 import android.util.Log;
 
 public class ModelPlayer extends Object2DBitmap {
@@ -11,7 +17,7 @@ public class ModelPlayer extends Object2DBitmap {
 				new BoundsRect(Constants.SCREEN_PLAYER_WIDTH, Constants.SCREEN_PLAYER_HEIGHT),
 				null,
 				new Positioning(Constants.SCREEN_PLAYER_MIDDLE_X, Constants.SCREEN_PLAYER_MIDDLE_Y, 1, 1, 0),
-				false, false, false);
+				false, false, false, null);
 		_playerDestination = Constants.SCREEN_PLAYER_MIDDLE_X;
 	}
 	
