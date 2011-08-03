@@ -46,6 +46,8 @@ public class CanvasRenderer extends View {
 	
 	public CanvasRenderer(Context context, int rWidth, int rHeight) {
 		super(context);
+		setDrawingCacheEnabled(true);
+		
 		
 		_canvasBaseMatrix = new Matrix();
 		_canvasCalibrationMatrix = new Matrix();
@@ -82,7 +84,7 @@ public class CanvasRenderer extends View {
 		calculateFrameRate();
 		postInvalidate();
 	}
-
+	
 	/* Privates */
 	
 	private void calculateScreen(int rWidth, int rHeight) {
@@ -145,8 +147,9 @@ public class CanvasRenderer extends View {
 			_frameRate = _frames / ((float) (_time - _startTime) / 1000);
 			_startTime = _time;
 			_frames = 0;
+			//Log.d("rate", "" + _frameRate);
 		}
-		//Log.d("rate", "" + _frameRate);
+
 	}
 	
 	private int first = 0;

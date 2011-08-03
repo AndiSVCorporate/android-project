@@ -28,7 +28,7 @@ public class ModelSmoke extends Object2D {
 		_totalTime += timeDiff;
 		if (_totalTime < Constants.ANIMATION_SMOKE_INTERVAL)
 			return;
-		_totalTime = 0;
+		_totalTime = 0; 
 		ModelSmokeCircle smokeCircle = new ModelSmokeCircle(getX(), getY());
 		getWorld().addObject(smokeCircle);
 	}
@@ -37,26 +37,38 @@ public class ModelSmoke extends Object2D {
 		
 		private float _radius;
 		private float _alpha;
-		private static Paint _paint = new Paint();
+		private int _paintIndex;
+		private float _skew;
+		private float _maxRadius;
 		
-		static {
-			_paint.setColor(Color.DKGRAY);
-		}
+		private static final Paint[] _paints = {
+			new Paint(Constants.PAINT_GRAY),
+			new Paint(Constants.PAINT_GRAY),
+			new Paint(Constants.PAINT_DKGRAY),
+			new Paint(Constants.PAINT_GRAY)
+			};
 		
 		public ModelSmokeCircle(float x, float y) {
 			super(null, null,
 					new Positioning(x, y, 1, 1, 0),
 					false, false, false, null);
+			float skewStartX = (float) (Math.random() - 0.5) * 2 * Constants.ANIMATION_SMOKE_MAX_START_SKEW;
+			float skewStartY = (float) (Math.random() - 0.5) * 2 * Constants.ANIMATION_SMOKE_MAX_START_SKEW;
+			translate(skewStartX, skewStartY);
+			
+			_skew = (float) (Math.random() - 0.5) * 2 * Constants.ANIMATION_SMOKE_MAX_SKEW;
+			_paintIndex = (int) Math.round(Math.random() * (_paints.length - 1));
 			_alpha = 0xFF;
 			_radius = 0;
+			_maxRadius = Constants.ANIMATION_SMOKE_MIN_RADIUS + (float) Math.random() * Constants.ANIMATION_SMOKE_DIFF_RADIUS;
 		}
 
 		@Override
 		public void drawThis(Canvas c) {
 			if (_alpha == 0)
 				return;
-			_paint.setAlpha((int) _alpha);
-			c.drawCircle(0, 0, _radius, _paint);
+			_paints[_paintIndex].setAlpha((int) _alpha);
+			c.drawCircle(0, 0, _radius, _paints[_paintIndex]);
 		}
 		
 		@Override
@@ -64,15 +76,17 @@ public class ModelSmoke extends Object2D {
 			if (_alpha == 0)
 				return;
 			float newAlpha = _alpha - (0xFF * (((float) timeDiff) / Constants.ANIMATION_SMOKE_FADE_TIME));
-			float newRadius = _radius + Constants.ANIMATION_SMOKE_MAX_RADIUS *  (((float) timeDiff) / Constants.ANIMATION_SMOKE_FADE_TIME);
+			float newRadius = _radius + _maxRadius *  (((float) timeDiff) / Constants.ANIMATION_SMOKE_FADE_TIME);
+			float dy = Constants.ANIMATION_SMOKE_DISTANCE * (((float) timeDiff) / Constants.ANIMATION_SMOKE_FADE_TIME);
+			float dx = _skew * (((float) timeDiff) / Constants.ANIMATION_SMOKE_FADE_TIME);
+			
+			translate(dx, -dy);
 			
 			_radius = newRadius;
 			_alpha = Math.max(0, newAlpha);
 			if (_alpha == 0)
 				getParent().removeObject(this);			
 		}
-		
-		
 		
 	}
 

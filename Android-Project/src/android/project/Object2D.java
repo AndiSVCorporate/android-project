@@ -137,6 +137,13 @@ public abstract class Object2D {
 		_position.setCalibrationY(_position.getCalibrationY() + value);
 	}
 	
+	public void translate(float dx, float dy) {
+		if (_position == null)
+			return;
+		_position.setCalibrationX(_position.getCalibrationX() + dx);
+		_position.setCalibrationY(_position.getCalibrationY() + dy);
+	}
+	
 	public float getX() {
 		return _x;
 	}

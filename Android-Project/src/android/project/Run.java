@@ -41,4 +41,6 @@ public class Run extends Activity {
     	_canvasRenderer.onResume();
     	super.onResume();
     }
+    
+    
 }

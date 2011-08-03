@@ -1,5 +1,8 @@
 package android.project;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+
 public class Constants {
 
 	/* SCREEN ASPECT CONTROL CONSTANTS */
@@ -34,12 +37,32 @@ public class Constants {
 	public static final long ANIMATION_SMOKE_INTERVAL = 100;
 	public static final long ANIMATION_SMOKE_FADE_TIME = 500;
 	public static final float ANIMATION_SMOKE_DISTANCE = 30;
+	public static final float ANIMATION_SMOKE_MAX_SKEW = 10;
+	public static final float ANIMATION_SMOKE_MAX_START_SKEW = 10;
 	public static final float ANIMATION_SMOKE_MAX_RADIUS = 20;
+	public static final float ANIMATION_SMOKE_MIN_RADIUS = 10;
+	public static final float ANIMATION_SMOKE_DIFF_RADIUS = ANIMATION_SMOKE_MAX_RADIUS - ANIMATION_SMOKE_MIN_RADIUS;
+	
+	/* DEPTH CONSTANTS */
+	
+	public static final int DEPTH_PLAYER = 0;
+	public static final int DEPTH_DEFUALT = 0;
+	
+	
+	
+	public static final int DEPTH_BACKGROUND = Integer.MIN_VALUE;
 	
 	/* PAINTS */
+	public static final Paint PAINT_RED = new Paint();
+	public static final Paint PAINT_GRAY = new Paint();
+	public static final Paint PAINT_LTGRAY = new Paint();
+	public static final Paint PAINT_DKGRAY = new Paint();
 	
 	static {
-		
+		PAINT_RED.setColor(Color.RED);
+		PAINT_GRAY.setColor(Color.GRAY);
+		PAINT_LTGRAY.setColor(Color.LTGRAY);
+		PAINT_DKGRAY.setColor(Color.DKGRAY);
 	}
 	
 }
