@@ -21,7 +21,7 @@ public class ModelBackground extends Object2D {
 	
 	@Override
 	public int depth() {
-		return Integer.MIN_VALUE;
+		return Constants.DEPTH_BACKGROUND;
 	}
 
 }

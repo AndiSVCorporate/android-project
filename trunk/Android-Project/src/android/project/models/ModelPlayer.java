@@ -59,8 +59,12 @@ public class ModelPlayer extends Object2DBitmap {
 		if (x - (Constants.SCREEN_PLAYER_WIDTH / 2) > clickX)
 			if (Utils.floatCompare(x, Constants.SCREEN_PLAYER_LEFT_X) > 0)
 				if (Utils.floatCompare(_playerDestination, x) >= 0)
-					_playerDestination = _playerDestination - Constants.SCREEN_PLAYER_MOVE_TOTAL_X;
-			
+					_playerDestination = _playerDestination - Constants.SCREEN_PLAYER_MOVE_TOTAL_X;		
+	}
+	
+	@Override
+	public int depth() {
+		return Constants.DEPTH_PLAYER;
 	}
 	
 }
