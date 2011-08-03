@@ -146,7 +146,7 @@ public class CanvasRenderer extends View {
 			_startTime = _time;
 			_frames = 0;
 		}
-		Log.d("rate", "" + _frameRate);
+		//Log.d("rate", "" + _frameRate);
 	}
 	
 	private int first = 0;

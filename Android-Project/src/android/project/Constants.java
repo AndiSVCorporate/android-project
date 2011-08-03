@@ -31,6 +31,15 @@ public class Constants {
 	
 	public static final float ANIMATION_FRAME_RATE = 35;
 	
-	public static final long SMOKE_INTERVAL = 300;
+	public static final long ANIMATION_SMOKE_INTERVAL = 100;
+	public static final long ANIMATION_SMOKE_FADE_TIME = 500;
+	public static final float ANIMATION_SMOKE_DISTANCE = 30;
+	public static final float ANIMATION_SMOKE_MAX_RADIUS = 20;
+	
+	/* PAINTS */
+	
+	static {
+		
+	}
 	
 }
