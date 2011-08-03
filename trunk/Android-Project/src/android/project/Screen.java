@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public abstract class Screen {
@@ -23,16 +24,23 @@ public abstract class Screen {
 	public abstract void postInvalidate();
 	
 	public void calculate() {
-		_world.calculate();
+		long timeDiff = Utils.getTime() - Utils.getTimePrev();
+		if (timeDiff == 0)
+			return;
+		
+		List<Object2D> objects = _world.getObjectsToCalculate();
+		
+		for (Object2D object : objects) {
+			object.calculateThis(timeDiff);
+		}
 	}
 	
 	protected void draw(Canvas c) {
 		List<Object2D> allObjects;
 		
 		synchronized (_calculateThread.getLock()) {
-			allObjects = _world.getObjects();
+			allObjects = _world.getObjectsToDraw();
 		}
-		
 		Collections.sort(allObjects, Object2D.DEPTH_COMPARATOR);
 		for (Object2D object : allObjects) {
 			object.draw(c);

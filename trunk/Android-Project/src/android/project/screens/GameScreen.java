@@ -7,6 +7,7 @@ import android.project.Utils;
 import android.project.models.ModelBackground;
 import android.project.models.ModelGameSplash;
 import android.project.models.ModelPlayer;
+import android.project.models.ModelSmoke;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -22,6 +23,7 @@ public class GameScreen extends Screen {
 		
 		_world.addObject(new ModelBackground(Color.WHITE));
 		_world.addObject(_player);
+		_player.addObject(new ModelSmoke(0, 0));
 		//_world.addObject(_logo);
 	}
 
