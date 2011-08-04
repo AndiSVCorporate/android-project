@@ -30,8 +30,8 @@ public class ModelPlayer extends Object2DBitmap {
 
 		int dir = Utils.floatCompare(_playerDestination, x);
 				
-		Log.d("wtf", "x = " + x);
-		Log.d("wtf", "dest = " + _playerDestination);
+		//Log.d("wtf", "x = " + x);
+		//Log.d("wtf", "dest = " + _playerDestination);
 		
 		if (dir == 0)
 			return;

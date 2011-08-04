@@ -30,6 +30,12 @@ public class Constants {
 	public static final float SCREEN_PLAYER_RIGHT_X = SCREEN_PLAYER_MIDDLE_X + SCREEN_PLAYER_MOVE_TOTAL_X;
 	public static final float SCREEN_PLAYER_SPEED_PPS = 600;
 	
+	/* TIME CONSTANTS */
+	
+	public static final long TIME_MAX_DIFF = 200;
+	public static final long TIME_FUTURE = 20000;
+	public static final int TIME_CHUNKS = (int) (TIME_FUTURE / TIME_MAX_DIFF);
+	
 	/* ANIMATION CONSTANTS */
 	
 	public static final float ANIMATION_FRAME_RATE = 35;
