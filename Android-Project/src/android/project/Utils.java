@@ -16,10 +16,7 @@ public class Utils {
 	private static Matrix _canvasBaseMatrix = new Matrix();
 	private static Matrix _inverseCanvasBaseMatrix = new Matrix();
 	
-	/* Current time. */
-	private static long _time = 0;
-	/* Previous frame time. */
-	private static long _timePrev = 0;
+	private static long _timeDiff = 0;
 	
 	private static Typeface _typeface;
 	
@@ -61,20 +58,12 @@ public class Utils {
 		return _typeface;
 	}
 	
-	public static void setTime(long time) {
-		if (_time == 0)
-			_timePrev = time;
-		else
-			_timePrev = _time;
-		_time = time;
+	public static void setTimeDiff(long timeDiff) {
+		_timeDiff = timeDiff;
 	}
 	
-	public static long getTime() {
-		return _time;
-	}
-	
-	public static long getTimePrev() {
-		return _timePrev;
+	public static long getTimeDiff() {
+		return _timeDiff;
 	}
 	
 	public static void setCanvasBaseMatrix(Matrix canvasBaseMatrix) {

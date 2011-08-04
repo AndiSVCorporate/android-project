@@ -2,22 +2,19 @@ package android.project.screens;
 
 import android.graphics.Color;
 import android.project.CalculateThread;
+import android.project.CanvasRenderer;
 import android.project.Screen;
-import android.project.World;
 import android.project.models.ModelBackground;
 import android.project.models.ModelCompanyLogo;
 import android.view.MotionEvent;
 
 public class CompanyLogoScreen extends Screen {
 
-	private World _world;
-	
-	public CompanyLogoScreen(CalculateThread calculateThread) {
-		super(calculateThread);
+	public CompanyLogoScreen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
+		super(calculateThread, canvasRenderer);
 		
-		_world = new World();
-		_world.addObject(new ModelBackground(Color.WHITE));
-		_world.addObject(new ModelCompanyLogo());
+		getWorld().addObject(new ModelBackground(Color.WHITE));
+		getWorld().addObject(new ModelCompanyLogo());
 	}
 
 	@Override
@@ -33,6 +30,11 @@ public class CompanyLogoScreen extends Screen {
 
 	@Override
 	public void postInvalidate() {
+		
+	}
+
+	@Override
+	public void calculateThis(long timeDiff) {
 		
 	}
 }

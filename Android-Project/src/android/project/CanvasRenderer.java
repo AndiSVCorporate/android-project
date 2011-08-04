@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.SystemClock;
+import android.project.screens.CompanyLogoScreen;
 import android.project.screens.GameScreen;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -69,11 +71,11 @@ public class CanvasRenderer extends View {
 		_frameRate = 0;
 		
 		_calculateThread = new CalculateThread(this);
+		
 		_activeScreen = new GameScreen(_calculateThread);
+		//_activeScreen = new CompanyLogoScreen(_calculateThread);
 		
 		new Thread(_calculateThread).start();
-		
-		//_activeScreen = new CompanyLogoScreen();
 	}
 
 	@Override
@@ -138,16 +140,15 @@ public class CanvasRenderer extends View {
 		if (!Constants.PATH_CALCULATE_FRAME_RATE)
 			return;
 		if (_startTime == 0) {
-			_startTime = Utils.getTime();
+			_startTime = SystemClock.elapsedRealtime();
 			return;
 		}
-		_time = Utils.getTime();
+		_time = SystemClock.elapsedRealtime();
 		_frames++;
 		if (_time > _startTime + 1000) {
 			_frameRate = _frames / ((float) (_time - _startTime) / 1000);
 			_startTime = _time;
 			_frames = 0;
-			//Log.d("rate", "" + _frameRate);
 		}
 
 	}
@@ -212,6 +213,7 @@ public class CanvasRenderer extends View {
 	}
 	
 	public void onResume() {
+		_startTime = SystemClock.elapsedRealtime();
 		_calculateThread.resume();
 	}
 }

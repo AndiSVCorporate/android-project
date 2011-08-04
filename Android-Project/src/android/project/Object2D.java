@@ -108,7 +108,6 @@ public abstract class Object2D {
 			if (_parent != null)
 				_matrixPositionCalc.preConcat(_parent.getPositionMatrixCalc());
 		positioningToMatrix(_matrixPositionCalc, _position);
-		Log.d("matrix", _matrixPositionCalc + "");
 		updatePoints();
 		
 		objects.add(this);

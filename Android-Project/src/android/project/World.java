@@ -1,14 +1,14 @@
 package android.project;
 
-public class World extends Object2DBitmap {
+import android.graphics.Canvas;
+
+public class World extends Object2D {
 
 	public World() {
-		super(0,
-				null,
-				null,
-				new Positioning(0, 0, 1, 1, 0),
-				false, false, false, null);
-		
+		super(null, null, null, false, false, false, null);
 	}
+
+	@Override
+	public void drawThis(Canvas c) { }
 
 }
