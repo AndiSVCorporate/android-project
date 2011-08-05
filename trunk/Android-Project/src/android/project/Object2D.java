@@ -17,6 +17,8 @@ public abstract class Object2D {
 
 	private Object2D _parent;
 	
+	private Screen _screen;
+	
 	private boolean _isAbsolute;
 
 	private boolean _drawCenter;
@@ -46,6 +48,7 @@ public abstract class Object2D {
 		_bounds = bounds;
 		_position = position;
 		_parent = parent;
+		_screen = null;
 		_matrixPositionCalc = new Matrix();
 	}
 
@@ -66,14 +69,16 @@ public abstract class Object2D {
 		
 		c.restore();
 	}
-
+	
 	public void addObject(Object2D object) {
 		object.setParent(this);
+		object.setScreen(getScreen());
 		_objects.add(object);
 	}
 	
 	public void removeObject(Object2D object) {
 		_objects.remove(object);
+		object.setScreen(null);
 		object.setParent(null);
 	}
 	
@@ -124,21 +129,33 @@ public abstract class Object2D {
 		_parent = parent;
 	}
 	
+	public Screen getScreen() {
+		return _screen;
+	}
+	
+	public void setScreen(Screen screen) {
+		_screen = screen;
+	}
+	
+	public CanvasRenderer getCanvasRenderer() {
+		if (_screen == null)
+			return null;
+		return _screen.getCanvasRenderer();
+	}
+	
 	public void translateX(float value) {
 		if (_position == null)
-			return;
+			_position = new Positioning(0, 0, 1, 1, 0);
 		_position.setCalibrationX(_position.getCalibrationX() + value);
 	}
 	
 	public void translateY(float value) {
 		if (_position == null)
-			return;
+			_position = new Positioning(0, 0, 1, 1, 0);
 		_position.setCalibrationY(_position.getCalibrationY() + value);
 	}
 	
 	public void translate(float dx, float dy) {
-		if (_position == null)
-			return;
 		_position.setCalibrationX(_position.getCalibrationX() + dx);
 		_position.setCalibrationY(_position.getCalibrationY() + dy);
 	}

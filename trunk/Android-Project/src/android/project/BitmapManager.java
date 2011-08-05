@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
+import android.util.Log;
 
 public class BitmapManager {
 	
@@ -30,12 +31,12 @@ public class BitmapManager {
 		_calibrations.put(R.drawable.epicfailgamingstudios, screenLogo);
 		_calibrations.put(R.drawable.game_screen, screenLogo);
 		
-		loadBitmap(R.drawable.player, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.player2, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.player2pu, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.player, Bitmap.Config.ARGB_4444);
+		loadBitmap(R.drawable.player2, Bitmap.Config.ARGB_4444);
+		loadBitmap(R.drawable.player2pu, Bitmap.Config.ARGB_4444);
 		loadBitmap(R.drawable.epicfailgamingstudios, Bitmap.Config.RGB_565);
-		loadBitmap(R.drawable.game_screen, Bitmap.Config.ARGB_8888);
-		
+		loadBitmap(R.drawable.game_screen, Bitmap.Config.ARGB_4444);
+
 	}
 	
 	public Bitmap getBitmap(int bitmapId) {

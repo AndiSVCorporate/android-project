@@ -21,6 +21,8 @@ public class GameScreen extends Screen {
 		
 		getWorld().addObject(new ModelBackground(Color.WHITE));
 		getWorld().addObject(_player);
+		//getWorld().addObject(new ModelBezierCurve(Color.GREEN));
+		
 		for (int i = 0; i < 3; ++i)
 			_player.addObject(new ModelSmoke(0, 0));
 		

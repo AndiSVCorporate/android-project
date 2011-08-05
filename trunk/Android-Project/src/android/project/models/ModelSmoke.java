@@ -28,7 +28,7 @@ public class ModelSmoke extends Object2D {
 		_totalTime += timeDiff;
 		if (_totalTime < Constants.ANIMATION_SMOKE_INTERVAL)
 			return;
-		_totalTime = 0; 
+		_totalTime -= Constants.ANIMATION_SMOKE_INTERVAL; 
 		ModelSmokeCircle smokeCircle = new ModelSmokeCircle(getX(), getY());
 		getWorld().addObject(smokeCircle);
 	}
@@ -42,8 +42,8 @@ public class ModelSmoke extends Object2D {
 		private float _maxRadius;
 		
 		private static final Paint[] _paints = {
-			new Paint(Constants.PAINT_GRAY),
-			new Paint(Constants.PAINT_GRAY),
+			new Paint(Constants.PAINT_WHITE),
+			new Paint(Constants.PAINT_LTGRAY),
 			new Paint(Constants.PAINT_DKGRAY),
 			new Paint(Constants.PAINT_GRAY)
 			};

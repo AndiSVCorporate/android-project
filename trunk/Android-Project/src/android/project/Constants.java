@@ -55,20 +55,14 @@ public class Constants {
 	public static final int DEPTH_DEFUALT = 0;
 	
 	
-	
+	public static final int DEPTH_COVER = 1000000;
 	public static final int DEPTH_BACKGROUND = Integer.MIN_VALUE;
 	
 	/* PAINTS */
-	public static final Paint PAINT_RED = new Paint();
-	public static final Paint PAINT_GRAY = new Paint();
-	public static final Paint PAINT_LTGRAY = new Paint();
-	public static final Paint PAINT_DKGRAY = new Paint();
-	
-	static {
-		PAINT_RED.setColor(Color.RED);
-		PAINT_GRAY.setColor(Color.GRAY);
-		PAINT_LTGRAY.setColor(Color.LTGRAY);
-		PAINT_DKGRAY.setColor(Color.DKGRAY);
-	}
+	public static final Paint PAINT_RED = new Paint() {{ setColor(Color.RED); }};
+	public static final Paint PAINT_GRAY = new Paint() {{ setColor(Color.GRAY); }};
+	public static final Paint PAINT_LTGRAY = new Paint() {{ setColor(Color.LTGRAY); }};
+	public static final Paint PAINT_DKGRAY = new Paint() {{ setColor(Color.DKGRAY); }};
+	public static final Paint PAINT_WHITE = new Paint() {{ setColor(Color.WHITE); }};
 	
 }

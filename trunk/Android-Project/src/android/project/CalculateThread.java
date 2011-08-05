@@ -26,7 +26,6 @@ public class CalculateThread implements Runnable {
 					Screen activeScreen = _renderer.getActiveScreen();
 					if (activeScreen != null) {
 						long nextTime = SystemClock.elapsedRealtime();
-						Log.d("speed", nextTime - _prevTime + "");
 						activeScreen.calculate(nextTime - _prevTime);
 						_prevTime = nextTime;
 					}
