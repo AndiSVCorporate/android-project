@@ -8,12 +8,26 @@ import android.util.Log;
 public class ModelFloatingModel extends Object2D {
 	
 	private Object2D _innerObject;
-	private float _innerObjectS;
+	private long _totalTime;
+	private float _prevY;
+	private float _v0;
+	private float _a;
+	private float _yHalf;
+	private long _tHalf = 200;
 	
 	public ModelFloatingModel(Object2D innerObject, float x, float y) {
 		super(null, null, new Positioning(x, y, 1, 1, 0), false, false, false, null);
 		_innerObject = innerObject;
-		_innerObjectS = 0;
+		
+		_totalTime = 0;
+		
+		_prevY = 0;
+		
+		_yHalf = 5;
+		_tHalf = 200;
+		
+		_v0 = 2 * _yHalf / _tHalf;
+		_a = -_v0 / _tHalf;
 		addObject(_innerObject);
 	}
 
@@ -22,13 +36,18 @@ public class ModelFloatingModel extends Object2D {
 	
 	@Override
 	public void calculateThis(long timeDiff) {
-		float acceleration = -10 + Math.max(0, _innerObject.getY() - getY());
-		//Log.d("dy", getY() + " - " + _innerObject.getY());
-		Log.d("acceleration", "" + acceleration);
-		_innerObjectS -= acceleration * ((float) timeDiff / 1000);
-		//Log.d("speed", "" + _innerObjectS);
-		_innerObject.translateY(6 * _innerObjectS * ((float)timeDiff / 1000));
-		//Log.d("dy", getY() + " - " + _innerObject.getY());
+		_totalTime += timeDiff;
+		if (_totalTime > 4 * _tHalf)
+			_totalTime -= 4 * _tHalf;
+		long t = _totalTime;
+		float sign = 1;
+		if (t > _tHalf * 2) {
+			sign = -1;
+			t -= _tHalf * 2;
+		}
+		t -= _tHalf;
+		float y = (t * t * _a / 2 + _yHalf) * sign;
+		_innerObject.translateY(y - _prevY);
 	}
 	
 	@Override

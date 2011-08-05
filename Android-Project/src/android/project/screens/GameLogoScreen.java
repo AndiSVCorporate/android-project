@@ -21,7 +21,7 @@ public class GameLogoScreen extends Screen {
 		getWorld().addObject(new ModelBackground(Color.WHITE));
 		//getWorld().addObject(new ModelGameSplash());
 		//getWorld().addObject(new ModelBezierCurve(Color.BLACK));
-		getWorld().addObject(new ModelFloatingModel(new ModelButton(), 500, 200));
+		getWorld().addObject(new ModelFloatingModel(new ModelButton(), 500, 300));
 	}
 
 	@Override
