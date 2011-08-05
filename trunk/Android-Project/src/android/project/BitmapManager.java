@@ -24,14 +24,12 @@ public class BitmapManager {
 		Positioning player = new Positioning((-Constants.SCREEN_PLAYER_WIDTH / 2), (-Constants.SCREEN_PLAYER_HEIGHT / 2), 1f, 1f, 0.0f);
 		Positioning screenLogo = new Positioning((-Constants.ASPECT_WIDTH / 2), (-Constants.ASPECT_HEIGHT / 2), 1f, 1f, 0.0f);
 		
-		_calibrations.put(R.drawable.player, player);
 		_calibrations.put(R.drawable.player2, player);
 		_calibrations.put(R.drawable.player2pu, player);
 		
 		_calibrations.put(R.drawable.epicfailgamingstudios, screenLogo);
 		_calibrations.put(R.drawable.game_screen, screenLogo);
 		
-		loadBitmap(R.drawable.player, Bitmap.Config.ARGB_4444);
 		loadBitmap(R.drawable.player2, Bitmap.Config.ARGB_4444);
 		loadBitmap(R.drawable.player2pu, Bitmap.Config.ARGB_4444);
 		loadBitmap(R.drawable.epicfailgamingstudios, Bitmap.Config.RGB_565);
