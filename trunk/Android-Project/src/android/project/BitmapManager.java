@@ -23,9 +23,16 @@ public class BitmapManager {
 		
 		Positioning player = new Positioning((-Constants.SCREEN_PLAYER_WIDTH / 2), (-Constants.SCREEN_PLAYER_HEIGHT / 2), 1f, 1f, 0.0f);
 		Positioning screenLogo = new Positioning((-Constants.ASPECT_WIDTH / 2), (-Constants.ASPECT_HEIGHT / 2), 1f, 1f, 0.0f);
+		Positioning playButton = new Positioning(-104, -104, 1f, 1f, 0.0f);
+		Positioning menuButton = new Positioning(-40, -40, 1f, 1f, 0.0f);
 		
 		_calibrations.put(R.drawable.player2, player);
 		_calibrations.put(R.drawable.player2pu, player);
+		
+		_calibrations.put(R.drawable.button_play, playButton);
+		_calibrations.put(R.drawable.button_settings, menuButton);
+		_calibrations.put(R.drawable.button_social, menuButton);
+		_calibrations.put(R.drawable.button_quit, menuButton);
 		
 		_calibrations.put(R.drawable.epicfailgamingstudios, screenLogo);
 		_calibrations.put(R.drawable.game_screen, screenLogo);
@@ -34,6 +41,10 @@ public class BitmapManager {
 		loadBitmap(R.drawable.player2pu, Bitmap.Config.ARGB_4444);
 		loadBitmap(R.drawable.epicfailgamingstudios, Bitmap.Config.RGB_565);
 		loadBitmap(R.drawable.game_screen, Bitmap.Config.ARGB_4444);
+		loadBitmap(R.drawable.button_play, Bitmap.Config.ARGB_4444);
+		loadBitmap(R.drawable.button_quit, Bitmap.Config.ARGB_4444);
+		loadBitmap(R.drawable.button_settings, Bitmap.Config.ARGB_4444);
+		loadBitmap(R.drawable.button_social, Bitmap.Config.ARGB_4444);
 
 	}
 	

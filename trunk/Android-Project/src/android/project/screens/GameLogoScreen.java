@@ -9,6 +9,7 @@ import android.project.models.ModelBezierCurve;
 import android.project.models.ModelButton;
 import android.project.models.ModelCompanyLogo;
 import android.project.models.ModelFloatingModel;
+import android.project.models.ModelGameMenu;
 import android.project.models.ModelGameSplash;
 import android.project.models.ModelSmoke;
 import android.view.MotionEvent;
@@ -21,7 +22,7 @@ public class GameLogoScreen extends Screen {
 		getWorld().addObject(new ModelBackground(Color.WHITE));
 		//getWorld().addObject(new ModelGameSplash());
 		//getWorld().addObject(new ModelBezierCurve(Color.BLACK));
-		getWorld().addObject(new ModelFloatingModel(new ModelButton(), 500, 300));
+		getWorld().addObject(new ModelGameMenu(400, 240));
 	}
 
 	@Override

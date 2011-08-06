@@ -10,12 +10,11 @@ public class ModelFloatingModel extends Object2D {
 	private Object2D _innerObject;
 	private long _totalTime;
 	private float _prevY;
-	private float _v0;
 	private float _a;
 	private float _yHalf;
 	private long _tHalf = 200;
 	
-	public ModelFloatingModel(Object2D innerObject, float x, float y) {
+	public ModelFloatingModel(Object2D innerObject, float x, float y, float yHalf, long tHalf) {
 		super(null, null, new Positioning(x, y, 1, 1, 0), false, false, false, null);
 		_innerObject = innerObject;
 		
@@ -23,11 +22,11 @@ public class ModelFloatingModel extends Object2D {
 		
 		_prevY = 0;
 		
-		_yHalf = 5;
-		_tHalf = 200;
+		_yHalf = yHalf;
+		_tHalf = tHalf;
 		
-		_v0 = 2 * _yHalf / _tHalf;
-		_a = -_v0 / _tHalf;
+		_a = - 2 * _yHalf / (_tHalf * _tHalf);
+		
 		addObject(_innerObject);
 	}
 
@@ -48,11 +47,7 @@ public class ModelFloatingModel extends Object2D {
 		t -= _tHalf;
 		float y = (t * t * _a / 2 + _yHalf) * sign;
 		_innerObject.translateY(y - _prevY);
-	}
-	
-	@Override
-	public int depth() {
-		return _innerObject.depth();
+		_prevY = y;
 	}
 	
 }
