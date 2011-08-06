@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.MotionEvent;
 
 public abstract class Screen {
@@ -28,9 +27,6 @@ public abstract class Screen {
 	public abstract void postInvalidate();
 	
 	public void calculate(long timeDiff) {
-		if (timeDiff == 0 || timeDiff >= Constants.TIME_MAX_DIFF)
-			return;
-		
 		calculateThis(timeDiff);
 		
 		List<Object2D> objects = _world.getObjectsToCalculate();

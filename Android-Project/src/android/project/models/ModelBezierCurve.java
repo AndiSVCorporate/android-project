@@ -1,13 +1,10 @@
 package android.project.models;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
 import android.graphics.Shader;
-import android.project.Constants;
 import android.project.Object2D;
 import android.project.Utils;
 
@@ -34,7 +31,7 @@ public class ModelBezierCurve extends Object2D {
 		_line = new Paint();
 		_line.setStyle(Paint.Style.STROKE);
 		_line.setAntiAlias(true);
-		_line.setStrokeWidth(7);
+		_line.setStrokeWidth(7f);
 	}
 
 	@Override
@@ -98,5 +95,10 @@ public class ModelBezierCurve extends Object2D {
 		
 		out[0] = sx + x;
 		out[1] = sy + y;
+	}
+	
+	@Override
+	public int depth() {
+		return 110;
 	}
 }

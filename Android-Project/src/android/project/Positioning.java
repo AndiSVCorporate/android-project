@@ -14,10 +14,10 @@ public class Positioning {
 	private float _calibrationScaleX;
 	/** Calibration by scaling Y - axis. */
 	private float _calibrationScaleY;
-	
+
 	/** Calibration by rotation. */
 	private float _calibrationAngle;
-	
+
 	/**
 	 * Constructor for initializing all calibration data.
 	 * @param calibrationX X - axis translation value.
@@ -35,14 +35,34 @@ public class Positioning {
 		_calibrationScaleY = calibrationScaleY;
 		_calibrationAngle = calibrationAngle;
 	}
-	
+
+	public Positioning(Positioning other) {
+		if (other == null) {
+			_calibrationX = 0;
+			_calibrationY = 0;
+			_calibrationScaleX = 1;
+			_calibrationScaleY = 1;
+			_calibrationAngle = 0;
+		} else {
+			_calibrationX = other.getCalibrationX();
+			_calibrationY = other.getCalibrationY();
+			_calibrationScaleX = other.getCalibrationScaleX();
+			_calibrationScaleY = other.getCalibrationScaleY();
+			_calibrationAngle = other.getCalibrationAngle();
+		}
+	}
+
+	public Positioning() {
+		this(0, 0, 1, 1, 0);
+	}
+
 	/**
 	 * @return Returns X - axis translation value.
 	 */
 	public float getCalibrationX() {
 		return _calibrationX;
 	}
-	
+
 	/**
 	 * Sets X - axis translation value.
 	 * @param calibrationX X - axis translation value.
@@ -50,14 +70,14 @@ public class Positioning {
 	public void setCalibrationX(float calibrationX) {
 		_calibrationX = calibrationX;
 	}
-	
+
 	/**
 	 * @return Returns Y - axis translation value.
 	 */
 	public float getCalibrationY() {
 		return _calibrationY;
 	}
-	
+
 	/**
 	 * Sets Y - axis translation value.
 	 * @param calibrationY Y - axis translation value.
@@ -65,14 +85,14 @@ public class Positioning {
 	public void setCalibrationY(float calibrationY) {
 		_calibrationY = calibrationY;
 	}
-	
+
 	/**
 	 * @return Returns scaling value X - Axis.
 	 */
 	public float getCalibrationScaleX() {
 		return _calibrationScaleX;
 	}
-	
+
 	/**
 	 * Sets X - axis scaling value.
 	 * @param calibrationX X - axis scaling value.
@@ -80,14 +100,14 @@ public class Positioning {
 	public void setCalibrationScaleX(float calibrationScaleX) {
 		_calibrationScaleX = calibrationScaleX;
 	}
-	
+
 	/**
 	 * @return Returns scaling value Y - axis.
 	 */
 	public float getCalibrationScaleY() {
 		return _calibrationScaleY;
 	}
-	
+
 	/**
 	 * Sets Y - axis scaling value.
 	 * @param calibrationY Y - axis scaling value.
@@ -95,14 +115,14 @@ public class Positioning {
 	public void setCalibrationScaleY(float calibrationScaleY) {
 		_calibrationScaleY = calibrationScaleY;
 	}
-	
+
 	/**
 	 * @return Returns rotation value.
 	 */
 	public float getCalibrationAngle() {
 		return _calibrationAngle;
 	}
-	
+
 	/**
 	 * Sets X - axis scaling value.
 	 * @param calibrationX X - axis scaling value.
@@ -110,5 +130,5 @@ public class Positioning {
 	public void setCalibrationAngle(float calibrationAngle) {
 		_calibrationAngle = calibrationAngle;
 	}
-	
+
 }

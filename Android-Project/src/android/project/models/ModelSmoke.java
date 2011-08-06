@@ -1,13 +1,10 @@
 package android.project.models;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.project.Constants;
 import android.project.Object2D;
 import android.project.Positioning;
-import android.project.World;
-import android.util.Log;
 
 public class ModelSmoke extends Object2D {
 	

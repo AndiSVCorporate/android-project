@@ -1,6 +1,5 @@
 package android.project.models;
 
-import android.project.Constants;
 import android.project.Object2DBitmap;
 import android.project.Positioning;
 import android.project.R;
@@ -17,6 +16,6 @@ public class ModelPlayButton extends Object2DBitmap {
 	
 	@Override
 	public int depth() {
-		return 100;
+		return 120;
 	}
 }

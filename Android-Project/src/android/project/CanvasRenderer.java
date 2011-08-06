@@ -7,9 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.SystemClock;
-import android.project.screens.CompanyLogoScreen;
 import android.project.screens.GameLogoScreen;
-import android.project.screens.GameScreen;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -76,8 +74,8 @@ public class CanvasRenderer extends View {
 		_calculateThread = new CalculateThread(this);
 		
 		//_activeScreen = new GameScreen(_calculateThread, this);
-		_activeScreen = new CompanyLogoScreen(_calculateThread, this);
-		//_activeScreen = new GameLogoScreen(_calculateThread, this);
+		//_activeScreen = new CompanyLogoScreen(_calculateThread, this);
+		_activeScreen = new GameLogoScreen(_calculateThread, this);
 		
 		new Thread(_calculateThread).start();
 	}
