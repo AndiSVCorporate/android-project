@@ -22,7 +22,7 @@ public class GameLogoScreen extends Screen {
 		getWorld().addObject(new ModelBackground(Color.WHITE));
 		//getWorld().addObject(new ModelGameSplash());
 		//getWorld().addObject(new ModelBezierCurve(Color.BLACK));
-		getWorld().addObject(new ModelGameMenu(400, 240));
+		getWorld().addObject(new ModelGameMenu(220, 320));
 	}
 
 	@Override

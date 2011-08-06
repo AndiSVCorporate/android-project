@@ -160,6 +160,12 @@ public abstract class Object2D {
 		_position.setCalibrationY(_position.getCalibrationY() + dy);
 	}
 	
+	public void rotate(float d) {
+		if (_position == null)
+			_position = new Positioning(0, 0, 1, 1, 0);
+		_position.setCalibrationAngle(_position.getCalibrationAngle() + d);
+	}
+	
 	public float getX() {
 		return _x;
 	}
