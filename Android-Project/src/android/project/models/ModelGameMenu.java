@@ -20,13 +20,13 @@ public class ModelGameMenu extends Object2D {
 		_quitButton = new ModelQuitButton();
 		
 		addObject(_playButton);
-		addObject(new ModelFloatingModel(_settingsButton, -200, -100, 3, 1000));
-		addObject(new ModelFloatingModel(_socialButton, -200, 0, 3, 1000));
-		addObject(new ModelFloatingModel(_quitButton, -200, 100, 3, 1000));
+		addObject(new ModelFloatingModel(_settingsButton, -130, -90, 3, 1000, 10000));
+		addObject(new ModelFloatingModel(_socialButton, -160, 0, 3, 1000, 8000));
+		addObject(new ModelFloatingModel(_quitButton, -130, 90, 3, 1000, 12000));
 		
-		addObject(new ModelBezierCurve(_playButton, _settingsButton, 0xff92cc47, 0xffffcc00));
-		addObject(new ModelBezierCurve(_playButton, _socialButton, 0xff92cc47, 0xff0099ff));
-		addObject(new ModelBezierCurve(_playButton, _quitButton, 0xff92cc47, 0xff8d2036));
+		addObject(new ModelBezierCurve(_playButton, _settingsButton, 0xff92cc47, 0xffffcc00, 104, 40));
+		addObject(new ModelBezierCurve(_playButton, _socialButton, 0xff92cc47, 0xff0099ff, 104, 40));
+		addObject(new ModelBezierCurve(_playButton, _quitButton, 0xff92cc47, 0xff8d2036, 104, 40));
 	}
 
 	@Override

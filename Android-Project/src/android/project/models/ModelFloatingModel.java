@@ -9,15 +9,17 @@ public class ModelFloatingModel extends Object2D {
 	
 	private Object2D _innerObject;
 	private long _totalTime;
+	private long _rotateTime;
 	private float _prevY;
 	private float _a;
 	private float _yHalf;
 	private long _tHalf = 200;
 	
-	public ModelFloatingModel(Object2D innerObject, float x, float y, float yHalf, long tHalf) {
+	public ModelFloatingModel(Object2D innerObject, float x, float y, float yHalf, long tHalf, long rotateSpeed) {
 		super(null, null, new Positioning(x, y, 1, 1, 0), false, false, false, null);
 		_innerObject = innerObject;
 		
+		 _rotateTime = rotateSpeed;
 		_totalTime = 0;
 		
 		_prevY = 0;
@@ -27,6 +29,9 @@ public class ModelFloatingModel extends Object2D {
 		
 		_a = - 2 * _yHalf / (_tHalf * _tHalf);
 		
+		float initialRotation = (float) Math.random() * 360;
+		rotate(initialRotation);
+		innerObject.rotate(-initialRotation);
 		addObject(_innerObject);
 	}
 
@@ -48,6 +53,10 @@ public class ModelFloatingModel extends Object2D {
 		float y = (t * t * _a / 2 + _yHalf) * sign;
 		_innerObject.translateY(y - _prevY);
 		_prevY = y;
+		
+		float rotate = (float) timeDiff / _rotateTime * 360;
+		rotate(rotate);
+		_innerObject.rotate(-rotate);
 	}
 	
 }
