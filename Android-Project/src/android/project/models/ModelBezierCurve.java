@@ -13,39 +13,39 @@ import android.project.Object2D;
 public class ModelBezierCurve extends Object2D {
 
 	Paint _line;
+	Object2D _o1;
+	Object2D _o2;
+	int _color1;
+	int _color2;
 	
-	public ModelBezierCurve(int color) {
+	public ModelBezierCurve(Object2D o1, Object2D o2, int color1, int color2) {
 		super(null, null, null, true, false, false, null);
+		_o1 = o1;
+		_o2 = o2;
+		_color1 = color1;
+		_color2 = color2;
 		_line = new Paint();
 		_line.setStyle(Paint.Style.STROKE);
 		_line.setAntiAlias(true);
 		_line.setStrokeWidth(7);
-		//_line.setColor(color);
-		 
-		_line.setShader(new LinearGradient(100, 100, 200, 200, Color.BLACK, Color.WHITE, Shader.TileMode.CLAMP));
-
-		
 	}
 
 	@Override
 	public void drawThis(Canvas c) {
-		
-		Point start = new Point(100, 100);
-		Point end = new Point(200, 200);
-		Point mid = new Point((start.x + end.x) / 2, (start.y + end.y) / 2);
+		float startX = _o1.getX();
+		float startY = _o1.getY();
+		float endX = _o2.getX();
+		float endY = _o2.getY();
+		float midX = (startX + endX) / 2;
+		float midY = (startY + endY) / 2;;
 		
 		Path p = new Path();
 		p.reset();
-		p.moveTo(start.x, start.y);
-		p.quadTo((start.x + mid.x) / 2, start.y, mid.x, mid.y);
-		p.quadTo((mid.x + end.x) / 2, end.y, end.x, end.y);
+		p.moveTo(startX, startY);
+		p.quadTo((startX + midX) / 2, startY, midX, midY);
+		p.quadTo((midX + endX) / 2, endY, endX, endY);
 		 
+		_line.setShader(new LinearGradient(startX, startY, endX, endY, _color1, _color2, Shader.TileMode.CLAMP));
 		c.drawPath(p, _line);
-		
-		Paint p1 = new Paint();
-		p1.setColor(0xff92cc47);
-		//c.drawCircle(260, 315, 110, p1);
-		p1.setColor(0xff9aef3f);
-		//c.drawCircle(260, 315, 103, p1);
 	}
 }
