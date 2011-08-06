@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.util.Log;
 
 public abstract class Object2D {
 
@@ -156,14 +155,35 @@ public abstract class Object2D {
 	}
 	
 	public void translate(float dx, float dy) {
-		_position.setCalibrationX(_position.getCalibrationX() + dx);
-		_position.setCalibrationY(_position.getCalibrationY() + dy);
+		translateX(dx);
+		translateY(dy);
 	}
 	
 	public void rotate(float d) {
 		if (_position == null)
 			_position = new Positioning(0, 0, 1, 1, 0);
 		_position.setCalibrationAngle(_position.getCalibrationAngle() + d);
+	}
+	
+	public void scaleX(float s) {
+		if (_position == null)
+			_position = new Positioning(0, 0, 1, 1, 0);
+		_position.setCalibrationScaleX(_position.getCalibrationScaleX() * s);
+	}
+
+	public void scaleY(float s) {
+		if (_position == null)
+			_position = new Positioning(0, 0, 1, 1, 0);
+		_position.setCalibrationScaleY(_position.getCalibrationScaleY() * s);
+	}
+	
+	public void scale(float sx, float sy) {
+		scaleX(sx);
+		scaleY(sy);
+	}
+	
+	public void scale(float s) {
+		scale(s, s);
 	}
 	
 	public float getX() {
@@ -188,6 +208,16 @@ public abstract class Object2D {
 	
 	public Matrix getPositionMatrixCalc() {
 		return _matrixPositionCalc;
+	}
+	
+	public Positioning getPositioning() {
+		if (_position == null)
+			_position = new Positioning(0, 0, 1, 1, 0);
+		return _position;
+	}
+	
+	public void setPositioning(Positioning position) {
+		_position = new Positioning(position);
 	}
 	
 	public int depth() {
@@ -231,6 +261,8 @@ public abstract class Object2D {
 		}
 		
 	}
+	
+	
 	
 	public static final Comparator<Object2D> DEPTH_COMPARATOR = new DepthComparator();
 	public static final Comparator<Object2D> INVERSE_DEPTH_COMPARATOR = Collections.reverseOrder(new DepthComparator());

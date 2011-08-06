@@ -6,7 +6,6 @@ import android.project.Object2DBitmap;
 import android.project.Positioning;
 import android.project.R;
 import android.project.Utils;
-import android.util.Log;
 
 public class ModelPlayer extends Object2DBitmap {
 	

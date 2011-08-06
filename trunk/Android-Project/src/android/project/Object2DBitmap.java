@@ -29,7 +29,7 @@ public abstract class Object2DBitmap extends Object2D {
 			c.scale(calibrationData.getCalibrationScaleX(), calibrationData.getCalibrationScaleY());
 			c.rotate(calibrationData.getCalibrationAngle());
 		}
-
+		
 		c.drawBitmap(bitmap, 0.0f, 0.0f, null);
 
 		if (calibrationData != null)
