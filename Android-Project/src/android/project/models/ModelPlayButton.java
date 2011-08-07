@@ -4,12 +4,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.project.Object2D;
 import android.project.Positioning;
+import android.project.bounds.BoundsCircle;
 
 public class ModelPlayButton extends Object2D {
 	
 	public ModelPlayButton(int x, int y) {
-		super(null,
-				null,
+		super(new BoundsCircle(100), null,
 				new Positioning(x, y, 1, 1, 0),
 				false, false, false, null);
 		

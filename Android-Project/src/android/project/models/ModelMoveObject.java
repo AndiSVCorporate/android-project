@@ -2,6 +2,7 @@ package android.project.models;
 
 import android.graphics.Canvas;
 import android.project.Object2D;
+import android.util.Log;
 
 public class ModelMoveObject extends Object2D {
 
@@ -19,7 +20,7 @@ public class ModelMoveObject extends Object2D {
 		super(null, null, null, false, false, false, null);
 		_innerObject = innerObject;
 		if (_innerObject == null)
-			return;
+			return;	
 		// steal (x,y) of inner object
 		_sx = _innerObject.getPositioning().getCalibrationX();
 		_sy = _innerObject.getPositioning().getCalibrationY();
@@ -27,12 +28,14 @@ public class ModelMoveObject extends Object2D {
 		getPositioning().setCalibrationY(_sy);
 		_innerObject.getPositioning().setCalibrationX(0);
 		_innerObject.getPositioning().setCalibrationY(0);
-		
 		_totalTime = 0;
 		_ex = x;
 		_ey = y;
 		_t = time;
 		addObject(_innerObject);
+		if (_innerObject.getX() == 0) {
+			Log.d("WRWRRE","WEWEQEASDSADASDASDSA");
+		}
 	}
 
 
@@ -57,8 +60,7 @@ public class ModelMoveObject extends Object2D {
 			return null;
 		float x = getPositioning().getCalibrationX();
 		float y = getPositioning().getCalibrationY();
-		_innerObject.getPositioning().setCalibrationX(x);
-		_innerObject.getPositioning().setCalibrationY(y);
+		_innerObject.translate(x, y);
 		Object2D toReturn = _innerObject;
 		removeObject(_innerObject);
 		_innerObject = null;

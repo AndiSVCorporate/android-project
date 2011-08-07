@@ -222,6 +222,12 @@ public abstract class Object2D {
 		_position = new Positioning(position);
 	}
 	
+	public boolean isPointInside(float x, float y) {
+		if (_bounds == null)
+			return false;
+		return _bounds.isPointInside(this, x, y);
+	}
+	
 	public int depth() {
 		return 0;
 	}
