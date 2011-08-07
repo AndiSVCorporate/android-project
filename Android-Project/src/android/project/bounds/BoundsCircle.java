@@ -1,8 +1,9 @@
-package android.project;
+package android.project.bounds;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.project.Bounds;
 
 public class BoundsCircle implements Bounds {
 

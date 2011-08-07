@@ -1,6 +1,6 @@
 package android.project.models;
 
-import android.project.BoundsRect;
+import android.project.bounds.BoundsRect;
 import android.project.Constants;
 import android.project.Object2DBitmap;
 import android.project.Positioning;

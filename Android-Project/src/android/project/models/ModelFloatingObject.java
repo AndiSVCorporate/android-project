@@ -82,6 +82,7 @@ public class ModelFloatingObject extends Object2D {
 		Object2D toReturn = _innerObject;
 		removeObject(_innerObject);
 		_innerObject = null;
+		getParent().removeObject(this);
 		return toReturn;
 	}
 

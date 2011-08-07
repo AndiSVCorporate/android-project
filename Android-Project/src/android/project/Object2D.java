@@ -70,6 +70,8 @@ public abstract class Object2D {
 	}
 	
 	public void addObject(Object2D object) {
+		if (object == null)
+			return;
 		object.setParent(this);
 		object.setScreen(getScreen());
 		_objects.add(object);

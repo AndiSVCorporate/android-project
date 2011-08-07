@@ -55,6 +55,10 @@ public class Positioning {
 	public Positioning() {
 		this(0, 0, 1, 1, 0);
 	}
+	
+	public Positioning(float x, float y) {
+		this(x, y, 1, 1, 0);
+	}
 
 	/**
 	 * @return Returns X - axis translation value.
