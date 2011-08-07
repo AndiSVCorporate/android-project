@@ -27,13 +27,14 @@ public abstract class Screen {
 	public abstract void postInvalidate();
 	
 	public void calculate(long timeDiff) {
-		calculateThis(timeDiff);
-		
 		List<Object2D> objects = _world.getObjectsToCalculate();
 		
+		calculateThis(timeDiff);
 		for (Object2D object : objects) {
 			object.calculateThis(timeDiff);
 		}
+		
+		_world.getObjectsToCalculate();
 	}
 	
 	protected World getWorld() {

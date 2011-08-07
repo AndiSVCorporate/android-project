@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.project.Bounds;
+import android.project.Object2D;
 
 public class BoundsRect implements Bounds {
 	
@@ -49,5 +50,11 @@ public class BoundsRect implements Bounds {
 	@Override
 	public float getBoundingRadius() {
 		return _boundingRadius;
+	}
+
+	@Override
+	public boolean isPointInside(Object2D object, float x, float y) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

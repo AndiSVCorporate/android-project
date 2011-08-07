@@ -16,13 +16,14 @@ public final class R {
         public static final int button_settings=0x7f020002;
         public static final int button_settings_big=0x7f020003;
         public static final int button_social=0x7f020004;
-        public static final int epicfailgamingstudios=0x7f020005;
-        public static final int game_screen=0x7f020006;
-        public static final int gamelogo=0x7f020007;
-        public static final int icon=0x7f020008;
-        public static final int player2=0x7f020009;
-        public static final int player2pu=0x7f02000a;
-        public static final int side_bird=0x7f02000b;
+        public static final int button_social_1=0x7f020005;
+        public static final int epicfailgamingstudios=0x7f020006;
+        public static final int game_screen=0x7f020007;
+        public static final int gamelogo=0x7f020008;
+        public static final int icon=0x7f020009;
+        public static final int player2=0x7f02000a;
+        public static final int player2pu=0x7f02000b;
+        public static final int side_bird=0x7f02000c;
     }
     public static final class layout {
         public static final int main=0x7f030000;
