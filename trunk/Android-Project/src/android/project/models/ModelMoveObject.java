@@ -3,19 +3,19 @@ package android.project.models;
 import android.graphics.Canvas;
 import android.project.Object2D;
 
-public class ModelThrownObject extends Object2D {
+public class ModelMoveObject extends Object2D {
 
 	private Object2D _innerObject;
 	
 	private long _totalTime;
 	
-	private long _tHalf;
-	private float _yHalf;
-	private float _speedX;
+	private long _t;
 	private float _sx;
 	private float _sy;
+	private float _ex;
+	private float _ey;
 
-	public ModelThrownObject(Object2D innerObject, float speedX, long tHalf, float yHalf) {
+	public ModelMoveObject(Object2D innerObject, float x, float y, long time) {
 		super(null, null, null, false, false, false, null);
 		_innerObject = innerObject;
 		if (_innerObject == null)
@@ -29,9 +29,9 @@ public class ModelThrownObject extends Object2D {
 		_innerObject.getPositioning().setCalibrationY(0);
 		
 		_totalTime = 0;
-		_tHalf = tHalf;
-		_yHalf = yHalf;
-		_speedX = speedX;
+		_ex = x;
+		_ey = y;
+		_t = time;
 		addObject(_innerObject);
 	}
 
@@ -43,15 +43,13 @@ public class ModelThrownObject extends Object2D {
 	public void calculateThis(long timeDiff) {
 		if (_innerObject == null)
 			return;
-		_totalTime += timeDiff;
-		float t = _totalTime - _tHalf;
-		float y = -_yHalf * t * t / (_tHalf * _tHalf) + _yHalf;
-		float x = _speedX * ((float) _totalTime / 1000);
-		getPositioning().setCalibrationX(_sx + x);
-		getPositioning().setCalibrationY(_sy - y);
-		if (getY() > 800) {
-			getParent().removeObject(this);
-		}
+		if (_totalTime >= _t)
+			return;
+		_totalTime = Math.min(_totalTime + timeDiff, _t);
+		float tf = ((float) timeDiff / _t);
+		float x = (_ex - _sx) * tf;
+		float y = (_ey - _sy) * tf;
+		translate(x, y);
 	}
 
 	public Object2D freeInnerObject() {

@@ -6,9 +6,9 @@ import android.project.R;
 
 public class ModelSideBird extends Object2DBitmap {
 	
-	public ModelSideBird() {
-		super(R.drawable.side_bird, null, new Positioning(800, 480, 1, 1, 0),
-				null, true, false, false, null);
+	public ModelSideBird(float x, float y) {
+		super(R.drawable.side_bird, null, null, new Positioning(x, y, 1, 1, 0),
+				false, false, false, null);
 	}
 
 }
