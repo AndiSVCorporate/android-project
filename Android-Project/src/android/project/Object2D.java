@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.R.integer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -34,6 +35,8 @@ public abstract class Object2D {
 	private float _x;
 	private float _y;
 	
+	private int _depth;
+	
 	protected Object2D(Bounds bounds,
 			Positioning calibrationData, Positioning position,
 			boolean isAbsolute, boolean drawCenter, boolean drawBorders, Object2D parent) {
@@ -49,6 +52,7 @@ public abstract class Object2D {
 		_parent = parent;
 		_screen = null;
 		_matrixPositionCalc = new Matrix();
+		_depth = 0;
 	}
 
 	public void draw(Canvas c) {
@@ -93,6 +97,10 @@ public abstract class Object2D {
 		List<Object2D> objects = new ArrayList<Object2D>();
 		getObjectsToCalculate(objects);		
 		return objects;
+	}
+	
+	public List<Object2D> getObjects() {
+		return _objects;
 	}
 	
 	public void getObjectsToDraw(List<Object2D> objects) {
@@ -229,7 +237,18 @@ public abstract class Object2D {
 	}
 	
 	public int depth() {
-		return 0;
+		return _depth;
+	}
+	
+	public void setDepth(int depth) {
+		_depth = depth;
+	}
+	
+	public void setDepthRecursive(int dx) {
+		_depth += dx;
+		for (Object2D object : _objects) {
+			object.setDepthRecursive(dx);
+		}
 	}
 	
 	public void updatePoints() {

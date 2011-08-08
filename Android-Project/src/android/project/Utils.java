@@ -1,5 +1,6 @@
 package android.project;
 
+import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
@@ -24,7 +25,17 @@ public class Utils {
 	
 	private static Canvas _canvas;
 	
+	private static Activity _activity;
+	
 	/* Global getters and setters to avoid passing endless arguments. */
+	
+	public static void setActivity(Activity activity) {
+		_activity = activity;
+	}
+	
+	public static void quit() {
+		_activity.finish();
+	}
 	
 	public static void setBitmapManager(BitmapManager bitmapManager) {
 		_bitmapManager = bitmapManager;

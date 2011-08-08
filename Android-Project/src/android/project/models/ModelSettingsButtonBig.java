@@ -8,6 +8,9 @@ import android.project.bounds.BoundsCircle;
 
 public class ModelSettingsButtonBig extends Object2DBitmap {
 	
+	ModelCircle _outer;
+	ModelCircle _inner;
+	
 	public ModelSettingsButtonBig(int x, int y) {
 		super(R.drawable.button_settings_big, new BoundsCircle(100),
 				null,
@@ -17,13 +20,13 @@ public class ModelSettingsButtonBig extends Object2DBitmap {
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setColor(0xffffcc00);
-		addObject(new ModelCircle(128, 100, 0, 0, paint));
+		_outer = new ModelCircle(100, 0, 0, paint);
+		_outer.setDepth(98);
+		addObject(_outer);
 		paint.setColor(0xffffff00);
-		addObject(new ModelCircle(129, 93, 0, 0, paint));
-	}
-	
-	@Override
-	public int depth() {
-		return 130;
+		_inner = new ModelCircle(93, 0, 0, paint);
+		_inner.setDepth(99);
+		addObject(_inner);
+		setDepth(100);
 	}
 }

@@ -3,16 +3,24 @@ package android.project.models;
 import android.graphics.Canvas;
 import android.project.Object2D;
 import android.project.Positioning;
+import android.project.Utils;
 import android.util.Log;
 
 public class ModelGameMenu extends Object2D {
 	private enum Menu {
-		PLAY, SETTINGS, NONE
+		PLAY, SETTINGS
+	}
+	
+	private enum Action {
+		LOAD_MENU_PLAY, LOAD_MENU_SETTINGS,
+		LOAD_BUTTON_QUIT,
+		IDLE
 	}
 	
 	private Menu _menu;
-	private Menu _loadMenu;
-	private Menu _loadingMenu;
+	private Action _nextAction;
+	private Action _currentAction;
+	private Action _lastAction;
 	private Object2D[] _finalizeButtons;
 	private Object2D[] _buttons;
 	private long _time;
@@ -21,8 +29,11 @@ public class ModelGameMenu extends Object2D {
 	public ModelGameMenu(float x, float y) {
 		super(null, null, new Positioning(x, y, 1, 1, 0), false, false, false, null);
 		
-		_menu = Menu.NONE;
-		_loadMenu = Menu.PLAY;
+		_menu = Menu.PLAY;
+		_nextAction = Action.LOAD_MENU_PLAY;
+		_currentAction = Action.IDLE;
+		_lastAction = Action.IDLE;
+		
 		_buttons = null;
 		_finalizeButtons = null;
 		_pressingButton = -1;
@@ -33,72 +44,30 @@ public class ModelGameMenu extends Object2D {
 	
 	@Override
 	public void calculateThis(long timeDiff) {
-		if (_loadMenu != Menu.NONE) {
+		if (_nextAction != Action.IDLE) {
 			_time = 0;
-			_loadingMenu = _loadMenu;
-			_loadMenu = Menu.NONE;
+			_currentAction = _nextAction;
+			_nextAction = Action.IDLE;
 			
-			closeMenu();
-			if (_loadingMenu == Menu.SETTINGS)
-				_buttons = getSettingsMenu();
-			else if (_loadingMenu == Menu.PLAY)
-				_buttons = getPlayMenu();
-			openMenu();
+			if (_currentAction == Action.LOAD_MENU_SETTINGS) {
+				changeMenu(getSettingsMenu(), Menu.SETTINGS);
+			} else if (_currentAction == Action.LOAD_MENU_PLAY) {
+				changeMenu(getPlayMenu(), Menu.PLAY);
+			} else if (_currentAction == Action.LOAD_BUTTON_QUIT) {
+				changeButton(new ModelQuitConfirmButton(), 3);
+			}
 			return;
 		}
-		if (_loadingMenu != Menu.NONE) {
+		if (_currentAction != Action.IDLE) {
 			_time += timeDiff;
 			if (_time > 300) {
-				finalizeMenu();
-				_menu = _loadingMenu;
-				_loadingMenu = Menu.NONE;
-				_loadMenu = Menu.NONE;
+				if (_currentAction == Action.LOAD_MENU_SETTINGS ||
+						_currentAction == Action.LOAD_MENU_PLAY)
+					finalizeMenu();
+				_lastAction = _currentAction;
+				_currentAction = Action.IDLE;
 			}
 		}
-		
-		/*
-		_movingSettings.freeInnerObject();
-		_movingSocial.freeInnerObject();
-		_movingQuit.freeInnerObject();
-		
-		addObject(_floatingSettings);
-		addObject(_floatingSocial);
-		addObject(_floatingQuit);
-		
-		_floatingSettings.freeInnerObject();
-		_floatingSocial.freeInnerObject();
-		_floatingQuit.freeInnerObject();
-		
-		Object2D scalingSettings = new ModelScaleObject(_settingsButton, 1, 0.01f, 1000);
-		Object2D scalingSocial = new ModelScaleObject(_socialButton, 1, 0.01f, 2000);
-		Object2D scalingQuit = new ModelScaleObject(_quitButton, 1, 0.01f, 3000);
-		
-		addObject(new ModelThrownObject(scalingSettings, -100, 120, 10));
-		addObject(new ModelThrownObject(scalingSocial, -100, 110, 10));
-		addObject(new ModelThrownObject(scalingQuit, -100, 100, 10));
-		
-		_socialButton.setDepth(-100);
-		
-		//addObject(new ModelScaleObject(new ModelSettingsButtonBig(0, 0), 0.01f, 1f, 300));
-		//addObject(new ModelScaleObject(_scalingPlay.freeInnerObject(), 1, 0.01f, 300));
-		
-		
-		_settingsButton = new ModelSettingsButton();
-		_socialButton = new ModelSocialButton();
-		_quitButton = new ModelQuitButton();
-		
-		_floatingSettings = new ModelFloatingObject(_settingsButton, 0, 0, 3, 1000, 10000);
-		_floatingSocial = new ModelFloatingObject(_socialButton, 0, 0, 3, 1000, 8000);
-		_floatingQuit = new ModelFloatingObject(_quitButton, 0, 0, 3, 1000, 12000);
-		
-		_movingSettings = new ModelMoveObject(_floatingSettings, -130, -90, 300);
-		_movingSocial = new ModelMoveObject(_floatingSocial, -160, 0, 300);
-		_movingQuit = new ModelMoveObject(_floatingQuit, -130, 90, 300);
-		
-		addObject(_movingSettings);
-		addObject(_movingSocial);
-		addObject(_movingQuit);
-		*/
 	}
 	
 	private Object2D[] getPlayMenu() {
@@ -119,6 +88,35 @@ public class ModelGameMenu extends Object2D {
 				};
 	}
 	
+	private void changeMenu(Object2D[] newMenu, Menu menu) {
+		closeMenu();
+		_buttons = newMenu;
+		openMenu();
+		_menu = menu;
+	}
+	
+	private void changeButton(Object2D newButton, int i) {
+		_buttons[i] = _buttons[i].getParent().getParent();
+		addObject(_buttons[i] = ((ModelMoveObject)_buttons[i]).freeInnerObject());
+		_buttons[i] = ((ModelFloatingObject)_buttons[i]).freeInnerObject();
+		_buttons[i].setDepthRecursive(-1000);
+		if (i == 1) {
+			addObject(new ModelThrownObject(_buttons[1], -100, 120, 10));
+			_buttons[1] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 10000);
+			_buttons[1] = new ModelMoveObject(_buttons[1], -130, -90, 300);
+		} else if (i == 2) {
+			addObject(new ModelThrownObject(_buttons[2], -100, 110, 10));
+			_buttons[2] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 8000);
+			_buttons[2] = new ModelMoveObject(_buttons[2], -160, 0, 300);
+		} else if (i == 3) {
+			addObject(new ModelThrownObject(_buttons[i], -100, 100, 10));
+			_buttons[3] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 12000);
+			_buttons[3] = new ModelMoveObject(_buttons[3], -130, 90, 300);
+		}
+		addObject(_buttons[i]);
+		_buttons[i] = newButton;
+	}
+	
 	private void closeMenu() {
 		if (_buttons == null)
 			return;
@@ -130,20 +128,23 @@ public class ModelGameMenu extends Object2D {
 		
 		_buttons[0] = ((ModelScaleObject)_buttons[0].getParent()).freeInnerObject();
 		addObject(new ModelScaleObject(_buttons[0], 1, 0.01f, 300));
-		
+		_buttons[0].setDepthRecursive(-1000);
 		for (int i = 1; i < _buttons.length; ++i) { 
 			addObject(_buttons[i] = ((ModelMoveObject)_buttons[i]).freeInnerObject());
 			_buttons[i] = ((ModelFloatingObject)_buttons[i]).freeInnerObject();
+			_buttons[i].setDepthRecursive(-1000);
 		}
-		addObject(new ModelThrownObject(_buttons[1], -100, 120, 10));
-		addObject(new ModelThrownObject(_buttons[2], -100, 110, 10));
-		addObject(new ModelThrownObject(_buttons[3], -100, 100, 10));
+		addObject(new ModelThrownObject(new ModelScaleObject(_buttons[1], 1, 0.5f, 300), -100, 120, 10));
+		addObject(new ModelThrownObject(new ModelScaleObject(_buttons[2], 1, 0.5f, 300), -100, 110, 10));
+		addObject(new ModelThrownObject(new ModelScaleObject(_buttons[3], 1, 0.5f, 300), -100, 100, 10));
 		
 		_finalizeButtons = _buttons;
 	}
 	
 	private void openMenu() {
 		Object2D[] wrappers = new Object2D[_buttons.length];
+		
+		Log.d("?", _buttons[0].getClass().getName() + " " + _buttons[0].depth());
 		
 		wrappers[0] = new ModelScaleObject(_buttons[0], 0.01f, 1f, 300);
 		
@@ -165,30 +166,33 @@ public class ModelGameMenu extends Object2D {
 		removeObject(_finalizeButtons[0].getParent());
 	}
 	
-	private Menu getAction(int index) {
+	private Action getAction(int index) {
 		if (_menu == Menu.PLAY)
 			if (index == 0)
-				return Menu.NONE;
+				return Action.IDLE;
 			else if (index == 1)
-				return Menu.SETTINGS;
+				return Action.LOAD_MENU_SETTINGS;
 			else if (index == 2)
-				return Menu.NONE;
+				return Action.IDLE;
 			else
-				return Menu.NONE;
+				if (_lastAction == Action.LOAD_BUTTON_QUIT)
+					Utils.quit();
+				else
+					return Action.LOAD_BUTTON_QUIT;
 		else if (_menu == Menu.SETTINGS)
 			if (index == 0)
-				return Menu.PLAY;
+				return Action.LOAD_MENU_PLAY;
 			else if (index == 1)
-				return Menu.NONE;
+				return Action.IDLE;
 			else if (index == 2)
-				return Menu.NONE;
+				return Action.IDLE;
 			else
-				return Menu.NONE;
-		return Menu.NONE;
+				return Action.IDLE;
+		return Action.IDLE;
 	}
 	
 	public void press(float x, float y) {
-		if (_loadMenu != Menu.NONE || _loadingMenu != Menu.NONE)
+		if (_currentAction != Action.IDLE || _nextAction != Action.IDLE)
 			return;
 		for (int i = 0; i < _buttons.length; ++i)
 			if (_buttons[i].isPointInside(x, y)) {
@@ -200,7 +204,7 @@ public class ModelGameMenu extends Object2D {
 	}
 	
 	public void move(float x, float y) {
-		if (_loadMenu != Menu.NONE || _loadingMenu != Menu.NONE)
+		if (_currentAction != Action.IDLE || _nextAction != Action.IDLE)
 			return;
 		if (_pressingButton == -1)
 			return;
@@ -213,16 +217,16 @@ public class ModelGameMenu extends Object2D {
 	}
 	
 	public void release(float x, float y) {
-		if (_loadMenu != Menu.NONE || _loadingMenu != Menu.NONE)
+		if (_currentAction != Action.IDLE || _nextAction != Action.IDLE)
 			return;
 		if (_pressingButton == -1)
 			return;
 		for (int i = 0; i < _buttons.length; ++i)
 			if (_buttons[i].isPointInside(x, y))
 				if (i == _pressingButton) {
-					_loadMenu =  getAction(i);
+					_nextAction =  getAction(i);
 					Log.d("", "" + _menu.name());
-					Log.d("", "" + _loadMenu.name());
+					Log.d("", "" + _nextAction.name());
 				}
 		_buttons[_pressingButton].scale((1/1.2f));
 		_pressingButton = -1;

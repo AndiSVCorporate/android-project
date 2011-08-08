@@ -59,14 +59,6 @@ public class GameScreen extends Screen {
 	public int getBorderColor() {
 		return Color.BLACK;
 	}
-	
-	@Override
-	public void postInvalidate() {
-		//v.postInvalidate(_player.getX() - Constants.SCREEN_PLAYER_WIDTH / 2,
-			//	_player.getY() - Constants.SCREEN_PLAYER_HEIGHT / 2,
-				//_player.getX() + Constants.SCREEN_PLAYER_WIDTH / 2,
-				//_player.getY() + Constants.SCREEN_PLAYER_HEIGHT / 2);
-	}
 
 	@Override
 	public void calculateThis(long timeDiff) { }

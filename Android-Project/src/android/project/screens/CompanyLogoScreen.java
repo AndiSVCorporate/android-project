@@ -40,11 +40,6 @@ public class CompanyLogoScreen extends Screen {
 	}
 
 	@Override
-	public void postInvalidate() {
-		
-	}
-
-	@Override
 	public void calculateThis(long timeDiff) {
 		_totalTime += timeDiff;
 		if (_totalTime > 3200)

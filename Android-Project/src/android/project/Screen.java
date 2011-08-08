@@ -4,7 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 
 public abstract class Screen {
 
@@ -24,7 +26,9 @@ public abstract class Screen {
 	
 	public abstract int getBorderColor();
 	
-	public abstract void postInvalidate();
+	public void postInvalidate(CanvasRenderer c) {
+		c.postInvalidate();
+	}
 	
 	public void calculate(long timeDiff) {
 		List<Object2D> objects = _world.getObjectsToCalculate();
@@ -51,6 +55,7 @@ public abstract class Screen {
 		synchronized (_calculateThread.getLock()) {
 			allObjects = _world.getObjectsToDraw();
 		}
+		
 		Collections.sort(allObjects, Object2D.DEPTH_COMPARATOR);
 		for (Object2D object : allObjects) {
 			object.draw(c);
