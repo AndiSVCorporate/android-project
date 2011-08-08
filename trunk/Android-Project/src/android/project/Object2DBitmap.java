@@ -2,12 +2,18 @@ package android.project;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.util.Log;
 
-public abstract class Object2DBitmap extends Object2D {
+public class Object2DBitmap extends Object2D {
 
 	private int _bitmapId;
 
-	protected Object2DBitmap(int id,
+	public Object2DBitmap(int id) {
+		this(id, null, null, null, false, false, false, null);
+	}
+	
+	public Object2DBitmap(int id,
 			Bounds bounds,
 			Positioning calibrationData, Positioning position,
 			boolean isAbsolute, boolean drawCenter, boolean drawBorders, Object2D parent) {
@@ -30,8 +36,10 @@ public abstract class Object2DBitmap extends Object2D {
 			c.rotate(calibrationData.getCalibrationAngle());
 		}
 		
-		c.drawBitmap(bitmap, 0.0f, 0.0f, null);
-
+		//long start = System.nanoTime();
+		c.drawBitmap(bitmap, 0.0f, 0.0f, new Paint() {{setDither(true);}});
+		//long end = System.nanoTime();
+		//Log.d("draw", this.getClass().getName() + " " + (float) ((end - start) / 1000000));
 		if (calibrationData != null)
 			c.restore();
 	}

@@ -2,7 +2,9 @@ package android.project;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,7 +18,9 @@ public class Run extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-
+        Utils.setActivity(this);
+        
+        getWindow().setFormat(PixelFormat.RGBA_8888);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         WindowManager.LayoutParams.FLAG_FULLSCREEN);

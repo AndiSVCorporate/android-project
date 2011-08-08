@@ -20,24 +20,28 @@ public class BitmapManager {
 		_bitmaps = new Hashtable<Integer, Bitmap>();
 		_calibrations = new Hashtable<Integer, Positioning>();
 		
-		Positioning player = new Positioning((-Constants.SCREEN_PLAYER_WIDTH / 2), (-Constants.SCREEN_PLAYER_HEIGHT / 2), 1f, 1f, 0.0f);
-		Positioning screenLogo = new Positioning((-Constants.ASPECT_WIDTH / 2), (-Constants.ASPECT_HEIGHT / 2), 1f, 1f, 0.0f);
-		Positioning playButton = new Positioning(-104, -104, 1f, 1f, 0.0f);
-		Positioning menuButton = new Positioning(-40, -40, 1f, 1f, 0.0f);
-		Positioning socialButton = new Positioning(-29, -17, 1f, 1f, 0.0f);
-		Positioning sideBird = new Positioning(-395, -479, 1f, 1f, 0.0f);
+		Positioning player = new Positioning((-Constants.SCREEN_PLAYER_WIDTH / 2), (-Constants.SCREEN_PLAYER_HEIGHT / 2));
+		Positioning screenLogo = new Positioning((-Constants.ASPECT_WIDTH / 2), (-Constants.ASPECT_HEIGHT / 2));
+		Positioning playButton = new Positioning(-80, -55);
+		//Positioning menuButton = new Positioning(-40, -40);
+		Positioning settingsButton = new Positioning(-24, -24);
+		Positioning socialButton = new Positioning(-29, -17);
+		Positioning quitConfirmButton = new Positioning(-17, -20);
+		Positioning sideBird = new Positioning(-374, -480);
+		Positioning flagBird = new Positioning(-37.5f, 50);
 		
-		Positioning bigButtonMiddle = new Positioning(-60, -60, 1f, 1f, 0.0f);
+		Positioning bigButtonMiddle = new Positioning(-60, -60);
 		
 		_calibrations.put(R.drawable.player2, player);
 		_calibrations.put(R.drawable.player2pu, player);
 		
-		_calibrations.put(R.drawable.button_play, playButton);
-		_calibrations.put(R.drawable.button_settings, menuButton);
+		_calibrations.put(R.drawable.button_play1, playButton);
+		_calibrations.put(R.drawable.button_settings_1, settingsButton);
 		_calibrations.put(R.drawable.button_social_1, socialButton);
-		_calibrations.put(R.drawable.button_quit, menuButton);
+		_calibrations.put(R.drawable.button_quit2, quitConfirmButton);
 		
 		_calibrations.put(R.drawable.side_bird, sideBird);
+		_calibrations.put(R.drawable.flag_bird, flagBird);
 		
 		_calibrations.put(R.drawable.button_settings_big, bigButtonMiddle);
 		
@@ -48,12 +52,14 @@ public class BitmapManager {
 		loadBitmap(R.drawable.player2pu, Bitmap.Config.ARGB_4444);
 		loadBitmap(R.drawable.epicfailgamingstudios, Bitmap.Config.RGB_565);
 		loadBitmap(R.drawable.game_screen, Bitmap.Config.ARGB_4444);
-		loadBitmap(R.drawable.button_play, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.button_quit, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.button_settings, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.button_play1, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.button_quit2, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.button_settings_1, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.button_social_1, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.side_bird, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.button_settings_big, Bitmap.Config.ARGB_8888);
+		
+		loadBitmap(R.drawable.flag_bird, Bitmap.Config.ARGB_8888);
 
 	}
 	
@@ -69,7 +75,7 @@ public class BitmapManager {
 		Options opts = new Options();
 		opts.inPreferredConfig = config;
 		
-		Bitmap bitmap = BitmapFactory.decodeResource(_res, bitmapId, opts);
+		Bitmap bitmap = Bitmap.createBitmap(BitmapFactory.decodeResource(_res, bitmapId, opts));
 		if (bitmap == null)
 			return;
 		

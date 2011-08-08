@@ -1,6 +1,8 @@
 package android.project;
 
+import android.graphics.Paint;
 import android.os.SystemClock;
+import android.util.Log;
 
 public class CalculateThread implements Runnable {
 
@@ -36,7 +38,7 @@ public class CalculateThread implements Runnable {
 				}
 			}
 			try {
-				Thread.sleep(1);
+				Thread.sleep(20);
 			} catch (InterruptedException e) { }
 		}
 	}

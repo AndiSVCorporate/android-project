@@ -33,9 +33,6 @@ public class ModelMoveObject extends Object2D {
 		_ey = y;
 		_t = time;
 		addObject(_innerObject);
-		if (_innerObject.getX() == 0) {
-			Log.d("WRWRRE","WEWEQEASDSADASDASDSA");
-		}
 	}
 
 
@@ -49,10 +46,11 @@ public class ModelMoveObject extends Object2D {
 		if (_totalTime >= _t)
 			return;
 		_totalTime = Math.min(_totalTime + timeDiff, _t);
-		float tf = ((float) timeDiff / _t);
-		float x = (_ex - _sx) * tf;
-		float y = (_ey - _sy) * tf;
-		translate(x, y);
+		float tf = ((float) _totalTime / _t);
+		float x = _sx + (_ex - _sx) * tf;
+		float y = _sy + (_ey - _sy) * tf;
+		getPositioning().setCalibrationX(x);
+		getPositioning().setCalibrationY(y);
 	}
 
 	public Object2D freeInnerObject() {
