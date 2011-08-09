@@ -33,9 +33,10 @@ public class Constants {
 
 	/* TIME CONSTANTS */
 	
-	public static final long TIME_MAX_DIFF = 200;
+	public static final long TIME_MAX_DIFF = 100;
+	public static final long TIME_CHUNK = 200;
 	public static final long TIME_FUTURE = 20000;
-	public static final int TIME_CHUNKS = (int) (TIME_FUTURE / TIME_MAX_DIFF);
+	public static final int TIME_CHUNKS = (int) (TIME_FUTURE / TIME_CHUNK);
 	
 	/* ANIMATION CONSTANTS */
 	

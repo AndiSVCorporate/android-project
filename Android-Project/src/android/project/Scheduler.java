@@ -17,9 +17,9 @@ public class Scheduler {
 	
 	public void calculate(long timeDiff) {
 		_timePass += timeDiff;
-		if (_timePass < Constants.TIME_MAX_DIFF)
+		if (_timePass < Constants.TIME_CHUNK)
 			return;
-		_timePass -= Constants.TIME_MAX_DIFF;
+		_timePass -= Constants.TIME_CHUNK;
 		_timeLine[_offset] = true;
 		_offset = (_offset + 1) % Constants.TIME_CHUNKS;
 	}
