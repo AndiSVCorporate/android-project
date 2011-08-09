@@ -9,6 +9,7 @@ import android.project.models.ModelBackground;
 import android.project.models.ModelFlagBird;
 import android.project.models.ModelGameMenu;
 import android.project.models.ModelMoveObject;
+import android.project.models.ModelPlayer;
 import android.project.models.ModelRect;
 import android.project.models.ModelSideBird;
 import android.view.MotionEvent;
@@ -23,6 +24,7 @@ public class GameMenuScreen extends Screen {
 		getWorld().addObject(new ModelBackground(0xffadd8c7));
 		getWorld().addObject(_menu);
 		getWorld().addObject(new ModelRect(800, 240, 0, 240, 0xffcc6600) {{ setDepth(-2000); }});
+		//getWorld().addObject(new ModelPlayer())y
 		//getWorld().addObject(new ModelFlagBird());
 		getWorld().addObject(new ModelMoveObject(new ModelSideBird(1200, 480), 802, 480, 300));
 	}

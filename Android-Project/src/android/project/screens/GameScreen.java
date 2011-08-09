@@ -18,8 +18,8 @@ public class GameScreen extends Screen {
 	public GameScreen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
 		super(calculateThread, canvasRenderer);
 		_player = new ModelPlayer();
-		
-		getWorld().addObject(new ModelBackground(0xffcc6600));
+		getWorld().addObject(new ModelBackground(0xffffffff));
+		//getWorld().addObject(new ModelBackground(0xffcc6600));
 		getWorld().addObject(_player);
 		//getWorld().addObject(new ModelBezierCurve(Color.GREEN));
 		
