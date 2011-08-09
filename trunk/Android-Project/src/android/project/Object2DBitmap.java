@@ -37,7 +37,7 @@ public class Object2DBitmap extends Object2D {
 		}
 		
 		//long start = System.nanoTime();
-		c.drawBitmap(bitmap, 0.0f, 0.0f, new Paint() {{setDither(true);}});
+		c.drawBitmap(bitmap, 0.0f, 0.0f, null);
 		//long end = System.nanoTime();
 		//Log.d("draw", this.getClass().getName() + " " + (float) ((end - start) / 1000000));
 		if (calibrationData != null)

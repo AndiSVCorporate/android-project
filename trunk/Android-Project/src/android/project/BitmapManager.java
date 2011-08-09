@@ -29,7 +29,7 @@ public class BitmapManager {
 		Positioning quitConfirmButton = new Positioning(-17, -20);
 		Positioning sideBird = new Positioning(-374, -480);
 		Positioning flagBird = new Positioning(-37.5f, 50);
-		
+		Positioning soundOnButton = new Positioning(-30, -25);
 		Positioning bigButtonMiddle = new Positioning(-60, -60);
 		
 		_calibrations.put(R.drawable.player2, player);
@@ -39,6 +39,7 @@ public class BitmapManager {
 		_calibrations.put(R.drawable.button_settings_1, settingsButton);
 		_calibrations.put(R.drawable.button_social_1, socialButton);
 		_calibrations.put(R.drawable.button_quit2, quitConfirmButton);
+		_calibrations.put(R.drawable.sound_on, soundOnButton);
 		
 		_calibrations.put(R.drawable.side_bird, sideBird);
 		_calibrations.put(R.drawable.flag_bird, flagBird);
@@ -58,7 +59,7 @@ public class BitmapManager {
 		loadBitmap(R.drawable.button_social_1, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.side_bird, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.button_settings_big, Bitmap.Config.ARGB_8888);
-		
+		loadBitmap(R.drawable.sound_on, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.flag_bird, Bitmap.Config.ARGB_8888);
 
 	}

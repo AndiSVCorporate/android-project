@@ -13,7 +13,7 @@ public class ModelGameMenu extends Object2D {
 	
 	private enum Action {
 		LOAD_MENU_PLAY, LOAD_MENU_SETTINGS,
-		LOAD_BUTTON_QUIT,
+		LOAD_BUTTON_QUIT, LOAD_BUTTON_SOUND,
 		IDLE
 	}
 	
@@ -55,6 +55,8 @@ public class ModelGameMenu extends Object2D {
 				changeMenu(getPlayMenu(), Menu.PLAY);
 			} else if (_currentAction == Action.LOAD_BUTTON_QUIT) {
 				changeButton(new ModelQuitConfirmButton(), 3);
+			} else if (_currentAction == Action.LOAD_BUTTON_SOUND) {
+				changeButton((Utils.getSound() ? new ModelSoundOnButton() : new ModelSoundOffButton()), 1);
 			}
 			return;
 		}
@@ -82,7 +84,7 @@ public class ModelGameMenu extends Object2D {
 	private Object2D[] getSettingsMenu() {
 		return new Object2D[] {
 				new ModelSettingsButtonBig(0, 0),
-				new ModelSettingsButton(),
+				(Utils.getSound() ? new ModelSoundOnButton() : new ModelSoundOffButton()),
 				new ModelSocialButton(),
 				new ModelQuitButton()
 				};
@@ -109,7 +111,7 @@ public class ModelGameMenu extends Object2D {
 			_buttons[2] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 8000);
 			_buttons[2] = new ModelMoveObject(_buttons[2], -160, 0, 300);
 		} else if (i == 3) {
-			addObject(new ModelThrownObject(_buttons[i], -100, 100, 10));
+			addObject(new ModelThrownObject(_buttons[3], -100, 100, 10));
 			_buttons[3] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 12000);
 			_buttons[3] = new ModelMoveObject(_buttons[3], -130, 90, 300);
 		}
@@ -182,8 +184,10 @@ public class ModelGameMenu extends Object2D {
 		else if (_menu == Menu.SETTINGS)
 			if (index == 0)
 				return Action.LOAD_MENU_PLAY;
-			else if (index == 1)
-				return Action.IDLE;
+			else if (index == 1) {
+				Utils.setSound(!Utils.getSound());
+				return Action.LOAD_BUTTON_SOUND;
+			}
 			else if (index == 2)
 				return Action.IDLE;
 			else

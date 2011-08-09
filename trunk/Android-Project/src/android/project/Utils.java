@@ -27,6 +27,8 @@ public class Utils {
 	
 	private static Activity _activity;
 	
+	private static boolean _soundOn = true;
+	
 	/* Global getters and setters to avoid passing endless arguments. */
 	
 	public static void setActivity(Activity activity) {
@@ -43,6 +45,14 @@ public class Utils {
 	
 	public static BitmapManager getBitmapManager() {
 		return _bitmapManager;
+	}
+	
+	public static boolean getSound() {
+		return _soundOn;
+	}
+	
+	public static void setSound(boolean isOn) {
+		_soundOn = isOn;
 	}
 	
 	public static void setCanvasRenderer(CanvasRenderer canvasRenderer) {
