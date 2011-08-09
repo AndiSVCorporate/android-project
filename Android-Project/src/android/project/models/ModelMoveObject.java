@@ -22,12 +22,12 @@ public class ModelMoveObject extends Object2D {
 		if (_innerObject == null)
 			return;	
 		// steal (x,y) of inner object
-		_sx = _innerObject.getPositioning().getCalibrationX();
-		_sy = _innerObject.getPositioning().getCalibrationY();
-		getPositioning().setCalibrationX(_sx);
-		getPositioning().setCalibrationY(_sy);
-		_innerObject.getPositioning().setCalibrationX(0);
-		_innerObject.getPositioning().setCalibrationY(0);
+		_sx = _innerObject.getPositioning().getX();
+		_sy = _innerObject.getPositioning().getY();
+		getPositioning().setX(_sx);
+		getPositioning().setY(_sy);
+		_innerObject.getPositioning().setX(0);
+		_innerObject.getPositioning().setY(0);
 		_totalTime = 0;
 		_ex = x;
 		_ey = y;
@@ -49,15 +49,15 @@ public class ModelMoveObject extends Object2D {
 		float tf = ((float) _totalTime / _t);
 		float x = _sx + (_ex - _sx) * tf;
 		float y = _sy + (_ey - _sy) * tf;
-		getPositioning().setCalibrationX(x);
-		getPositioning().setCalibrationY(y);
+		getPositioning().setX(x);
+		getPositioning().setY(y);
 	}
 
 	public Object2D freeInnerObject() {
 		if (_innerObject == null)
 			return null;
-		float x = getPositioning().getCalibrationX();
-		float y = getPositioning().getCalibrationY();
+		float x = getPositioning().getX();
+		float y = getPositioning().getY();
 		_innerObject.translate(x, y);
 		Object2D toReturn = _innerObject;
 		removeObject(_innerObject);

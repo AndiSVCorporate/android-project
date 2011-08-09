@@ -31,7 +31,7 @@ public class Object2DBitmap extends Object2D {
 
 		if (calibrationData != null) {
 			c.save();
-			c.translate(calibrationData.getCalibrationX(), calibrationData.getCalibrationY());
+			c.translate(calibrationData.getX(), calibrationData.getY());
 			c.scale(calibrationData.getCalibrationScaleX(), calibrationData.getCalibrationScaleY());
 			c.rotate(calibrationData.getCalibrationAngle());
 		}

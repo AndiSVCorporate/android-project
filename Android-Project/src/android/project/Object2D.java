@@ -155,13 +155,13 @@ public abstract class Object2D {
 	public void translateX(float value) {
 		if (_position == null)
 			_position = new Positioning(0, 0, 1, 1, 0);
-		_position.setCalibrationX(_position.getCalibrationX() + value);
+		_position.setX(_position.getX() + value);
 	}
 	
 	public void translateY(float value) {
 		if (_position == null)
 			_position = new Positioning(0, 0, 1, 1, 0);
-		_position.setCalibrationY(_position.getCalibrationY() + value);
+		_position.setY(_position.getY() + value);
 	}
 	
 	public void translate(float dx, float dy) {
@@ -261,7 +261,7 @@ public abstract class Object2D {
 	public static void positioningToMatrix(Matrix m, Positioning p) {
 		if (p == null)
 			return;
-		m.preTranslate(p.getCalibrationX(), p.getCalibrationY());
+		m.preTranslate(p.getX(), p.getY());
 		m.preScale(p.getCalibrationScaleX(), p.getCalibrationScaleY());
 		m.preRotate(p.getCalibrationAngle());		
 	}
