@@ -44,8 +44,8 @@ public class Positioning {
 			_calibrationScaleY = 1;
 			_calibrationAngle = 0;
 		} else {
-			_calibrationX = other.getCalibrationX();
-			_calibrationY = other.getCalibrationY();
+			_calibrationX = other.getX();
+			_calibrationY = other.getY();
 			_calibrationScaleX = other.getCalibrationScaleX();
 			_calibrationScaleY = other.getCalibrationScaleY();
 			_calibrationAngle = other.getCalibrationAngle();
@@ -63,7 +63,7 @@ public class Positioning {
 	/**
 	 * @return Returns X - axis translation value.
 	 */
-	public float getCalibrationX() {
+	public float getX() {
 		return _calibrationX;
 	}
 
@@ -71,14 +71,14 @@ public class Positioning {
 	 * Sets X - axis translation value.
 	 * @param calibrationX X - axis translation value.
 	 */
-	public void setCalibrationX(float calibrationX) {
+	public void setX(float calibrationX) {
 		_calibrationX = calibrationX;
 	}
 
 	/**
 	 * @return Returns Y - axis translation value.
 	 */
-	public float getCalibrationY() {
+	public float getY() {
 		return _calibrationY;
 	}
 
@@ -86,7 +86,7 @@ public class Positioning {
 	 * Sets Y - axis translation value.
 	 * @param calibrationY Y - axis translation value.
 	 */
-	public void setCalibrationY(float calibrationY) {
+	public void setY(float calibrationY) {
 		_calibrationY = calibrationY;
 	}
 

@@ -16,7 +16,7 @@ public class ModelFloatingObject extends Object2D {
 	private long _tHalf = 200;
 
 	public ModelFloatingObject(Object2D innerObject, float x, float y, float yHalf, long tHalf, long rotateSpeed) {
-		super(null, null, new Positioning(x, y, 1, 1, 0), false, false, false, null);
+		super(null, null, new Positioning(x, y), false, false, false, null);
 		_innerObject = innerObject;
 		if (_innerObject == null)
 			return;
@@ -72,12 +72,12 @@ public class ModelFloatingObject extends Object2D {
 	public Object2D freeInnerObject() {
 		if (_innerObject == null)
 			return null;
-		float tx = getPositioning().getCalibrationX();
-		float ty = getPositioning().getCalibrationY();
+		float tx = getPositioning().getX();
+		float ty = getPositioning().getY();
 		float dx = _innerObject.getX() - getX();
 		float dy = _innerObject.getY() - getY();
-		_innerObject.getPositioning().setCalibrationX(tx + dx);
-		_innerObject.getPositioning().setCalibrationY(ty + dy);
+		_innerObject.getPositioning().setX(tx + dx);
+		_innerObject.getPositioning().setY(ty + dy);
 		_innerObject.rotate(_totalRotationAngle);
 		Object2D toReturn = _innerObject;
 		removeObject(_innerObject);

@@ -21,12 +21,12 @@ public class ModelThrownObject extends Object2D {
 		if (_innerObject == null)
 			return;
 		// steal (x,y) of inner object
-		_sx = _innerObject.getPositioning().getCalibrationX();
-		_sy = _innerObject.getPositioning().getCalibrationY();
-		getPositioning().setCalibrationX(_sx);
-		getPositioning().setCalibrationY(_sy);
-		_innerObject.getPositioning().setCalibrationX(0);
-		_innerObject.getPositioning().setCalibrationY(0);
+		_sx = _innerObject.getPositioning().getX();
+		_sy = _innerObject.getPositioning().getY();
+		getPositioning().setX(_sx);
+		getPositioning().setY(_sy);
+		_innerObject.getPositioning().setX(0);
+		_innerObject.getPositioning().setY(0);
 		
 		_totalTime = 0;
 		_tHalf = tHalf;
@@ -47,8 +47,8 @@ public class ModelThrownObject extends Object2D {
 		float t = _totalTime - _tHalf;
 		float y = -_yHalf * t * t / (_tHalf * _tHalf) + _yHalf;
 		float x = _speedX * ((float) _totalTime / 1000);
-		getPositioning().setCalibrationX(_sx + x);
-		getPositioning().setCalibrationY(_sy - y);
+		getPositioning().setX(_sx + x);
+		getPositioning().setY(_sy - y);
 		if (getY() > 800) {
 			getParent().removeObject(this);
 		}
@@ -57,10 +57,10 @@ public class ModelThrownObject extends Object2D {
 	public Object2D freeInnerObject() {
 		if (_innerObject == null)
 			return null;
-		float x = getPositioning().getCalibrationX();
-		float y = getPositioning().getCalibrationY();
-		_innerObject.getPositioning().setCalibrationX(x);
-		_innerObject.getPositioning().setCalibrationY(y);
+		float x = getPositioning().getX();
+		float y = getPositioning().getY();
+		_innerObject.getPositioning().setX(x);
+		_innerObject.getPositioning().setY(y);
 		Object2D toReturn = _innerObject;
 		removeObject(_innerObject);
 		_innerObject = null;
