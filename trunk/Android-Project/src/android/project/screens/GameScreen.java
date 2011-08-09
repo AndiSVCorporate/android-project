@@ -6,6 +6,8 @@ import android.project.CanvasRenderer;
 import android.project.Screen;
 import android.project.Utils;
 import android.project.models.ModelBackground;
+import android.project.models.ModelCircle;
+import android.project.models.ModelJumpingObject;
 import android.project.models.ModelPlayer;
 import android.project.models.ModelSmoke;
 import android.util.Log;
@@ -25,6 +27,9 @@ public class GameScreen extends Screen {
 		
 		for (int i = 0; i < 3; ++i)
 			_player.addObject(new ModelSmoke(0, 0));
+		
+		getWorld().addObject(new ModelJumpingObject(new ModelCircle(30, 150, 50, 0xff0000ff), 100, 100, 440 - 50));
+		getWorld().addObject(new ModelJumpingObject(new ModelCircle(30, 150, 50, 0xff0000ff), 200, 100, 440 - 50));
 		
 	}
 

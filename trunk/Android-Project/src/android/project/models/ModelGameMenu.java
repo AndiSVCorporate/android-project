@@ -103,15 +103,15 @@ public class ModelGameMenu extends Object2D {
 		_buttons[i] = ((ModelFloatingObject)_buttons[i]).freeInnerObject();
 		_buttons[i].setDepthRecursive(-1000);
 		if (i == 1) {
-			addObject(new ModelThrownObject(_buttons[1], -100, 120, 10));
+			addObject(new ModelThrownObject(new ModelScaleObject(_buttons[1], 1, 0.5f, 300), -100, 120, 10));
 			_buttons[1] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 10000);
 			_buttons[1] = new ModelMoveObject(_buttons[1], -130, -90, 300);
 		} else if (i == 2) {
-			addObject(new ModelThrownObject(_buttons[2], -100, 110, 10));
+			addObject(new ModelThrownObject(new ModelScaleObject(_buttons[2], 1, 0.5f, 300), -100, 110, 10));
 			_buttons[2] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 8000);
 			_buttons[2] = new ModelMoveObject(_buttons[2], -160, 0, 300);
 		} else if (i == 3) {
-			addObject(new ModelThrownObject(_buttons[3], -100, 100, 10));
+			addObject(new ModelThrownObject(new ModelScaleObject(_buttons[3], 1, 0.5f, 300), -100, 100, 10));
 			_buttons[3] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 12000);
 			_buttons[3] = new ModelMoveObject(_buttons[3], -130, 90, 300);
 		}
