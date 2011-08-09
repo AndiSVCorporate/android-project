@@ -3,6 +3,7 @@ package android.project.models;
 import android.graphics.Canvas;
 import android.project.Constants;
 import android.project.Object2D;
+import android.util.Log;
 
 public class ModelJumpingObject extends Object2D {
 	private Object2D _innerObject;
@@ -33,7 +34,8 @@ public class ModelJumpingObject extends Object2D {
 		_dy = dy;		
 		addObject(_innerObject);
 		
-		_tFall = (long) (_vX / _dx);
+		_tFall = (long) (_dx / _vX * 1000);
+		Log.d("tFall", "" + _tFall);
 		_a = -_dy /  (_tFall* _tFall);
 	}
 
@@ -45,18 +47,17 @@ public class ModelJumpingObject extends Object2D {
 		if(_innerObject == null)
 			return;
 		_totalTime += timeDiff;
-		if (_totalTime > 2 * _tFall)
-			_totalTime -= 2 * _tFall;
 		float x = _sX + _vX * ((float)_totalTime) / 1000;
 		float t = _totalTime;
-		if (t > _tFall)
+		while (t > _tFall)
 			t -= 2 * _tFall;
-		float y = (-_dy / (_tFall * _tFall)) * t * t + _dy;
+		float y = _a * t * t + _dy;
 		getPositioning().setX(x);
+		//Log.d("y sy dy", y + " " + _sY + " " + _dy);
 		getPositioning().setY(_sY + _dy - y);
 		if(x > 1200) {
 			removeObject(_innerObject);
-			_innerObject=null;
+			_innerObject = null;
 			getParent().removeObject(this);
 		}
 		
