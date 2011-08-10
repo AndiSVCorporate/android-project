@@ -3,7 +3,7 @@ package android.project.models;
 import android.project.bounds.BoundsRect;
 import android.project.Constants;
 import android.project.Object2DBitmap;
-import android.project.Positioning;
+import android.project.Position;
 import android.project.R;
 import android.project.Utils;
 
@@ -15,7 +15,7 @@ public class ModelPlayer extends Object2DBitmap {
 		super(R.drawable.player2,
 				new BoundsRect(Constants.SCREEN_PLAYER_WIDTH, Constants.SCREEN_PLAYER_HEIGHT),
 				null,
-				new Positioning(Constants.SCREEN_PLAYER_MIDDLE_X, Constants.SCREEN_PLAYER_MIDDLE_Y, 1, 1, 0),
+				new Position(Constants.SCREEN_PLAYER_MIDDLE_X, Constants.SCREEN_PLAYER_MIDDLE_Y, 1, 1, 0),
 				false, false, false, null);
 		_playerDestination = Constants.SCREEN_PLAYER_MIDDLE_X;
 	}
@@ -25,7 +25,7 @@ public class ModelPlayer extends Object2DBitmap {
 		
 		setBitmap(R.drawable.player2);
 		
-		float x = getX();
+		float x = getRealX();
 
 		int dir = Utils.floatCompare(_playerDestination, x);
 				
@@ -50,7 +50,7 @@ public class ModelPlayer extends Object2DBitmap {
 	public void move(float clickX, float clickY) {
 		if (clickY < 240)
 			return;
-		float x = getX();
+		float x = getRealX();
 		if (x + (Constants.SCREEN_PLAYER_WIDTH / 2) < clickX)
 			if (Utils.floatCompare(x, Constants.SCREEN_PLAYER_RIGHT_X) < 0)
 				if (Utils.floatCompare(_playerDestination, x) <= 0)

@@ -2,7 +2,7 @@ package android.project.models;
 
 import android.graphics.Canvas;
 import android.project.Object2D;
-import android.project.Positioning;
+import android.project.Position;
 import android.project.Utils;
 import android.util.Log;
 
@@ -27,7 +27,7 @@ public class ModelGameMenu extends Object2D {
 	int _pressingButton;
 	
 	public ModelGameMenu(float x, float y) {
-		super(null, null, new Positioning(x, y, 1, 1, 0), false, false, false, null);
+		super(null, null, new Position(x, y, 1, 1, 0), false, false, false, null);
 		
 		_menu = Menu.PLAY;
 		_nextAction = Action.LOAD_MENU_PLAY;
@@ -150,9 +150,9 @@ public class ModelGameMenu extends Object2D {
 		
 		wrappers[0] = new ModelScaleObject(_buttons[0], 0.01f, 1f, 300);
 		
-		wrappers[1] = new ModelFloatingObject(_buttons[1], 0, 0, 3, 1000, 10000);
-		wrappers[2] = new ModelFloatingObject(_buttons[2], 0, 0, 3, 1000, 8000);
-		wrappers[3] = new ModelFloatingObject(_buttons[3], 0, 0, 3, 1000, 12000);
+		wrappers[1] = new ModelFloatingObject(_buttons[1], 3, 1000, 10000);
+		wrappers[2] = new ModelFloatingObject(_buttons[2], 3, 1000, 8000);
+		wrappers[3] = new ModelFloatingObject(_buttons[3], 3, 1000, 12000);
 		
 		wrappers[1] = new ModelMoveObject(wrappers[1], -130, -90, 300);
 		wrappers[2] = new ModelMoveObject(wrappers[2], -160, 0, 300);

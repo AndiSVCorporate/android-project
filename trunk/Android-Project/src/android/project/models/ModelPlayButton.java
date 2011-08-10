@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.project.Object2D;
 import android.project.Object2DBitmap;
-import android.project.Positioning;
+import android.project.Position;
 import android.project.R;
 import android.project.bounds.BoundsCircle;
 
@@ -12,7 +12,7 @@ public class ModelPlayButton extends Object2DBitmap {
 	
 	public ModelPlayButton(int x, int y) {
 		super(R.drawable.button_play1, new BoundsCircle(100), null,
-				new Positioning(x, y, 1, 1, 0),
+				new Position(x, y, 1, 1, 0),
 				false, false, false, null);
 		
 		Paint paint = new Paint();

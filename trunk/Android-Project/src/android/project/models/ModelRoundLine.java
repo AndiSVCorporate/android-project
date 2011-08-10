@@ -3,7 +3,7 @@ package android.project.models;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.project.Object2D;
-import android.project.Positioning;
+import android.project.Position;
 
 public class ModelRoundLine extends Object2D {
 
@@ -16,7 +16,7 @@ public class ModelRoundLine extends Object2D {
 	}
 	
 	public ModelRoundLine(float dx, float dy, float x, float y) {
-		super(null, null, new Positioning(x, y), false, false, false, null);
+		super(null, null, new Position(x, y), false, false, false, null);
 		_x = dx;
 		_y = dy;
 		_p = new Paint();		

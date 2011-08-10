@@ -36,10 +36,10 @@ public class ModelBezierCurve extends Object2D {
 
 	@Override
 	public void drawThis(Canvas c) {
-		float startX = _o1.getX();
-		float startY = _o1.getY();
-		float endX = _o2.getX();
-		float endY = _o2.getY();
+		float startX = _o1.getRealX();
+		float startY = _o1.getRealY();
+		float endX = _o2.getRealX();
+		float endY = _o2.getRealY();
 		
 		float dx = (startX - endX);
 		float dy = (startY - endY);

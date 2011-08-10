@@ -3,7 +3,7 @@ package android.project.models;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.project.Object2D;
-import android.project.Positioning;
+import android.project.Position;
 
 public class ModelCircle extends Object2D {
 
@@ -15,7 +15,7 @@ public class ModelCircle extends Object2D {
 	}
 	
 	public ModelCircle(float r, float x, float y) {
-		super(null, null, new Positioning(x, y), false, false, false, null);
+		super(null, null, new Position(x, y), false, false, false, null);
 		_r = r;
 		_p = new Paint();
 	}
