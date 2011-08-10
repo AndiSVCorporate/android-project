@@ -20,8 +20,8 @@ public class ModelJumpingObject extends Object2D {
 			return;
 		_innerObject.reset();
 		
-		_vX = vX;
 		_totalTime = 0;
+		_vX = vX;
 		_dy = dy;		
 		addObject(_innerObject);
 		
