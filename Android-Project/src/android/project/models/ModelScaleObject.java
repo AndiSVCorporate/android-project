@@ -9,22 +9,22 @@ public class ModelScaleObject extends Object2D {
 	
 	private long _totalTime;
 	
-	private long _t;
+	private long _scaleTime;
 	private float _scale0;
-	private float _scaleTime;
-	
-	private float _lastScale;
+	private float _scaleEnd;
 
-	public ModelScaleObject(Object2D innerObject, float scale0, float scaleTime, long time) {
-		super(null, null, null, false, false, false, null);
+	public ModelScaleObject(Object2D innerObject, float scale0, float scaleEnd, long time) {
+		super(innerObject);
 		_innerObject = innerObject;
 		if (_innerObject == null)
 			return;
+		innerObject.reset();
+		
 		_totalTime = 0;
 		_scale0 = scale0;
-		_scaleTime = scaleTime;
-		_lastScale = 1;
-		_t = time;
+		_scaleEnd = scaleEnd;
+		_scaleTime = time;
+		
 		addObject(_innerObject);
 	}
 
@@ -36,13 +36,13 @@ public class ModelScaleObject extends Object2D {
 	public void calculateThis(long timeDiff) {
 		if (_innerObject == null)
 			return;
-		if (_totalTime >= _t)
+		if (_totalTime >= _scaleTime)
 			return;
-		_totalTime = Math.min(_totalTime + timeDiff, _t);
-		float tf = ((float) _totalTime / _t);
-		float scale = _scale0 + (_scaleTime - _scale0) * tf;
-		_innerObject.scale(scale / _lastScale);
-		_lastScale = scale;
+		_totalTime = Math.min(_totalTime + timeDiff, _scaleTime);
+		float tf = ((float) _totalTime / _scaleTime);
+		float scale = _scale0 + (_scaleEnd - _scale0) * tf;
+		_innerObject.setScaleX(scale);
+		_innerObject.setScaleY(scale);
 	}
 
 	@Override
