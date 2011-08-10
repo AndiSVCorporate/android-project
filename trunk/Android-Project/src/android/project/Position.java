@@ -78,8 +78,8 @@ public class Position {
 	public void reset() {
 		_x = 0;
 		_y = 0;
-		_scaleX = 0;
-		_scaleY = 0;
+		_scaleX = 1;
+		_scaleY = 1;
 		_angle = 0;
 	}
 	

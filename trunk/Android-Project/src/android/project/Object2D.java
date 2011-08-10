@@ -24,8 +24,6 @@ public abstract class Object2D extends Position {
 	private boolean _drawBorders;
 	
 	private Bounds _bounds;
-
-	private Position _position;
 	
 	private Matrix _matrixCalibration;
 	private Matrix _matrixPosition;
@@ -49,7 +47,6 @@ public abstract class Object2D extends Position {
 		_drawCenter = drawCenter;
 		_drawBorders = drawBorders;
 		_bounds = bounds;
-		_position = position;
 		_parent = parent;
 		_screen = null;
 		_matrixPositionCalc = new Matrix();
@@ -115,7 +112,7 @@ public abstract class Object2D extends Position {
 		if (!_isAbsolute)
 			if (_parent != null)
 				_matrixPositionCalc.preConcat(_parent.getPositionMatrixCalc());
-		positionToMatrix(_matrixPositionCalc, _position);
+		positionToMatrix(_matrixPositionCalc, this);
 		updatePoints();
 		
 		objects.add(this);

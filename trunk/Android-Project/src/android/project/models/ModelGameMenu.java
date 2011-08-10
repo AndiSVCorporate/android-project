@@ -98,21 +98,18 @@ public class ModelGameMenu extends Object2D {
 	}
 	
 	private void changeButton(Object2D newButton, int i) {
-		_buttons[i] = _buttons[i].getParent().getParent();
-		addObject(_buttons[i] = ((ModelMoveObject)_buttons[i]).freeInnerObject());
-		_buttons[i] = ((ModelFloatingObject)_buttons[i]).freeInnerObject();
-		_buttons[i].setDepthRecursive(-1000);
+		freeInnerObject(this, _buttons[i]);
 		if (i == 1) {
 			addObject(new ModelThrownObject(new ModelScaleObject(_buttons[1], 1, 0.5f, 300), -100, 120, 10));
-			_buttons[1] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 10000);
+			_buttons[1] = new ModelFloatingObject(newButton, 3, 1000, 10000);
 			_buttons[1] = new ModelMoveObject(_buttons[1], -130, -90, 300);
 		} else if (i == 2) {
 			addObject(new ModelThrownObject(new ModelScaleObject(_buttons[2], 1, 0.5f, 300), -100, 110, 10));
-			_buttons[2] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 8000);
+			_buttons[2] = new ModelFloatingObject(newButton, 3, 1000, 8000);
 			_buttons[2] = new ModelMoveObject(_buttons[2], -160, 0, 300);
 		} else if (i == 3) {
 			addObject(new ModelThrownObject(new ModelScaleObject(_buttons[3], 1, 0.5f, 300), -100, 100, 10));
-			_buttons[3] = new ModelFloatingObject(newButton, 0, 0, 3, 1000, 12000);
+			_buttons[3] = new ModelFloatingObject(newButton, 3, 1000, 12000);
 			_buttons[3] = new ModelMoveObject(_buttons[3], -130, 90, 300);
 		}
 		addObject(_buttons[i]);
@@ -122,18 +119,11 @@ public class ModelGameMenu extends Object2D {
 	private void closeMenu() {
 		if (_buttons == null)
 			return;
-		_finalizeButtons = _buttons;
-		
-		for (int i = 1; i < _buttons.length; ++i) {
-			_buttons[i] = _buttons[i].getParent().getParent();
-		}
-		
-		_buttons[0] = ((ModelScaleObject)_buttons[0].getParent()).freeInnerObject();
+		freeInnerObject(this, _buttons[0]);
 		addObject(new ModelScaleObject(_buttons[0], 1, 0.01f, 300));
 		_buttons[0].setDepthRecursive(-1000);
 		for (int i = 1; i < _buttons.length; ++i) { 
-			addObject(_buttons[i] = ((ModelMoveObject)_buttons[i]).freeInnerObject());
-			_buttons[i] = ((ModelFloatingObject)_buttons[i]).freeInnerObject();
+			freeInnerObject(this, _buttons[i]);
 			_buttons[i].setDepthRecursive(-1000);
 		}
 		addObject(new ModelThrownObject(new ModelScaleObject(_buttons[1], 1, 0.5f, 300), -100, 120, 10));

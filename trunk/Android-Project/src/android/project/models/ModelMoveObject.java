@@ -1,7 +1,7 @@
 package android.project.models;
 
-import android.graphics.Canvas;
 import android.project.Object2D;
+import android.util.Log;
 
 public class ModelMoveObject extends Object2D {
 
@@ -25,10 +25,6 @@ public class ModelMoveObject extends Object2D {
 		_t = time;
 		addObject(_innerObject);
 	}
-
-
-	@Override
-	public void drawThis(Canvas c) { }
 
 	@Override
 	public void calculateThis(long timeDiff) {
