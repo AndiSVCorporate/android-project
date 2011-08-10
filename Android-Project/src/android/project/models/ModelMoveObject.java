@@ -2,7 +2,6 @@ package android.project.models;
 
 import android.graphics.Canvas;
 import android.project.Object2D;
-import android.util.Log;
 
 public class ModelMoveObject extends Object2D {
 
@@ -11,26 +10,18 @@ public class ModelMoveObject extends Object2D {
 	private long _totalTime;
 	
 	private long _t;
-	private float _sx;
-	private float _sy;
-	private float _ex;
-	private float _ey;
+	private float _dx;
+	private float _dy;
 
-	public ModelMoveObject(Object2D innerObject, float x, float y, long time) {
-		super(null, null, null, false, false, false, null);
+	public ModelMoveObject(Object2D innerObject, float dx, float dy, long time) {
+		super(innerObject);
 		_innerObject = innerObject;
 		if (_innerObject == null)
 			return;	
-		// steal (x,y) of inner object
-		_sx = _innerObject.getPositioning().getX();
-		_sy = _innerObject.getPositioning().getY();
-		getPositioning().setX(_sx);
-		getPositioning().setY(_sy);
-		_innerObject.getPositioning().setX(0);
-		_innerObject.getPositioning().setY(0);
+		_innerObject.reset();
 		_totalTime = 0;
-		_ex = x;
-		_ey = y;
+		_dx = dx;
+		_dy = dy;
 		_t = time;
 		addObject(_innerObject);
 	}
@@ -47,27 +38,12 @@ public class ModelMoveObject extends Object2D {
 			return;
 		_totalTime = Math.min(_totalTime + timeDiff, _t);
 		float tf = ((float) _totalTime / _t);
-		float x = _sx + (_ex - _sx) * tf;
-		float y = _sy + (_ey - _sy) * tf;
-		getPositioning().setX(x);
-		getPositioning().setY(y);
-	}
-
-	public Object2D freeInnerObject() {
-		if (_innerObject == null)
-			return null;
-		float x = getPositioning().getX();
-		float y = getPositioning().getY();
-		_innerObject.translate(x, y);
-		Object2D toReturn = _innerObject;
-		removeObject(_innerObject);
-		_innerObject = null;
-		getParent().removeObject(this);
-		return toReturn;
+		_innerObject.setX(_dx * tf);
+		_innerObject.setY(_dy * tf);
 	}
 
 	@Override
 	public int depth() {
-		return 1000;
+		return 0;
 	}
 }

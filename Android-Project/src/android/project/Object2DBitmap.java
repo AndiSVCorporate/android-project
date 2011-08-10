@@ -15,7 +15,7 @@ public class Object2DBitmap extends Object2D {
 	
 	public Object2DBitmap(int id,
 			Bounds bounds,
-			Positioning calibrationData, Positioning position,
+			Position calibrationData, Position position,
 			boolean isAbsolute, boolean drawCenter, boolean drawBorders, Object2D parent) {
 		super(bounds, calibrationData, position, isAbsolute, drawCenter, drawBorders, parent);
 		_bitmapId = id;
@@ -25,15 +25,15 @@ public class Object2DBitmap extends Object2D {
 	public void drawThis(Canvas c) {
 		BitmapManager bitmapManager = Utils.getBitmapManager();
 		Bitmap bitmap = bitmapManager.getBitmap(_bitmapId);
-		Positioning calibrationData = bitmapManager.getCalibrationData(_bitmapId);
+		Position calibrationData = bitmapManager.getCalibrationData(_bitmapId);
 		if (bitmap == null)
 			return;
 
 		if (calibrationData != null) {
 			c.save();
 			c.translate(calibrationData.getX(), calibrationData.getY());
-			c.scale(calibrationData.getCalibrationScaleX(), calibrationData.getCalibrationScaleY());
-			c.rotate(calibrationData.getCalibrationAngle());
+			c.scale(calibrationData.getScaleX(), calibrationData.getScaleY());
+			c.rotate(calibrationData.getAngle());
 		}
 		
 		//long start = System.nanoTime();

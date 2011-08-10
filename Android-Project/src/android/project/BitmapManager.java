@@ -12,25 +12,25 @@ public class BitmapManager {
 	private Resources _res;
 	
 	private Hashtable<Integer, Bitmap> _bitmaps;
-	private Hashtable<Integer, Positioning> _calibrations;
+	private Hashtable<Integer, Position> _calibrations;
 	
 	public BitmapManager(Resources res) {
 		
 		_res = res;
 		_bitmaps = new Hashtable<Integer, Bitmap>();
-		_calibrations = new Hashtable<Integer, Positioning>();
+		_calibrations = new Hashtable<Integer, Position>();
 		
-		Positioning player = new Positioning((-Constants.SCREEN_PLAYER_WIDTH / 2), (-Constants.SCREEN_PLAYER_HEIGHT / 2));
-		Positioning screenLogo = new Positioning((-Constants.ASPECT_WIDTH / 2), (-Constants.ASPECT_HEIGHT / 2));
-		Positioning playButton = new Positioning(-80, -55);
+		Position player = new Position((-Constants.SCREEN_PLAYER_WIDTH / 2), (-Constants.SCREEN_PLAYER_HEIGHT / 2));
+		Position screenLogo = new Position((-Constants.ASPECT_WIDTH / 2), (-Constants.ASPECT_HEIGHT / 2));
+		Position playButton = new Position(-80, -55);
 		//Positioning menuButton = new Positioning(-40, -40);
-		Positioning settingsButton = new Positioning(-24, -24);
-		Positioning socialButton = new Positioning(-29, -17);
-		Positioning quitConfirmButton = new Positioning(-17, -20);
-		Positioning sideBird = new Positioning(-374, -480);
-		Positioning flagBird = new Positioning(-37.5f, 50);
-		Positioning soundOnButton = new Positioning(-30, -25);
-		Positioning bigButtonMiddle = new Positioning(-60, -60);
+		Position settingsButton = new Position(-24, -24);
+		Position socialButton = new Position(-29, -17);
+		Position quitConfirmButton = new Position(-17, -20);
+		Position sideBird = new Position(-374, -480);
+		Position flagBird = new Position(-37.5f, 50);
+		Position soundOnButton = new Position(-30, -25);
+		Position bigButtonMiddle = new Position(-60, -60);
 		
 		_calibrations.put(R.drawable.player2, player);
 		_calibrations.put(R.drawable.player2pu, player);
@@ -68,7 +68,7 @@ public class BitmapManager {
 		return _bitmaps.get(bitmapId);
 	}
 	
-	public Positioning getCalibrationData(int bitmapId) {
+	public Position getCalibrationData(int bitmapId) {
 		return _calibrations.get(bitmapId);
 	}
 	

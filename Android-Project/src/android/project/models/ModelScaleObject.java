@@ -45,16 +45,6 @@ public class ModelScaleObject extends Object2D {
 		_lastScale = scale;
 	}
 
-	public Object2D freeInnerObject() {
-		if (_innerObject == null)
-			return null;
-		Object2D toReturn = _innerObject;
-		removeObject(_innerObject);
-		_innerObject = null;
-		getParent().removeObject(this);
-		return toReturn;
-	}
-
 	@Override
 	public int depth() {
 		return 1000;

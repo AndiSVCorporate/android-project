@@ -2,26 +2,26 @@ package android.project.models;
 
 import android.graphics.Canvas;
 import android.project.Object2D;
-import android.project.Positioning;
+import android.project.Position;
 
 public class ModelFloatingObject extends Object2D {
 
 	private Object2D _innerObject;
 	private long _totalTime;
 	private long _rotateTime;
-	private float _totalRotationAngle;
 	private float _prevY;
 	private float _a;
 	private float _yHalf;
 	private long _tHalf = 200;
 
-	public ModelFloatingObject(Object2D innerObject, float x, float y, float yHalf, long tHalf, long rotateSpeed) {
-		super(null, null, new Positioning(x, y), false, false, false, null);
+	public ModelFloatingObject(Object2D innerObject, float yHalf, long tHalf, long rotateTime) {
+		super(innerObject);
 		_innerObject = innerObject;
 		if (_innerObject == null)
 			return;
+		_innerObject.reset();
 		
-		_rotateTime = rotateSpeed;
+		_rotateTime = rotateTime;
 		_totalTime = 0;
 
 		_prevY = 0;
@@ -31,12 +31,10 @@ public class ModelFloatingObject extends Object2D {
 
 		_a = - 2 * _yHalf / (_tHalf * _tHalf);
 
-		_totalRotationAngle = 0;
-
 		float initialRotation = (float) Math.random() * 360;
 		rotate(initialRotation);
 		innerObject.rotate(-initialRotation);
-		_totalRotationAngle += initialRotation;
+		
 		addObject(_innerObject);
 	}
 
@@ -64,26 +62,6 @@ public class ModelFloatingObject extends Object2D {
 		float rotate = (float) timeDiff / _rotateTime * 360;
 		rotate(rotate);
 		_innerObject.rotate(-rotate);
-		_totalRotationAngle += rotate;
-		if (_totalRotationAngle > 360)
-			_totalRotationAngle -= 360;
-	}
-
-	public Object2D freeInnerObject() {
-		if (_innerObject == null)
-			return null;
-		float tx = getPositioning().getX();
-		float ty = getPositioning().getY();
-		float dx = _innerObject.getX() - getX();
-		float dy = _innerObject.getY() - getY();
-		_innerObject.getPositioning().setX(tx + dx);
-		_innerObject.getPositioning().setY(ty + dy);
-		_innerObject.rotate(_totalRotationAngle);
-		Object2D toReturn = _innerObject;
-		removeObject(_innerObject);
-		_innerObject = null;
-		getParent().removeObject(this);
-		return toReturn;
 	}
 
 	@Override

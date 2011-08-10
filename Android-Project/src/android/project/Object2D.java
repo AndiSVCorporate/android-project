@@ -5,13 +5,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import android.R.integer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
-public abstract class Object2D {
+public abstract class Object2D extends Position {
 
 	private ArrayList<Object2D> _objects;
 
@@ -26,7 +25,7 @@ public abstract class Object2D {
 	
 	private Bounds _bounds;
 
-	private Positioning _position;
+	private Position _position;
 	
 	private Matrix _matrixCalibration;
 	private Matrix _matrixPosition;
@@ -37,13 +36,15 @@ public abstract class Object2D {
 	
 	private int _depth;
 	
+	/* Constructors */
+	
 	protected Object2D(Bounds bounds,
-			Positioning calibrationData, Positioning position,
+			Position calibrationData, Position position,
 			boolean isAbsolute, boolean drawCenter, boolean drawBorders, Object2D parent) {
-		
+		super(position);
 		_objects = new ArrayList<Object2D>();
 		_matrixPosition = new Matrix();
-		_matrixCalibration = positioningToMatrix(calibrationData);
+		_matrixCalibration = positionToMatrix(calibrationData);
 		_isAbsolute = isAbsolute;
 		_drawCenter = drawCenter;
 		_drawBorders = drawBorders;
@@ -54,7 +55,17 @@ public abstract class Object2D {
 		_matrixPositionCalc = new Matrix();
 		_depth = 0;
 	}
+	
+	public Object2D() {
+		this(null, null, null, false, false, false, null);
+	}
+	
+	public Object2D(Position position) {
+		this(null, null, position, false, false, false, null);
+	}
 
+	/* Draw */
+	
 	public void draw(Canvas c) {
 		
 		c.save();
@@ -72,20 +83,8 @@ public abstract class Object2D {
 		
 		c.restore();
 	}
-	
-	public void addObject(Object2D object) {
-		if (object == null)
-			return;
-		object.setParent(this);
-		object.setScreen(getScreen());
-		_objects.add(object);
-	}
-	
-	public void removeObject(Object2D object) {
-		_objects.remove(object);
-		object.setScreen(null);
-		object.setParent(null);
-	}
+
+	/* Functions for drawing and calculating */
 	
 	public List<Object2D> getObjectsToDraw() {
 		List<Object2D> objects = new ArrayList<Object2D>();
@@ -99,18 +98,13 @@ public abstract class Object2D {
 		return objects;
 	}
 	
-	public List<Object2D> getObjects() {
-		return _objects;
-	}
-	
 	public void getObjectsToDraw(List<Object2D> objects) {
 		if (objects == null)
 			return;
 		_matrixPosition.set(_matrixPositionCalc);
 		objects.add(this);
-		for (Object2D object : _objects) {
+		for (Object2D object : _objects)
 			object.getObjectsToDraw(objects);
-		}
 	}
 	
 	public void getObjectsToCalculate(List<Object2D> objects) {
@@ -121,7 +115,7 @@ public abstract class Object2D {
 		if (!_isAbsolute)
 			if (_parent != null)
 				_matrixPositionCalc.preConcat(_parent.getPositionMatrixCalc());
-		positioningToMatrix(_matrixPositionCalc, _position);
+		positionToMatrix(_matrixPositionCalc, _position);
 		updatePoints();
 		
 		objects.add(this);
@@ -129,6 +123,46 @@ public abstract class Object2D {
 			object.getObjectsToCalculate(objects);
 		}
 	}
+	
+	/* Remove and add objects */
+
+	public void addObject(Object2D object) {
+		if (object == null)
+			return;
+		object.setParent(this);
+		object.setScreen(getScreen());
+		_objects.add(object);
+	}
+	
+	public boolean removeObject(Object2D object) {
+		boolean removed = _objects.remove(object);
+		object.setScreen(null);
+		object.setParent(null);
+		return removed;
+	}
+	
+	public void freeInnerObject(Object2D object) {
+		if (!removeObject(object))
+			return;
+		object.merge(this);
+	}
+	
+	public static void freeInnerObject(Object2D parent, Object2D object) {
+		Object2D objectsParent = object.getParent();
+		while (objectsParent != parent) {
+			objectsParent.freeInnerObject(object);
+			Object2D nextObjectParent = objectsParent.getParent();
+			if (nextObjectParent == null)
+				return;
+			if (objectsParent._objects.isEmpty())
+				nextObjectParent.removeObject(objectsParent);
+			nextObjectParent.addObject(object);
+			objectsParent = nextObjectParent;
+		}
+		parent.removeObject(object);
+	}
+	
+	/* Getters and Setters */
 	
 	public Object2D getParent() {
 		return _parent;
@@ -151,59 +185,15 @@ public abstract class Object2D {
 			return null;
 		return _screen.getCanvasRenderer();
 	}
-	
-	public void translateX(float value) {
-		if (_position == null)
-			_position = new Positioning(0, 0, 1, 1, 0);
-		_position.setX(_position.getX() + value);
-	}
-	
-	public void translateY(float value) {
-		if (_position == null)
-			_position = new Positioning(0, 0, 1, 1, 0);
-		_position.setY(_position.getY() + value);
-	}
-	
-	public void translate(float dx, float dy) {
-		translateX(dx);
-		translateY(dy);
-	}
-	
-	public void rotate(float d) {
-		if (_position == null)
-			_position = new Positioning(0, 0, 1, 1, 0);
-		_position.setCalibrationAngle(_position.getCalibrationAngle() + d);
-	}
-	
-	public void scaleX(float s) {
-		if (_position == null)
-			_position = new Positioning(0, 0, 1, 1, 0);
-		_position.setCalibrationScaleX(_position.getCalibrationScaleX() * s);
-	}
-
-	public void scaleY(float s) {
-		if (_position == null)
-			_position = new Positioning(0, 0, 1, 1, 0);
-		_position.setCalibrationScaleY(_position.getCalibrationScaleY() * s);
-	}
-	
-	public void scale(float sx, float sy) {
-		scaleX(sx);
-		scaleY(sy);
-	}
-	
-	public void scale(float s) {
-		scale(s, s);
-	}
-	
-	public float getX() {
+		
+	public float getRealX() {
 		return _x;
 	}
 	
-	public float getY() {
+	public float getRealY() {
 		return _y;
 	}
-	
+
 	public Object2D getWorld() {
 		Object2D world = this;
 		while (world.getParent() != null) {
@@ -218,16 +208,6 @@ public abstract class Object2D {
 	
 	public Matrix getPositionMatrixCalc() {
 		return _matrixPositionCalc;
-	}
-	
-	public Positioning getPositioning() {
-		if (_position == null)
-			_position = new Positioning(0, 0, 1, 1, 0);
-		return _position;
-	}
-	
-	public void setPositioning(Positioning position) {
-		_position = new Positioning(position);
 	}
 	
 	public boolean isPointInside(float x, float y) {
@@ -255,24 +235,10 @@ public abstract class Object2D {
 		float[] point = {0, 0};
 		_matrixPositionCalc.mapPoints(point);
 		_x = point[0];
-		_y = point[1];	
+		_y = point[1];
 	}
 	
-	public static void positioningToMatrix(Matrix m, Positioning p) {
-		if (p == null)
-			return;
-		m.preTranslate(p.getX(), p.getY());
-		m.preScale(p.getCalibrationScaleX(), p.getCalibrationScaleY());
-		m.preRotate(p.getCalibrationAngle());		
-	}
-	
-	public static Matrix positioningToMatrix(Positioning p) {
-		Matrix m = new Matrix();
-		positioningToMatrix(m, p);
-		return m;		
-	}
-	
-	public abstract void drawThis(Canvas c);
+	public void drawThis(Canvas c) { }
 	
 	public void calculateThis(long timeDiff) { }
 	
@@ -288,8 +254,6 @@ public abstract class Object2D {
 		}
 		
 	}
-	
-	
 	
 	public static final Comparator<Object2D> DEPTH_COMPARATOR = new DepthComparator();
 	public static final Comparator<Object2D> INVERSE_DEPTH_COMPARATOR = Collections.reverseOrder(new DepthComparator());

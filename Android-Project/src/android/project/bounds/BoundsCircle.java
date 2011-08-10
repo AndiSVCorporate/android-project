@@ -36,8 +36,8 @@ public class BoundsCircle implements Bounds {
 	public boolean isPointInside(Object2D object, float x, float y) {
 		if (object == null)
 			return false;
-		float dx = object.getX() - x;
-		float dy = object.getY() - y;
+		float dx = object.getRealX() - x;
+		float dy = object.getRealY() - y;
 		return dx * dx + dy * dy < _radius * _radius;
 	}
 }
