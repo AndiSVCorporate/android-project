@@ -1,13 +1,19 @@
 package android.project.screens;
 
+import java.util.Collection;
+import java.util.Vector;
+
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.project.CalculateThread;
 import android.project.CanvasRenderer;
+import android.project.Object2D;
 import android.project.Screen;
 import android.project.Utils;
 import android.project.models.ModelBackground;
 import android.project.models.ModelCircle;
 import android.project.models.ModelJumpingObject;
+import android.project.models.ModelThrowingObject;
 import android.project.models.ModelPlayer;
 import android.project.models.ModelSmoke;
 import android.util.Log;
@@ -16,7 +22,7 @@ import android.view.MotionEvent;
 public class GameScreen extends Screen {
 
 	private ModelPlayer _player;
-	
+	private Collection<Object2D> _balls;
 	public GameScreen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
 		super(calculateThread, canvasRenderer);
 		_player = new ModelPlayer();
@@ -24,13 +30,13 @@ public class GameScreen extends Screen {
 		//getWorld().addObject(new ModelBackground(0xffcc6600));
 		getWorld().addObject(_player);
 		//getWorld().addObject(new ModelBezierCurve(Color.GREEN));
-		
+		_balls=new Vector<Object2D>();
 		for (int i = 0; i < 3; ++i)
 			_player.addObject(new ModelSmoke(0, 0));
 		
-		getWorld().addObject(new ModelJumpingObject(new ModelCircle(30, 150, 50, 0xff0000ff), 100, 100, 440 - 50));
-		getWorld().addObject(new ModelJumpingObject(new ModelCircle(30, 150, 50, 0xff0000ff), 200, 100, 440 - 50));
-		
+		Object2D ball1=new ModelCircle(30, 150, 50, 0xff0000ff);
+		getWorld().addObject(new ModelJumpingObject(ball1, 1000, 100, 440 - 50, 1000));
+		_balls.add(ball1);
 	}
 
 	@Override
@@ -66,5 +72,19 @@ public class GameScreen extends Screen {
 	}
 
 	@Override
-	public void calculateThis(long timeDiff) { }
+	public void calculateThis(long timeDiff) {	
+		for(Object2D ball:_balls){
+			ModelJumpingObject jmp=(ModelJumpingObject) ball.getParent();
+			if(jmp==null)
+				continue;
+			if(!jmp.isFinished())
+				continue;
+			jmp.freeInnerObject(ball);
+			getWorld().removeObject(jmp);
+			if(Math.abs(ball.getRealX()-_player.getRealX())<20){
+				Log.d("wow", ball.getRealY()+"");
+				getWorld().addObject(new ModelJumpingObject(ball, 1000, 100, 440 - 50, jmp.getTime()-2000));				
+			}
+		}
+	}
 }
