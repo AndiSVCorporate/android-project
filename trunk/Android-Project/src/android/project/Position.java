@@ -118,7 +118,7 @@ public class Position {
 	}
 	
 	public void rotate(float angle) {
-		_angle *= angle;
+		_angle += angle;
 	}
 
 	public void merge(Position other) {

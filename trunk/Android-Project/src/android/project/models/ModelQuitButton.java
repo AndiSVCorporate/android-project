@@ -1,6 +1,5 @@
 package android.project.models;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.project.Object2D;
 import android.project.bounds.BoundsCircle;
@@ -30,7 +29,4 @@ public class ModelQuitButton extends Object2D {
 		line.setDepth(70);
 		setDepth(70);
 	}
-
-	@Override
-	public void drawThis(Canvas c) { }
 }

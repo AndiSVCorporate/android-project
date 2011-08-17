@@ -52,12 +52,12 @@ public class ModelPlayer extends Object2DBitmap {
 			return;
 		float x = getRealX();
 		if (x + (Constants.SCREEN_PLAYER_WIDTH / 2) < clickX)
-			if (Utils.floatCompare(x, Constants.SCREEN_PLAYER_RIGHT_X) < 0)
-				if (Utils.floatCompare(_playerDestination, x) <= 0)
+			if (Utils.floatCompare(_playerDestination, Constants.SCREEN_PLAYER_RIGHT_X) < 0)
+				//if (Utils.floatCompare(_playerDestination, x) <= 0)
 					_playerDestination = _playerDestination + Constants.SCREEN_PLAYER_MOVE_TOTAL_X;
 		if (x - (Constants.SCREEN_PLAYER_WIDTH / 2) > clickX)
-			if (Utils.floatCompare(x, Constants.SCREEN_PLAYER_LEFT_X) > 0)
-				if (Utils.floatCompare(_playerDestination, x) >= 0)
+			if (Utils.floatCompare(_playerDestination, Constants.SCREEN_PLAYER_LEFT_X) > 0)
+				//if (Utils.floatCompare(_playerDestination, x) >= 0)
 					_playerDestination = _playerDestination - Constants.SCREEN_PLAYER_MOVE_TOTAL_X;		
 	}
 	

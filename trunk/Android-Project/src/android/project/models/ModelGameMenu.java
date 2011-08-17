@@ -2,17 +2,20 @@ package android.project.models;
 
 import android.graphics.Canvas;
 import android.project.Object2D;
+import android.project.Object2DBitmap;
 import android.project.Position;
+import android.project.R;
 import android.project.Utils;
 import android.util.Log;
 
 public class ModelGameMenu extends Object2D {
+	
 	private enum Menu {
-		PLAY, SETTINGS
+		PLAY, SETTINGS, SOCIAL
 	}
 	
 	private enum Action {
-		LOAD_MENU_PLAY, LOAD_MENU_SETTINGS,
+		LOAD_MENU_PLAY, LOAD_MENU_SETTINGS, LOAD_MENU_SOCIAL,
 		LOAD_BUTTON_QUIT, LOAD_BUTTON_SOUND,
 		IDLE
 	}
@@ -27,7 +30,7 @@ public class ModelGameMenu extends Object2D {
 	int _pressingButton;
 	
 	public ModelGameMenu(float x, float y) {
-		super(null, null, new Position(x, y, 1, 1, 0), false, false, false, null);
+		super(null, null, new Position(x, y), false, false, false, null);
 		
 		_menu = Menu.PLAY;
 		_nextAction = Action.LOAD_MENU_PLAY;
@@ -48,11 +51,13 @@ public class ModelGameMenu extends Object2D {
 			_time = 0;
 			_currentAction = _nextAction;
 			_nextAction = Action.IDLE;
-			
+
 			if (_currentAction == Action.LOAD_MENU_SETTINGS) {
 				changeMenu(getSettingsMenu(), Menu.SETTINGS);
 			} else if (_currentAction == Action.LOAD_MENU_PLAY) {
 				changeMenu(getPlayMenu(), Menu.PLAY);
+			} else if (_currentAction == Action.LOAD_MENU_SOCIAL) {
+					changeMenu(getSocialMenu(), Menu.SOCIAL);
 			} else if (_currentAction == Action.LOAD_BUTTON_QUIT) {
 				changeButton(new ModelQuitConfirmButton(), 3);
 			} else if (_currentAction == Action.LOAD_BUTTON_SOUND) {
@@ -90,6 +95,15 @@ public class ModelGameMenu extends Object2D {
 				};
 	}
 	
+	private Object2D[] getSocialMenu() {
+		return new Object2D[] {
+				new ModelSocialButtonBig(0, 0),
+				(Utils.getSound() ? new ModelSoundOnButton() : new ModelSoundOffButton()),
+				new ModelFacebookButton(),
+				new ModelQuitButton()
+				};
+	}
+	
 	private void changeMenu(Object2D[] newMenu, Menu menu) {
 		closeMenu();
 		_buttons = newMenu;
@@ -99,6 +113,7 @@ public class ModelGameMenu extends Object2D {
 	
 	private void changeButton(Object2D newButton, int i) {
 		freeInnerObject(this, _buttons[i]);
+		_buttons[i].setDepthRecursive(-1000);
 		if (i == 1) {
 			addObject(new ModelThrownObject(new ModelScaleObject(_buttons[1], 1, 0.5f, 300), -100, 120, 10));
 			_buttons[1] = new ModelFloatingObject(newButton, 3, 1000, 10000);
@@ -165,7 +180,7 @@ public class ModelGameMenu extends Object2D {
 			else if (index == 1)
 				return Action.LOAD_MENU_SETTINGS;
 			else if (index == 2)
-				return Action.IDLE;
+				return Action.LOAD_MENU_SOCIAL;
 			else
 				if (_lastAction == Action.LOAD_BUTTON_QUIT)
 					Utils.quit();
@@ -182,6 +197,9 @@ public class ModelGameMenu extends Object2D {
 				return Action.IDLE;
 			else
 				return Action.IDLE;
+		else if (_menu == Menu.SOCIAL)
+			if (index == 0)
+				return Action.LOAD_MENU_PLAY;
 		return Action.IDLE;
 	}
 	

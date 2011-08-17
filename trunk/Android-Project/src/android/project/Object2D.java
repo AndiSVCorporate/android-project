@@ -10,7 +10,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
-public abstract class Object2D extends Position {
+public class Object2D extends Position {
 
 	private ArrayList<Object2D> _objects;
 
@@ -129,6 +129,10 @@ public abstract class Object2D extends Position {
 		object.setParent(this);
 		object.setScreen(getScreen());
 		_objects.add(object);
+	}
+	
+	public List<Object2D> getObjects() {
+		return _objects;
 	}
 	
 	public boolean removeObject(Object2D object) {

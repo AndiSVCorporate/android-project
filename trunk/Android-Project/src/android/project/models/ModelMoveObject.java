@@ -13,11 +13,13 @@ public class ModelMoveObject extends Object2D {
 	private float _dy;
 
 	public ModelMoveObject(Object2D innerObject, float dx, float dy, long time) {
-		super(innerObject);
+		setX(innerObject.getX());
+		setY(innerObject.getY());
 		_innerObject = innerObject;
 		if (_innerObject == null)
 			return;	
-		_innerObject.reset();
+		_innerObject.setX(0);
+		_innerObject.setY(0);
 		_totalTime = 0;
 		_dx = dx;
 		_dy = dy;

@@ -29,22 +29,27 @@ public class BitmapManager {
 		Position quitConfirmButton = new Position(-17, -20);
 		Position sideBird = new Position(-374, -480);
 		Position flagBird = new Position(-37.5f, 50);
-		Position soundOnButton = new Position(-30, -25);
+		Position soundOnButton = new Position(-20, -16.5f);
 		Position bigButtonMiddle = new Position(-60, -60);
+		Position fallingBird = new Position(-35f, -43f);
 		
 		_calibrations.put(R.drawable.player2, player);
 		_calibrations.put(R.drawable.player2pu, player);
 		
+		_calibrations.put(R.drawable.button_social_big, new Position(-70, -40));
+		_calibrations.put(R.drawable.facebook, new Position(-40, -40));
 		_calibrations.put(R.drawable.button_play1, playButton);
 		_calibrations.put(R.drawable.button_settings_1, settingsButton);
 		_calibrations.put(R.drawable.button_social_1, socialButton);
 		_calibrations.put(R.drawable.button_quit2, quitConfirmButton);
-		_calibrations.put(R.drawable.sound_on, soundOnButton);
+		_calibrations.put(R.drawable.sound_on2, soundOnButton);
 		
 		_calibrations.put(R.drawable.side_bird, sideBird);
 		_calibrations.put(R.drawable.flag_bird, flagBird);
 		
 		_calibrations.put(R.drawable.button_settings_big, bigButtonMiddle);
+		
+		_calibrations.put(R.drawable.model_bird_1_falling, fallingBird);
 		
 		_calibrations.put(R.drawable.epicfailgamingstudios, screenLogo);
 		_calibrations.put(R.drawable.game_screen, screenLogo);
@@ -59,8 +64,12 @@ public class BitmapManager {
 		loadBitmap(R.drawable.button_social_1, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.side_bird, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.button_settings_big, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.sound_on, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.sound_on2, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.flag_bird, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.model_bird_1_falling, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.building, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.facebook, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.button_social_big, Bitmap.Config.ARGB_8888);
 
 	}
 	

@@ -3,6 +3,7 @@ package android.project.models;
 import android.graphics.Canvas;
 import android.project.Object2D;
 import android.project.Position;
+import android.util.Log;
 
 public class ModelFloatingObject extends Object2D {
 
@@ -62,6 +63,7 @@ public class ModelFloatingObject extends Object2D {
 		float rotate = (float) timeDiff / _rotateTime * 360;
 		rotate(rotate);
 		_innerObject.rotate(-rotate);
+		Log.d("rotate", "" + rotate);
 	}
 
 	@Override

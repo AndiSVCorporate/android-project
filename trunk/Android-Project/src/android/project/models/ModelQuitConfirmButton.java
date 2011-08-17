@@ -1,6 +1,5 @@
 package android.project.models;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.project.Object2D;
 import android.project.Object2DBitmap;

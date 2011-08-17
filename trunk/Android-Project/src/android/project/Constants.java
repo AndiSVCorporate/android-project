@@ -28,15 +28,20 @@ public class Constants {
 	public static final float SCREEN_PLAYER_MOVE_TOTAL_X = 200;
 	public static final float SCREEN_PLAYER_LEFT_X = SCREEN_PLAYER_MIDDLE_X - SCREEN_PLAYER_MOVE_TOTAL_X;
 	public static final float SCREEN_PLAYER_RIGHT_X = SCREEN_PLAYER_MIDDLE_X + SCREEN_PLAYER_MOVE_TOTAL_X;
-	public static final float SCREEN_PLAYER_SPEED_PPS = 600;
+	public static final float SCREEN_PLAYER_SPEED_PPS = 1000;
 	public static final float SCREEN_TRAMPOLINE_HEIGHT = 450;	
 
 	/* TIME CONSTANTS */
 	
-	public static final long TIME_MAX_DIFF = 100;
-	public static final long TIME_CHUNK = 200;
+	public static final long TIME_MAX_DIFF = 50;
+	public static final long TIME_CHUNK = 100;
+	public static final int TIME_CHUNK_OFFSET = 10;
 	public static final long TIME_FUTURE = 20000;
 	public static final int TIME_CHUNKS = (int) (TIME_FUTURE / TIME_CHUNK);
+	
+	public static final long TIME_REACT_PLAYER = 0;
+	public static final long TIME_SPEED_PLAYER = (long) ((1000 * SCREEN_PLAYER_MOVE_TOTAL_X) / SCREEN_PLAYER_SPEED_PPS);
+	public static final long TIME_REACT_TOTAL = TIME_SPEED_PLAYER + TIME_REACT_PLAYER;
 	
 	/* ANIMATION CONSTANTS */
 	
