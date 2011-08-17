@@ -2,6 +2,7 @@ package android.project.models;
 
 import android.graphics.Canvas;
 import android.project.Object2D;
+import android.util.Log;
 
 public class ModelThrownObject extends Object2D {
 
@@ -42,7 +43,7 @@ public class ModelThrownObject extends Object2D {
 		float x = _speedX * ((float) _totalTime / 1000);
 		_innerObject.setX(x);
 		_innerObject.setY(-y);
-		if (getRealY() > 800) {
+		if (_innerObject.getRealY() > 800) {
 			getParent().removeObject(this);
 		}
 	}

@@ -9,7 +9,7 @@ import android.project.bounds.BoundsCircle;
 public class ModelSoundOffButton extends Object2DBitmap {
 	
 	public ModelSoundOffButton() {
-		super(R.drawable.sound_on, new BoundsCircle(40), null, null, false, false, false, null);
+		super(R.drawable.sound_on2, new BoundsCircle(40), null, null, false, false, false, null);
 		Paint p = new Paint();
 		p.setAntiAlias(true);
 		p.setColor(0xff248e8e);

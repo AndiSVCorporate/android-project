@@ -11,22 +11,27 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int button_play=0x7f020000;
-        public static final int button_play1=0x7f020001;
-        public static final int button_quit=0x7f020002;
-        public static final int button_quit2=0x7f020003;
-        public static final int button_settings_1=0x7f020004;
-        public static final int button_settings_big=0x7f020005;
-        public static final int button_social_1=0x7f020006;
-        public static final int epicfailgamingstudios=0x7f020007;
-        public static final int flag_bird=0x7f020008;
-        public static final int game_screen=0x7f020009;
-        public static final int gamelogo=0x7f02000a;
-        public static final int icon=0x7f02000b;
-        public static final int player2=0x7f02000c;
-        public static final int player2pu=0x7f02000d;
-        public static final int side_bird=0x7f02000e;
-        public static final int sound_on=0x7f02000f;
+        public static final int building=0x7f020000;
+        public static final int button_play=0x7f020001;
+        public static final int button_play1=0x7f020002;
+        public static final int button_quit=0x7f020003;
+        public static final int button_quit2=0x7f020004;
+        public static final int button_settings_1=0x7f020005;
+        public static final int button_settings_big=0x7f020006;
+        public static final int button_social_1=0x7f020007;
+        public static final int button_social_big=0x7f020008;
+        public static final int epicfailgamingstudios=0x7f020009;
+        public static final int facebook=0x7f02000a;
+        public static final int flag_bird=0x7f02000b;
+        public static final int game_screen=0x7f02000c;
+        public static final int gamelogo=0x7f02000d;
+        public static final int icon=0x7f02000e;
+        public static final int model_bird_1_falling=0x7f02000f;
+        public static final int player2=0x7f020010;
+        public static final int player2pu=0x7f020011;
+        public static final int side_bird=0x7f020012;
+        public static final int sound_on=0x7f020013;
+        public static final int sound_on2=0x7f020014;
     }
     public static final class layout {
         public static final int main=0x7f030000;
