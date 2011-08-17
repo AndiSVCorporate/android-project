@@ -38,6 +38,8 @@ public class BitmapManager {
 		
 		_calibrations.put(R.drawable.button_social_big, new Position(-70, -40));
 		_calibrations.put(R.drawable.facebook, new Position(-40, -40));
+		_calibrations.put(R.drawable.twitter, new Position(-40, -40));
+		_calibrations.put(R.drawable.highscore, new Position(-40, -40));
 		_calibrations.put(R.drawable.button_play1, playButton);
 		_calibrations.put(R.drawable.button_settings_1, settingsButton);
 		_calibrations.put(R.drawable.button_social_1, socialButton);
@@ -69,6 +71,8 @@ public class BitmapManager {
 		loadBitmap(R.drawable.model_bird_1_falling, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.building, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.facebook, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.twitter, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.highscore, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.button_social_big, Bitmap.Config.ARGB_8888);
 
 	}

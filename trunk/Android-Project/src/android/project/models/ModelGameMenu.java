@@ -98,9 +98,9 @@ public class ModelGameMenu extends Object2D {
 	private Object2D[] getSocialMenu() {
 		return new Object2D[] {
 				new ModelSocialButtonBig(0, 0),
-				(Utils.getSound() ? new ModelSoundOnButton() : new ModelSoundOffButton()),
+				new ModelHighscoresButton(),
 				new ModelFacebookButton(),
-				new ModelQuitButton()
+				new ModelTwitterButton()
 				};
 	}
 	
