@@ -7,8 +7,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.SystemClock;
-import android.project.screens.CompanyLogoScreen;
-import android.project.screens.GameMenuScreen;
 import android.project.screens.GameScreen;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -75,9 +73,9 @@ public class CanvasRenderer extends View {
 		
 		_calculateThread = new CalculateThread(this);
 		
-		_activeScreen = new GameScreen(_calculateThread, this);
+		//_activeScreen = new GameScreen(_calculateThread, this);
 		//_activeScreen = new CompanyLogoScreen(_calculateThread, this);
-//		_activeScreen = new GameMenuScreen(_calculateThread, this);
+		_activeScreen = new GameScreen(_calculateThread, this);
 		
 		new Thread(_calculateThread).start();
 	}
@@ -115,7 +113,6 @@ public class CanvasRenderer extends View {
 		_ratio = (float) _fWidth / _fHeight;
 
 		int cmpr = Utils.floatCompare(_ratio, Constants.ASPECT_RATIO);
-
 		if (cmpr > 0) {
 			_width = Utils.floatRound((float) _fHeight * Constants.ASPECT_RATIO);
 			_height = _fHeight;
@@ -184,7 +181,7 @@ public class CanvasRenderer extends View {
 			paint.setTypeface(Utils.getTypeface());
 			paint.setTextSize(10);
 			
-		    canvas.drawText("FPS: " + Utils.floatRound(_frameRate), 725, 10, paint);
+		    canvas.drawText("FPS: " + Utils.floatRound(_frameRate), 10, 15, paint);
 		}
 		
 		/* Draw clipping borders. */
@@ -208,7 +205,7 @@ public class CanvasRenderer extends View {
 	
 	public void setActiveScreen(ScreenEnum screenEnum) {
 		if (screenEnum == ScreenEnum.GAME_MAIN_MENU) {
-			_activeScreen = new GameMenuScreen(_calculateThread, this);
+			_activeScreen = new GameScreen(_calculateThread, this);
 		}
 	}
 	
@@ -222,6 +219,11 @@ public class CanvasRenderer extends View {
 	public void onPause() {
 		_calculateThread.pause();
 	}
+	
+	public void onBackPressed() {
+    	if (_activeScreen != null)
+    		_activeScreen.onBackPressed();
+    }
 	
 	public void onResume() {
 		_startTime = SystemClock.elapsedRealtime();
