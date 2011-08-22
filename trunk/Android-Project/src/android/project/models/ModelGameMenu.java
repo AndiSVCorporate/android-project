@@ -1,22 +1,24 @@
 package android.project.models;
 
 import android.graphics.Canvas;
+import android.os.SystemClock;
 import android.project.Object2D;
 import android.project.Object2DBitmap;
 import android.project.Position;
 import android.project.R;
 import android.project.Utils;
+import android.project.screens.GameScreen;
 import android.util.Log;
 
 public class ModelGameMenu extends Object2D {
 	
 	private enum Menu {
-		PLAY, SETTINGS, SOCIAL
+		PLAY, SETTINGS, SOCIAL, PAUSE
 	}
 	
 	private enum Action {
-		LOAD_MENU_PLAY, LOAD_MENU_SETTINGS, LOAD_MENU_SOCIAL,
-		LOAD_BUTTON_QUIT, LOAD_BUTTON_SOUND,
+		LOAD_MENU_PLAY, LOAD_MENU_SETTINGS, LOAD_MENU_SOCIAL, LOAD_MENU_PAUSE,
+		LOAD_BUTTON_QUIT, LOAD_BUTTON_SOUND, LOAD_BUTTON_BACKGROUND,
 		IDLE
 	}
 	
@@ -57,11 +59,16 @@ public class ModelGameMenu extends Object2D {
 			} else if (_currentAction == Action.LOAD_MENU_PLAY) {
 				changeMenu(getPlayMenu(), Menu.PLAY);
 			} else if (_currentAction == Action.LOAD_MENU_SOCIAL) {
-					changeMenu(getSocialMenu(), Menu.SOCIAL);
+				changeMenu(getSocialMenu(), Menu.SOCIAL);
+			} else if (_currentAction == Action.LOAD_MENU_PAUSE) {
+				changeMenu(getPauseMenu(), Menu.PAUSE);
+				((GameScreen)getScreen()).startGame();
 			} else if (_currentAction == Action.LOAD_BUTTON_QUIT) {
 				changeButton(new ModelQuitConfirmButton(), 3);
 			} else if (_currentAction == Action.LOAD_BUTTON_SOUND) {
 				changeButton((Utils.getSound() ? new ModelSoundOnButton() : new ModelSoundOffButton()), 1);
+			} else if (_currentAction == Action.LOAD_BUTTON_BACKGROUND) {
+				changeButton((Utils.getBackground() ? new ModelBackgroundOnButton() : new ModelBackgroundOffButton()), 2);
 			}
 			return;
 		}
@@ -69,7 +76,9 @@ public class ModelGameMenu extends Object2D {
 			_time += timeDiff;
 			if (_time > 300) {
 				if (_currentAction == Action.LOAD_MENU_SETTINGS ||
-						_currentAction == Action.LOAD_MENU_PLAY)
+						_currentAction == Action.LOAD_MENU_PLAY ||
+						_currentAction == Action.LOAD_MENU_SOCIAL ||
+						_currentAction == Action.LOAD_MENU_PAUSE)
 					finalizeMenu();
 				_lastAction = _currentAction;
 				_currentAction = Action.IDLE;
@@ -90,7 +99,7 @@ public class ModelGameMenu extends Object2D {
 		return new Object2D[] {
 				new ModelSettingsButtonBig(0, 0),
 				(Utils.getSound() ? new ModelSoundOnButton() : new ModelSoundOffButton()),
-				new ModelSocialButton(),
+				(Utils.getBackground() ? new ModelBackgroundOnButton() : new ModelBackgroundOffButton()),
 				new ModelQuitButton()
 				};
 	}
@@ -104,6 +113,15 @@ public class ModelGameMenu extends Object2D {
 				};
 	}
 	
+	private Object2D[] getPauseMenu() {
+		return new Object2D[] {
+				new ModelPauseButtonBig(),
+				new Object2D(),
+				new Object2D(),
+				new Object2D()
+				};
+	}
+	
 	private void changeMenu(Object2D[] newMenu, Menu menu) {
 		closeMenu();
 		_buttons = newMenu;
@@ -113,7 +131,7 @@ public class ModelGameMenu extends Object2D {
 	
 	private void changeButton(Object2D newButton, int i) {
 		freeInnerObject(this, _buttons[i]);
-		_buttons[i].setDepthRecursive(-1000);
+		_buttons[i].setDepthRecursive(-200);
 		if (i == 1) {
 			addObject(new ModelThrownObject(new ModelScaleObject(_buttons[1], 1, 0.5f, 300), -100, 120, 10));
 			_buttons[1] = new ModelFloatingObject(newButton, 3, 1000, 10000);
@@ -135,15 +153,17 @@ public class ModelGameMenu extends Object2D {
 		if (_buttons == null)
 			return;
 		freeInnerObject(this, _buttons[0]);
+		_buttons[0].merge(this);
 		addObject(new ModelScaleObject(_buttons[0], 1, 0.01f, 300));
-		_buttons[0].setDepthRecursive(-1000);
+		_buttons[0].setDepthRecursive(-200);
 		for (int i = 1; i < _buttons.length; ++i) { 
 			freeInnerObject(this, _buttons[i]);
-			_buttons[i].setDepthRecursive(-1000);
+			_buttons[i].setDepthRecursive(-200);
+			_buttons[i].merge(this);
 		}
-		addObject(new ModelThrownObject(new ModelScaleObject(_buttons[1], 1, 0.5f, 300), -100, 120, 10));
-		addObject(new ModelThrownObject(new ModelScaleObject(_buttons[2], 1, 0.5f, 300), -100, 110, 10));
-		addObject(new ModelThrownObject(new ModelScaleObject(_buttons[3], 1, 0.5f, 300), -100, 100, 10));
+		getWorld().addObject(new ModelThrownObject(new ModelScaleObject(_buttons[1], 1, 0.5f, 300), -100, 120, 10));
+		getWorld().addObject(new ModelThrownObject(new ModelScaleObject(_buttons[2], 1, 0.5f, 300), -100, 110, 10));
+		getWorld().addObject(new ModelThrownObject(new ModelScaleObject(_buttons[3], 1, 0.5f, 300), -100, 100, 10));
 		
 		_finalizeButtons = _buttons;
 	}
@@ -176,7 +196,7 @@ public class ModelGameMenu extends Object2D {
 	private Action getAction(int index) {
 		if (_menu == Menu.PLAY)
 			if (index == 0)
-				return Action.IDLE;
+				return Action.LOAD_MENU_PAUSE;
 			else if (index == 1)
 				return Action.LOAD_MENU_SETTINGS;
 			else if (index == 2)
@@ -193,8 +213,10 @@ public class ModelGameMenu extends Object2D {
 				Utils.setSound(!Utils.getSound());
 				return Action.LOAD_BUTTON_SOUND;
 			}
-			else if (index == 2)
-				return Action.IDLE;
+			else if (index == 2) {
+				Utils.setBackground(!Utils.getBackground());
+				return Action.LOAD_BUTTON_BACKGROUND;
+			}
 			else
 				return Action.IDLE;
 		else if (_menu == Menu.SOCIAL)
@@ -202,6 +224,24 @@ public class ModelGameMenu extends Object2D {
 				return Action.LOAD_MENU_PLAY;
 		return Action.IDLE;
 	}
+	
+	public void onBackPressed() {
+		if (_currentAction != Action.IDLE || _nextAction != Action.IDLE)
+			return;
+		if (_pressingButton != -1) {
+			_buttons[_pressingButton].scale((1/1.2f));
+			_pressingButton = -1;
+		}
+		if (_menu == Menu.PLAY)
+			if (_lastAction == Action.LOAD_BUTTON_QUIT)
+				Utils.quit();
+			else
+				_nextAction = Action.LOAD_BUTTON_QUIT;
+		else if (_menu == Menu.SETTINGS)
+			_nextAction = Action.LOAD_MENU_PLAY;
+		else if (_menu == Menu.SOCIAL)
+			_nextAction = Action.LOAD_MENU_PLAY;
+    }
 	
 	public void press(float x, float y) {
 		if (_currentAction != Action.IDLE || _nextAction != Action.IDLE)

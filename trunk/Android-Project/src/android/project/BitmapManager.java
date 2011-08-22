@@ -40,6 +40,8 @@ public class BitmapManager {
 		_calibrations.put(R.drawable.facebook, new Position(-40, -40));
 		_calibrations.put(R.drawable.twitter, new Position(-40, -40));
 		_calibrations.put(R.drawable.highscore, new Position(-40, -40));
+		_calibrations.put(R.drawable.background, new Position(-26.5f, -17.5f));
+		_calibrations.put(R.drawable.pause, new Position(-47.5f, -47.5f));
 		_calibrations.put(R.drawable.button_play1, playButton);
 		_calibrations.put(R.drawable.button_settings_1, settingsButton);
 		_calibrations.put(R.drawable.button_social_1, socialButton);
@@ -55,7 +57,7 @@ public class BitmapManager {
 		
 		_calibrations.put(R.drawable.epicfailgamingstudios, screenLogo);
 		_calibrations.put(R.drawable.game_screen, screenLogo);
-		
+
 		loadBitmap(R.drawable.player2, Bitmap.Config.ARGB_4444);
 		loadBitmap(R.drawable.player2pu, Bitmap.Config.ARGB_4444);
 		loadBitmap(R.drawable.epicfailgamingstudios, Bitmap.Config.RGB_565);
@@ -72,8 +74,10 @@ public class BitmapManager {
 		loadBitmap(R.drawable.building, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.facebook, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.twitter, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.background, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.highscore, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.button_social_big, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.pause, Bitmap.Config.ARGB_8888);
 
 	}
 	

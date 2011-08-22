@@ -1,72 +1,86 @@
 package android.project.screens;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.graphics.Color;
 import android.project.CalculateThread;
 import android.project.CanvasRenderer;
-import android.project.Object2D;
-import android.project.Object2DBitmap;
-import android.project.R;
-import android.project.Scheduler;
 import android.project.Screen;
 import android.project.Utils;
 import android.project.models.ModelBackground;
-import android.project.models.ModelCircle;
-import android.project.models.ModelJumpingObject;
-import android.project.models.ModelThrowingObject;
+import android.project.models.ModelGameBackground;
+import android.project.models.ModelPlayScreen;
+import android.project.models.ModelSkylineFar;
+import android.project.models.ModelSkylineNear;
+import android.project.models.ModelFlagBird;
+import android.project.models.ModelGameMenu;
+import android.project.models.ModelLogoScreen;
+import android.project.models.ModelMenuScreen;
+import android.project.models.ModelMoveObject;
 import android.project.models.ModelPlayer;
-import android.project.models.ModelSmoke;
-import android.util.Log;
+import android.project.models.ModelRect;
+import android.project.models.ModelScaleObject;
+import android.project.models.ModelSideBird;
 import android.view.MotionEvent;
 
 public class GameScreen extends Screen {
 
-	private ModelPlayer _player;
-	private Scheduler _scheduler;
-	private List<Object2D> _balls;
-	
-	
+	private enum CurrentScreen {
+		LOAD, MENU, PLAY
+	}
+
+	private ModelMenuScreen _menu;
+	private ModelPlayScreen _play;
+	private ModelGameBackground _background;
+
+	private CurrentScreen _currentScreen;
+
+	private long _totalTime;
+
 	public GameScreen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
 		super(calculateThread, canvasRenderer);
-		_player = new ModelPlayer();
-		_scheduler = new Scheduler();
-		getWorld().addObject(new ModelBackground(0xffffffff));
-		//getWorld().addObject(new ModelBackground(0xffcc6600));
-		getWorld().addObject(_player);
-		getWorld().addObject(new Object2DBitmap(R.drawable.building) {{setDepth(-500);}});
-		//getWorld().addObject(new ModelBezierCurve(Color.GREEN));
-		_balls = new ArrayList<Object2D>();
-		for (int i = 0; i < 3; ++i)
-			_player.addObject(new ModelSmoke(0, 0));
+		_currentScreen = CurrentScreen.LOAD;
+		_menu = new ModelMenuScreen();
+		_background = new ModelGameBackground();
+		_play = new ModelPlayScreen();
+
+		getWorld().addObject(new ModelLogoScreen());
+		getWorld().addObject(_menu);
+		getWorld().addObject(_play);
+
+		_totalTime = 0;
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-
-		int action = event.getActionMasked();
-		int actionIndex = event.getActionIndex();
-		
-		float[] point = new float[] {event.getX(actionIndex), event.getY(actionIndex)};
-		
-		//Log.d("click0", "x = " + point[0] + "; y = " + point[1]);
-		Utils.getInverseCanvasCalibrationMatrix().mapPoints(point);
-		
-		float x = point[0];
-		float y = point[1];
-		
-		//Log.d("player", "x = " + _player.getX() + "; y = " + _player.getY());
-		
-		Log.d("check", "index " + actionIndex);
-		
-		if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
-			
-			Log.d("click", "x = " + x + "; y = " + y);
-			Log.d("count", event.getPointerCount() + "");
-			_player.move(x, y);
+		if (_currentScreen == CurrentScreen.MENU)
+			return _menu.onTouchEvent(event);
+		if (_currentScreen == CurrentScreen.PLAY) {
+			_menu.onTouchEvent(event);
+			return _play.onTouchEvent(event);
 		}
+		if (_currentScreen == CurrentScreen.LOAD)
+			return _menu.onTouchEvent(event);
 		return true;
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (_currentScreen == CurrentScreen.MENU)
+			_menu.onBackPressed();
+		else if (_currentScreen == CurrentScreen.PLAY)
+			_play.onBackPressed();
+		else if (_currentScreen == CurrentScreen.LOAD)
+			_menu.onBackPressed();
+	}
+
+	@Override
+	public void calculateThis(long timeDiff) {
+		_totalTime += timeDiff;
+		if (_totalTime > 2300) {
+			if (Utils.getBackground() && _background.getParent() == null)
+				getWorld().addObject((_background = new ModelGameBackground()));
+			if (!Utils.getBackground() && _background.getParent() != null)
+				getWorld().removeObject(_background);
+		}
 	}
 
 	@Override
@@ -74,35 +88,20 @@ public class GameScreen extends Screen {
 		return Color.BLACK;
 	}
 
-	@Override
-	public void calculateThis(long timeDiff) {
-		_scheduler.calculate(timeDiff);
-		
-		if (_scheduler.getNext() != 0) {
-			float v = _scheduler.getNext();
-			long tFall = (long) (100 * 1000 / v);
-			Object2D ball = new Object2DBitmap(R.drawable.model_bird_1_falling);
-			ball.setX(150);
-			ball.setY(50);
-			getWorld().addObject(new ModelJumpingObject(ball, tFall, 100, 440 - 50, tFall));
-			_balls.add(ball);
-		}
-		
-		for(Object2D ball:_balls){
-			ModelJumpingObject jmp = (ModelJumpingObject) ball.getParent();
-			if(jmp == null)
-				continue;
-			if(!jmp.isFinished())
-				continue;
-			if(Math.abs(ball.getRealX() - _player.getRealX()) < 80){
-				jmp.finalizePosition();
-				jmp.freeInnerObject(ball);
-				getWorld().removeObject(jmp);
-				getWorld().addObject(new ModelJumpingObject(ball, jmp.getTFall(), 100, 440 - 50, jmp.getTime() - 2 * jmp.getTFall()));				
-			} else {
-				jmp.freeInnerObject(ball);
-				getWorld().removeObject(jmp);
-			}
-		}
+	public void showMenu() {
+		_menu.show();
+
 	}
+
+	public void hideMenu() {
+		_menu.hide();
+	}
+
+	public void startGame() {
+		_menu.hide();
+		_play.show();
+
+		_currentScreen = CurrentScreen.PLAY;
+	}
+
 }

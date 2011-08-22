@@ -63,7 +63,6 @@ public class ModelFloatingObject extends Object2D {
 		float rotate = (float) timeDiff / _rotateTime * 360;
 		rotate(rotate);
 		_innerObject.rotate(-rotate);
-		Log.d("rotate", "" + rotate);
 	}
 
 	@Override

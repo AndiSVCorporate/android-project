@@ -127,7 +127,6 @@ public class Object2D extends Position {
 		if (object == null)
 			return;
 		object.setParent(this);
-		object.setScreen(getScreen());
 		_objects.add(object);
 	}
 	
@@ -137,7 +136,6 @@ public class Object2D extends Position {
 	
 	public boolean removeObject(Object2D object) {
 		boolean removed = _objects.remove(object);
-		object.setScreen(null);
 		object.setParent(null);
 		return removed;
 	}
@@ -174,7 +172,9 @@ public class Object2D extends Position {
 	}
 	
 	public Screen getScreen() {
-		return _screen;
+		if (_screen != null)
+			return _screen;
+		return getParent().getScreen();
 	}
 	
 	public void setScreen(Screen screen) {

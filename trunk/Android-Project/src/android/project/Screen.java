@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.graphics.Canvas;
+import android.os.SystemClock;
 import android.view.MotionEvent;
 
 public abstract class Screen {
@@ -15,6 +16,7 @@ public abstract class Screen {
 	
 	public Screen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
 		_world = new World();
+		_world.setScreen(this);
 		_calculateThread = calculateThread;
 		_canvasRenderer = canvasRenderer;
 		_toCalculate = _world.getObjectsToCalculate();
@@ -39,7 +41,9 @@ public abstract class Screen {
 		_toCalculate = _world.getObjectsToCalculate();
 	}
 	
-	protected World getWorld() {
+	public void onBackPressed() { }
+	
+	public World getWorld() {
 		return _world;
 	}
 	

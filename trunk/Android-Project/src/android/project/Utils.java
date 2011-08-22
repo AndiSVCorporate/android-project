@@ -28,6 +28,7 @@ public class Utils {
 	private static Activity _activity;
 	
 	private static boolean _soundOn = true;
+	private static boolean _backgroundOn = true;
 	
 	/* Global getters and setters to avoid passing endless arguments. */
 	
@@ -53,6 +54,14 @@ public class Utils {
 	
 	public static void setSound(boolean isOn) {
 		_soundOn = isOn;
+	}
+	
+	public static boolean getBackground() {
+		return _backgroundOn;
+	}
+	
+	public static void setBackground(boolean isOn) {
+		_backgroundOn = isOn;
 	}
 	
 	public static void setCanvasRenderer(CanvasRenderer canvasRenderer) {
