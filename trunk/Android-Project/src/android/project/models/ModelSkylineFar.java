@@ -1,17 +1,7 @@
 package android.project.models;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
-import android.graphics.Canvas;
 import android.project.Object2D;
-import android.project.Object2DBitmap;
-import android.project.R;
-import android.project.Utils;
-import android.util.Log;
 
 public class ModelSkylineFar extends Object2D {
 	

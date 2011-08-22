@@ -1,7 +1,6 @@
 package android.project.models;
 
 import android.project.Object2D;
-import android.util.Log;
 
 public class ModelMoveObject extends Object2D {
 

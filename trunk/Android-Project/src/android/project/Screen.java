@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import android.graphics.Canvas;
-import android.os.SystemClock;
 import android.view.MotionEvent;
 
 public abstract class Screen {

@@ -2,8 +2,6 @@ package android.project.models;
 
 import android.graphics.Canvas;
 import android.project.Object2D;
-import android.project.Position;
-import android.util.Log;
 
 public class ModelFloatingObject extends Object2D {
 

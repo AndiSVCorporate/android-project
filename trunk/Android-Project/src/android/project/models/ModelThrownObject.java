@@ -2,7 +2,6 @@ package android.project.models;
 
 import android.graphics.Canvas;
 import android.project.Object2D;
-import android.util.Log;
 
 public class ModelThrownObject extends Object2D {
 
