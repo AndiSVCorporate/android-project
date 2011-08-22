@@ -39,7 +39,7 @@ public class Scheduler {
 		_timePass -= Constants.TIME_CHUNK;
 		_timeLine[_offset] = Place.NONE;
 		_offset = (_offset + 1) % Constants.TIME_CHUNKS;
-		Log.d("offset", "" + _offset);
+		//Log.d("offset", "" + _offset);
 		double r = Math.random();
 		if (r > 0.1)
 			return;

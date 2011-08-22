@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Display;
 import android.view.Window;
@@ -32,6 +33,18 @@ public class Run extends Activity {
         _canvasRenderer = new CanvasRenderer(this, rWidth, rHeight);
         
         setContentView(_canvasRenderer);
+    }
+    
+    private long _backPressedTime = 0;
+    
+    @Override
+    public void onBackPressed() {
+    	long time = SystemClock.elapsedRealtime();
+    	if (time < _backPressedTime + 300)    		
+    		super.onBackPressed();
+    	_backPressedTime = time;
+    	_canvasRenderer.onBackPressed();
+    	
     }
     
     @Override

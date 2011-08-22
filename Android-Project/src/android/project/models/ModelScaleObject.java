@@ -19,7 +19,8 @@ public class ModelScaleObject extends Object2D {
 		if (_innerObject == null)
 			return;
 		innerObject.reset();
-		
+		innerObject.setScaleX(scale0);
+		innerObject.setScaleY(scale0);
 		_totalTime = 0;
 		_scale0 = scale0;
 		_scaleEnd = scaleEnd;

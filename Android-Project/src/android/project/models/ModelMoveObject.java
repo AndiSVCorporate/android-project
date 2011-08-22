@@ -1,6 +1,7 @@
 package android.project.models;
 
 import android.project.Object2D;
+import android.util.Log;
 
 public class ModelMoveObject extends Object2D {
 
@@ -31,12 +32,13 @@ public class ModelMoveObject extends Object2D {
 	public void calculateThis(long timeDiff) {
 		if (_innerObject == null)
 			return;
-		if (_totalTime >= _t)
-			return;
-		_totalTime = Math.min(_totalTime + timeDiff, _t);
-		float tf = ((float) _totalTime / _t);
-		_innerObject.setX(_dx * tf);
-		_innerObject.setY(_dy * tf);
+		_totalTime += timeDiff;
+		if (_totalTime > _t)
+			_totalTime = _t;
+		double tf = ((double) _totalTime / (double) _t);
+
+		_innerObject.setX((float) (_dx * tf));
+		_innerObject.setY((float) (_dy * tf));
 	}
 
 	@Override

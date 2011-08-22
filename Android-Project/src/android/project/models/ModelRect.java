@@ -11,8 +11,6 @@ public class ModelRect extends Object2D {
 	private float _h;
 	private Paint _p;
 	
-	private int _depth;
-	
 	public ModelRect(float w, float h) {
 		this(w, h, 0, 0);
 	}
@@ -22,7 +20,6 @@ public class ModelRect extends Object2D {
 		_w = w;
 		_h = h;
 		_p = new Paint();
-		_depth = 0;
 	}
 	
 	public ModelRect(float w, float h, float x, float y, int color) {
@@ -43,14 +40,5 @@ public class ModelRect extends Object2D {
 	@Override
 	public void drawThis(Canvas c) {
 		c.drawRect(0, 0, _w, _h, _p);
-	}
-	
-	public void setDepth(int depth) {
-		_depth = depth;
-	}
-	
-	@Override
-	public int depth() {
-		return _depth;
 	}
 }
