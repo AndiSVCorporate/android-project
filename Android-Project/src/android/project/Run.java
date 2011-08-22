@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;

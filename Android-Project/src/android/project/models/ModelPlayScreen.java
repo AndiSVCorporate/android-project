@@ -3,7 +3,6 @@ package android.project.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Color;
 import android.project.Object2D;
 import android.project.Object2DBitmap;
 import android.project.R;
