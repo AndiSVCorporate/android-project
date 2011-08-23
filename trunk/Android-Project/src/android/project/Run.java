@@ -20,6 +20,7 @@ public class Run extends Activity {
         
         Utils.setActivity(this);
         
+        SoundManager.initialize();
         getWindow().setFormat(PixelFormat.RGBA_8888);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -48,12 +49,14 @@ public class Run extends Activity {
     
     @Override
     protected void onPause() {
+    	SoundManager.pause();
     	_canvasRenderer.onPause();
     	super.onPause();
     }
     
     @Override
     protected void onResume() {
+    	SoundManager.resume();
     	_canvasRenderer.onResume();
     	super.onResume();
     }
