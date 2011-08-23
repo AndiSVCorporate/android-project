@@ -216,9 +216,12 @@ public class ModelGameMenu extends Object2D {
 			}
 			else
 				return Action.IDLE;
-		else if (_menu == Menu.SOCIAL)
+		else if (_menu == Menu.SOCIAL){
 			if (index == 0)
 				return Action.LOAD_MENU_PLAY;
+			else if(index == 2)
+				Utils.navigateToFacebook();
+		}
 		return Action.IDLE;
 	}
 	

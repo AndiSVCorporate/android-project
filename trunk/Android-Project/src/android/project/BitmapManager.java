@@ -28,7 +28,7 @@ public class BitmapManager {
 		Position socialButton = new Position(-29, -17);
 		Position quitConfirmButton = new Position(-17, -20);
 		Position sideBird = new Position(-374, -480);
-		Position flagBird = new Position(-37.5f, 50);
+		Position flagBird = new Position(-37.5f, -50);
 		Position soundOnButton = new Position(-20, -16.5f);
 		Position bigButtonMiddle = new Position(-60, -60);
 		Position fallingBird = new Position(-35f, -43f);
