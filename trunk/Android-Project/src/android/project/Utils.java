@@ -48,7 +48,9 @@ public class Utils {
 	public static void setActivity(Activity activity) {
 		_activity = activity;
 	}
-	
+	public static Activity getActivity() {
+		return _activity;
+	}
 	public static void quit() {
 		_activity.finish();
 	}
@@ -66,6 +68,8 @@ public class Utils {
 	}
 	
 	public static void setSound(boolean isOn) {
+		if(!isOn)
+			SoundManager.muteSounds(isOn);
 		_soundOn = isOn;
 	}
 	
