@@ -3,9 +3,11 @@ package android.project.models;
 import android.graphics.Canvas;
 import android.project.Object2D;
 import android.project.Position;
+import android.project.SoundManager;
 import android.project.Utils;
 import android.project.screens.GameScreen;
 import android.util.Log;
+import java.util.Random;
 
 public class ModelGameMenu extends Object2D {
 	
@@ -191,9 +193,19 @@ public class ModelGameMenu extends Object2D {
 	}
 	
 	private Action getAction(int index) {
+		Random generator = new Random();
+		int randomNum = generator.nextInt(100);
+		
+		if(randomNum < 70)
+			SoundManager.playSound(SoundManager.MENU_REGULAR_1);
+		else
+			SoundManager.playSound(SoundManager.MENU_REGULAR_2);
+		
 		if (_menu == Menu.PLAY)
-			if (index == 0)
+			if (index == 0){
+				SoundManager.playSound(SoundManager.GAME_THEME);
 				return Action.LOAD_MENU_PAUSE;
+			}
 			else if (index == 1)
 				return Action.LOAD_MENU_SETTINGS;
 			else if (index == 2)
