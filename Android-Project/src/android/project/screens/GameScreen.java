@@ -90,8 +90,12 @@ public class GameScreen extends Screen {
 	public void startGame() {
 		_menu.hide();
 		_play.show();
-
 		_currentScreen = CurrentScreen.PLAY;
+	}
+	public void endGame(){
+		_play.hide();
+		_menu.show();
+		_currentScreen = CurrentScreen.MENU;
 	}
 
 }
