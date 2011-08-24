@@ -9,8 +9,8 @@ public abstract class FallingObject {
 	protected Object2D _ball;
 	private int _score;
 	protected long _tFall;
-	protected World _world;
-	protected FallingObject(int draw, int score, long tf, World w){
+	protected Object2D _world;
+	protected FallingObject(int draw, int score, long tf, Object2D w){
 		_ball= new Object2DBitmap(draw);
 		_score=score;
 		_tFall=tf;
@@ -21,9 +21,7 @@ public abstract class FallingObject {
 	}
 	public abstract void jump();
 	public void crash(){
-		Object2D o=_ball.getParent();
-		o.freeInnerObject(_ball);
-		_world.removeObject(o);
+		Object2D.freeInnerObject(_world,_ball);
 	}
 	public float getRealX(){
 		return _ball.getRealX();
@@ -34,4 +32,8 @@ public abstract class FallingObject {
 		return ((ModelJumpingObject) _ball.getParent()).isFinished();
 	}
 	public abstract boolean jobDone();
+	public boolean readyToJump(){
+		return true;
+	}
+	public void birdTouched(float x, float y){}
 }
