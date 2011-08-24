@@ -112,7 +112,7 @@ public class ModelPlayScreen extends Object2D {
 			for(FallingObject b:_balls)
 				b.crash();
 			_balls.clear();
-			((GameScreen)getScreen()).endGame();
+			((GameScreen)getScreen()).GameOver();
 		}
 		_scheduler.calculate(timeDiff);
 		Place p;
@@ -166,6 +166,11 @@ public class ModelPlayScreen extends Object2D {
 	@Override
 	public boolean isCalculateChildren() {
 		return ((GameScreen)getScreen()).isPlaying();
+	}
+	
+	public void stopGame(){
+		_sky.setDepthRecursive(-1);
+		_ground.setDepthRecursive(-1);
 	}
 
 }
