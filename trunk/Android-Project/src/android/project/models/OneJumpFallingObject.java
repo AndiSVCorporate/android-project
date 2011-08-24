@@ -7,7 +7,7 @@ import android.project.World;
 public class OneJumpFallingObject extends FallingObject {
 	private int _jump;
 	private float _floor;
-	protected OneJumpFallingObject(long tf, float floor, World w) {
+	protected OneJumpFallingObject(long tf, float floor, Object2D w) {
 		super(R.drawable.flag_bird, 50, tf, w);
 		_jump=0;
 		_floor=floor;
