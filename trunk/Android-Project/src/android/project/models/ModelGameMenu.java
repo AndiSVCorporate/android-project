@@ -259,6 +259,8 @@ public class ModelGameMenu extends Object2D {
 		else if (_menu == Menu.SOCIAL) {
 			if (index == 0)
 				return Action.LOAD_MENU_PLAY;
+			else if (index==2)
+				Utils.navigateToFacebook();
 		} else if (_menu == Menu.PAUSE) {
 				if (index == 0)
 					return Action.LOAD_MENU_PAUSE_BIG;

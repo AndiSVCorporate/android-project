@@ -17,8 +17,6 @@ public class OneJumpFallingObject extends FallingObject {
 	@Override
 	public void jump() {
 		if(_jump==0){
-			for (int i = 0; i < 3; ++i)
-				_ball.addObject(new ModelSmoke(0, 0));
 			_world.addObject(new ModelJumpingObject(_ball, _tFall, 350, 440 - _floor, _tFall));
 		}
 		else{
