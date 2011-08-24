@@ -1,21 +1,9 @@
 package android.project;
 
-import com.facebook.android.DialogError;
-import com.facebook.android.Facebook;
-import com.facebook.android.FacebookError;
-import com.facebook.android.Facebook.DialogListener;
-
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
-import android.webkit.WebView;
-
-import com.facebook.android.*;
-import com.facebook.android.Facebook.*;
 
 public class Utils {
 	
@@ -40,7 +28,6 @@ public class Utils {
 	private static Activity _activity;
 	
 	private static boolean _soundOn = true;
-	private static 	Facebook _facebook = new Facebook("124575674305461");
 	private static boolean _backgroundOn = true;
 	
 	/* Global getters and setters to avoid passing endless arguments. */
@@ -48,9 +35,7 @@ public class Utils {
 	public static void setActivity(Activity activity) {
 		_activity = activity;
 	}
-	public static Activity getActivity() {
-		return _activity;
-	}
+	
 	public static void quit() {
 		_activity.finish();
 	}
@@ -68,8 +53,6 @@ public class Utils {
 	}
 	
 	public static void setSound(boolean isOn) {
-		if(!isOn)
-			SoundManager.muteSounds(isOn);
 		_soundOn = isOn;
 	}
 	
@@ -227,52 +210,5 @@ public class Utils {
 		baseCalibrationMatrix.preConcat(_canvasBaseMatrix);
 		
 		return baseCalibrationMatrix;
-	}
-	
-	public static void loginFacebook(){
-		_facebook.authorize(_activity, new DialogListener() {
-			@Override
-			public void onComplete(Bundle values) {
-			}
-
-			@Override
-			public void onFacebookError(FacebookError error) {
-			}
-
-			@Override
-			public void onError(DialogError e) {
-			}
-
-			@Override
-			public void onCancel() {
-			}
-		});
-	}
-	public static void postHighscore(int highScore){
-		Bundle b=new Bundle();
-		b.putString("picture", "https://fbcdn-photos-a.akamaihd.net/photos-ak-snc1/v43/141/124575674305461/app_1_124575674305461_1992.gif");
-		b.putString("description", "I saved the birds from the fire and score "+highScore+" points!");
-		b.putString("name", "FireBirds!");
-		b.putString("caption", "Save the birds from the fire. FAST!");
-		_facebook.dialog(_activity, "feed", b,
-			      new DialogListener() {
-			           @Override
-			           public void onComplete(Bundle values) {}
-
-			           @Override
-			           public void onFacebookError(FacebookError error) {}
-
-			           @Override
-			           public void onError(DialogError e) {}
-
-			           @Override
-			           public void onCancel() {}
-			      }
-			);
-	}
-	public static void navigateToFacebook(){
-		String page="http://www.facebook.com/apps/application.php?id=124575674305461";
-		Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(page));
-		_activity.startActivity(viewIntent);
 	}
 }

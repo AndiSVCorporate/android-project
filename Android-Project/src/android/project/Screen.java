@@ -54,6 +54,7 @@ public abstract class Screen {
 		List<Object2D> allObjects;
 		
 		synchronized (_calculateThread.getLock()) {
+			_toCalculate = _world.getObjectsToCalculate();
 			allObjects = _world.getObjectsToDraw();
 		}
 		

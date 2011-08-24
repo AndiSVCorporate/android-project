@@ -47,6 +47,10 @@ public class ModelPlayer extends Object2DBitmap {
 		setBitmap(R.drawable.player2pu);
 	}
 	
+	public void setDestination(float x) {
+		_playerDestination = x;
+	}
+	
 	public void move(float clickX, float clickY) {
 		if (clickY < 240)
 			return;

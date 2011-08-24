@@ -1,6 +1,7 @@
 package android.project;
 
 import android.os.SystemClock;
+import android.util.Log;
 
 public class CalculateThread implements Runnable {
 
@@ -26,6 +27,7 @@ public class CalculateThread implements Runnable {
 					if (activeScreen != null) {
 						long nextTime = SystemClock.elapsedRealtime();
 						long timeDiff = nextTime - _prevTime;
+						//timeDiff = 10;
 						if (timeDiff != 0) {
 							if (timeDiff >= Constants.TIME_MAX_DIFF)
 								timeDiff = Constants.TIME_MAX_DIFF - 1;

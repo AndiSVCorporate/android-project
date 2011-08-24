@@ -9,6 +9,7 @@ import android.project.models.ModelGameBackground;
 import android.project.models.ModelPlayScreen;
 import android.project.models.ModelLogoScreen;
 import android.project.models.ModelMenuScreen;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class GameScreen extends Screen {
@@ -24,19 +25,24 @@ public class GameScreen extends Screen {
 	private CurrentScreen _currentScreen;
 
 	private long _totalTime;
+	
+	private boolean _playing;
+	private boolean _gameAvailable;
 
 	public GameScreen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
 		super(calculateThread, canvasRenderer);
 		_currentScreen = CurrentScreen.LOAD;
 		_menu = new ModelMenuScreen();
 		_background = new ModelGameBackground();
-		_play = new ModelPlayScreen();
+		//_play = new ModelPlayScreen();
 
 		getWorld().addObject(new ModelLogoScreen());
 		getWorld().addObject(_menu);
-		getWorld().addObject(_play);
+		//getWorld().addObject(_play);
 
 		_totalTime = 0;
+		_playing = false;
+		_gameAvailable = false;
 	}
 
 	@Override
@@ -70,6 +76,28 @@ public class GameScreen extends Screen {
 				getWorld().addObject((_background = new ModelGameBackground()));
 			if (!Utils.getBackground() && _background.getParent() != null)
 				getWorld().removeObject(_background);
+			
+		}
+		stopCalculate(timeDiff);
+	}
+	
+	private boolean _stopCalculate = false;
+	private long _stopCalculateTime = 0;
+	private void stopCalculate(long timeDiff) {
+		if (_stopCalculate) {
+			_stopCalculateTime += timeDiff;
+			_stopCalculate = false;
+		}
+		if (_stopCalculateTime == 0)
+			return;
+		_stopCalculateTime += timeDiff;
+		if (_stopCalculateTime > 350) {
+			if (getWorld().removeObject(_background))
+				getWorld().addObject((_background = new ModelGameBackground()));
+			
+			getWorld().removeObject(_play);
+			_play = null;
+			_stopCalculateTime = 0;
 		}
 	}
 
@@ -80,7 +108,6 @@ public class GameScreen extends Screen {
 
 	public void showMenu() {
 		_menu.show();
-
 	}
 
 	public void hideMenu() {
@@ -88,14 +115,58 @@ public class GameScreen extends Screen {
 	}
 
 	public void startGame() {
+		_playing = true;
+		_gameAvailable = true;
 		_menu.hide();
+		_play = new ModelPlayScreen();
+		getWorld().addObject(_play);
 		_play.show();
+
 		_currentScreen = CurrentScreen.PLAY;
 	}
-	public void endGame(){
-		_play.hide();
-		_menu.show();
+	
+	public void continueGame() {
+		_playing = true;
+		_menu.hideReturn();
+
+		_currentScreen = CurrentScreen.PLAY;
+	}
+	
+	public void pauseGame() {
+		_playing = false;
+		_menu.pause();
+		_play.pause();
+
+		_currentScreen = CurrentScreen.MENU;
+	}
+	
+	public void GameOver() {
+		_playing = false;
+		_gameAvailable = false;
+		
+		_menu.gameOver();
+		_play.setDepthRecursive(-30000);
+		_background.setDepthRecursive(-30000);
+		_play.stopGame();
+		_stopCalculate = true;
+		_currentScreen = CurrentScreen.MENU;
+	}
+	
+	public void stopGame() {
+		_menu.stopGame();
+		_play.setDepthRecursive(-30000);
+		_background.setDepthRecursive(-30000);
+		_play.stopGame();
+		_stopCalculate = true;
+		_gameAvailable = false;
 		_currentScreen = CurrentScreen.MENU;
 	}
 
+	public boolean isPlaying() {
+		return _playing;
+	}
+	
+	public boolean isGameAvailable() {
+		return _gameAvailable;
+	}
 }

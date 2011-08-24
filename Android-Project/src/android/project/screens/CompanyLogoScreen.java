@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.project.CalculateThread;
 import android.project.CanvasRenderer;
 import android.project.Screen;
-import android.project.SoundManager;
 import android.project.CanvasRenderer.ScreenEnum;
 import android.project.models.ModelBackground;
 import android.project.models.ModelCompanyLogo;

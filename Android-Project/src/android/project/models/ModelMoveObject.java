@@ -1,6 +1,7 @@
 package android.project.models;
 
 import android.project.Object2D;
+import android.util.Log;
 
 public class ModelMoveObject extends Object2D {
 
@@ -13,11 +14,12 @@ public class ModelMoveObject extends Object2D {
 	private float _dy;
 
 	public ModelMoveObject(Object2D innerObject, float dx, float dy, long time) {
+		if (innerObject == null)
+			return;	
 		setX(innerObject.getX());
 		setY(innerObject.getY());
 		_innerObject = innerObject;
-		if (_innerObject == null)
-			return;	
+		
 		_innerObject.setX(0);
 		_innerObject.setY(0);
 		_totalTime = 0;

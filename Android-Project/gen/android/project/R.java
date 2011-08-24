@@ -25,19 +25,19 @@ public final class R {
         public static final int button_social_big=0x7f02000b;
         public static final int epicfailgamingstudios=0x7f02000c;
         public static final int facebook=0x7f02000d;
-        public static final int facebook_icon=0x7f02000e;
-        public static final int flag_bird=0x7f02000f;
-        public static final int game_screen=0x7f020010;
-        public static final int gamelogo=0x7f020011;
-        public static final int highscore=0x7f020012;
-        public static final int icon=0x7f020013;
-        public static final int model_bird_1_falling=0x7f020014;
-        public static final int pause=0x7f020015;
-        public static final int player2=0x7f020016;
-        public static final int player2pu=0x7f020017;
-        public static final int side_bird=0x7f020018;
-        public static final int sound_on=0x7f020019;
-        public static final int sound_on2=0x7f02001a;
+        public static final int flag_bird=0x7f02000e;
+        public static final int game_screen=0x7f02000f;
+        public static final int gamelogo=0x7f020010;
+        public static final int highscore=0x7f020011;
+        public static final int icon=0x7f020012;
+        public static final int model_bird_1_falling=0x7f020013;
+        public static final int pause=0x7f020014;
+        public static final int player2=0x7f020015;
+        public static final int player2pu=0x7f020016;
+        public static final int side_bird=0x7f020017;
+        public static final int sound_on=0x7f020018;
+        public static final int sound_on2=0x7f020019;
+        public static final int stop=0x7f02001a;
         public static final int twitter=0x7f02001b;
     }
     public static final class layout {
