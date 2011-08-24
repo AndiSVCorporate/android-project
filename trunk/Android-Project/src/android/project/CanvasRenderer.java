@@ -13,13 +13,13 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class CanvasRenderer extends View {
-	
+
 	private Screen _activeScreen;
-	
+
 	public enum ScreenEnum { COMPAMY_LOGO, GAME_MAIN_MENU, GAME };
-	
+
 	private BitmapManager _bitmapManager;
-	
+
 	/* Privates for calibrating the screen to ASPECT_RATIO. */
 
 	private int _rWidth;
@@ -32,12 +32,12 @@ public class CanvasRenderer extends View {
 	private int _left;
 	private boolean _landscape;
 	private float _ratio;
-	
+
 	private Matrix _canvasCalibrationMatrix;
 	private Matrix _canvasBaseMatrix;
-	
+
 	/* Privates for checking the frame rate. */
-	
+
 	private float _frameRate;
 	private long _frames;
 	private long _startTime;
@@ -45,55 +45,53 @@ public class CanvasRenderer extends View {
 
 	/* Privates for calculation making thread */
 	private CalculateThread _calculateThread;
-		
-	
+
+
 	public CanvasRenderer(Context context, int rWidth, int rHeight) {
 		super(context);
 		setDrawingCacheEnabled(true);
-		
-		
+
+
 		_canvasBaseMatrix = new Matrix();
 		_canvasCalibrationMatrix = new Matrix();
-		
+
 		calculateScreen(rWidth, rHeight);
 
 		_bitmapManager = new BitmapManager(getResources());
-		
+
 		Typeface fontFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/amiga.ttf");
-		
+
 		Utils.setTypeface(fontFace);
 		Utils.setBitmapManager(_bitmapManager);
 		Utils.setCanvasCalibrationMatrix(_canvasCalibrationMatrix);
 		Utils.setCanvasRenderer(this);
-		
+
 		_time = 0;
 		_frames = 0;
 		_startTime = 0;
 		_frameRate = 0;
-		
+
 		_calculateThread = new CalculateThread(this);
-		
-		//_activeScreen = new GameScreen(_calculateThread, this);
-		//_activeScreen = new CompanyLogoScreen(_calculateThread, this);
+
 		_activeScreen = new GameScreen(_calculateThread, this);
-		
+
 		new Thread(_calculateThread).start();
 	}
-	
+
 	@Override
 	public void onDraw(Canvas canvas) {
 		Utils.setCanvas(canvas);
-		
+
 		drawScreen(canvas);
 		calculateFrameRate();
 		if (_activeScreen != null)
 			_activeScreen.postInvalidate(this);
 	}
-	
+
 	/* Privates */
-	
+
 	private void calculateScreen(int rWidth, int rHeight) {
-		
+
 		_rWidth = rWidth;
 		_rHeight = rHeight;
 
@@ -128,16 +126,16 @@ public class CanvasRenderer extends View {
 		Log.d("CANVAS", "fWidth = " + _fWidth + "; fHeight = " + _fHeight);
 		Log.d("CANVAS", "landscape = " + _landscape + "; width = " + _width + "; height = " + _height);
 		Log.d("CANVAS", "left = " + _left + "; top = " + _top);
-		
+
 		if (_landscape) {
 			_canvasCalibrationMatrix.preRotate(90);
 			_canvasCalibrationMatrix.preTranslate(0, -_rWidth);
 		}
-		
+
 		_canvasCalibrationMatrix.preTranslate(_left, _top);
 		_canvasCalibrationMatrix.preScale(_width / Constants.ASPECT_WIDTH, _height / Constants.ASPECT_HEIGHT);
 	}
-	
+
 	private void calculateFrameRate() {
 		if (!Constants.PATH_CALCULATE_FRAME_RATE)
 			return;
@@ -154,36 +152,36 @@ public class CanvasRenderer extends View {
 		}
 
 	}
-	
+
 	private int first = 0;
-	
+
 	private void drawScreen(Canvas canvas) {
 		// remove this eventually
 		if (first < 0) {
 			first++;
 			return;
 		}
-		
+
 		Paint paint = new Paint();
-		
+
 		//canvas.setMatrix(new Matrix());
-		
+
 		_canvasBaseMatrix = canvas.getMatrix();
-		
+
 		Utils.setCanvasBaseMatrix(_canvasBaseMatrix);
-		
+
 		canvas.concat(_canvasCalibrationMatrix);
-		
+
 		_activeScreen.draw(canvas);
-		
+
 		if (Constants.PATH_CALCULATE_FRAME_RATE) {
 			paint.setColor(Color.BLACK);
 			paint.setTypeface(Utils.getTypeface());
 			paint.setTextSize(10);
-			
-		    canvas.drawText("FPS: " + Utils.floatRound(_frameRate), 10, 15, paint);
+
+			canvas.drawText("FPS: " + Utils.floatRound(_frameRate), 10, 15, paint);
 		}
-		
+
 		/* Draw clipping borders. */
 		if (_activeScreen == null)
 			paint.setColor(Color.BLACK); // Border color.
@@ -198,33 +196,33 @@ public class CanvasRenderer extends View {
 			canvas.drawRect(0, 481, 800, 721, paint); // Bottom border.
 		}
 	}
-	
+
 	public Screen getActiveScreen() {
 		return _activeScreen;
 	}
-	
+
 	public void setActiveScreen(ScreenEnum screenEnum) {
 		if (screenEnum == ScreenEnum.GAME_MAIN_MENU) {
 			_activeScreen = new GameScreen(_calculateThread, this);
 		}
 	}
-	
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (_activeScreen == null)
 			return true;
 		return _activeScreen.onTouchEvent(event);
 	}
-	
+
 	public void onPause() {
 		_calculateThread.pause();
 	}
-	
+
 	public void onBackPressed() {
-    	if (_activeScreen != null)
-    		_activeScreen.onBackPressed();
-    }
-	
+		if (_activeScreen != null)
+			_activeScreen.onBackPressed();
+	}
+
 	public void onResume() {
 		_startTime = SystemClock.elapsedRealtime();
 		_calculateThread.resume();

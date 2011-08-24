@@ -15,6 +15,12 @@ public class ModelRect extends Object2D {
 		this(w, h, 0, 0);
 	}
 	
+	public ModelRect(float w, float h, int color) {
+		this(w, h);
+		_p = new Paint();
+		_p.setColor(color);
+	}
+	
 	public ModelRect(float w, float h, float x, float y) {
 		super(null, null, new Position(x, y), false, false, false, null);
 		_w = w;

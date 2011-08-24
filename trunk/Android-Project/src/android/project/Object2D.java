@@ -116,6 +116,8 @@ public class Object2D extends Position {
 		updatePoints();
 		
 		objects.add(this);
+		if (!isCalculateChildren())
+			return;
 		for (Object2D object : _objects) {
 			object.getObjectsToCalculate(objects);
 		}
@@ -172,9 +174,7 @@ public class Object2D extends Position {
 	}
 	
 	public Screen getScreen() {
-		if (_screen != null)
-			return _screen;
-		return getParent().getScreen();
+		return getCanvasRenderer().getActiveScreen();
 	}
 	
 	public void setScreen(Screen screen) {
@@ -182,9 +182,7 @@ public class Object2D extends Position {
 	}
 	
 	public CanvasRenderer getCanvasRenderer() {
-		if (_screen == null)
-			return null;
-		return _screen.getCanvasRenderer();
+		return Utils.getCanvasRenderer();
 	}
 		
 	public float getRealX() {
@@ -196,11 +194,7 @@ public class Object2D extends Position {
 	}
 
 	public Object2D getWorld() {
-		Object2D world = this;
-		while (world.getParent() != null) {
-			world = world.getParent();
-		}
-		return world;
+		return getScreen().getWorld();
 	}
 	
 	public Matrix getPositionMatrix() {
@@ -209,6 +203,10 @@ public class Object2D extends Position {
 	
 	public Matrix getPositionMatrixCalc() {
 		return _matrixPositionCalc;
+	}
+	
+	public void setBounds(Bounds bounds) {
+		_bounds = bounds;
 	}
 	
 	public boolean isPointInside(float x, float y) {
@@ -230,6 +228,10 @@ public class Object2D extends Position {
 		for (Object2D object : _objects) {
 			object.setDepthRecursive(dx);
 		}
+	}
+	
+	public boolean isCalculateChildren() {
+		return true;
 	}
 	
 	public void updatePoints() {
