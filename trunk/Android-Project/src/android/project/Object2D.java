@@ -16,8 +16,6 @@ public class Object2D extends Position {
 
 	private Object2D _parent;
 	
-	private Screen _screen;
-	
 	private boolean _isAbsolute;
 
 	private boolean _drawCenter;
@@ -48,7 +46,6 @@ public class Object2D extends Position {
 		_drawBorders = drawBorders;
 		_bounds = bounds;
 		_parent = parent;
-		_screen = null;
 		_matrixPositionCalc = new Matrix();
 		_depth = 0;
 	}
@@ -176,11 +173,7 @@ public class Object2D extends Position {
 	public Screen getScreen() {
 		return getCanvasRenderer().getActiveScreen();
 	}
-	
-	public void setScreen(Screen screen) {
-		_screen = screen;
-	}
-	
+		
 	public CanvasRenderer getCanvasRenderer() {
 		return Utils.getCanvasRenderer();
 	}

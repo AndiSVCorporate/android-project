@@ -9,7 +9,6 @@ import android.project.models.ModelGameBackground;
 import android.project.models.ModelPlayScreen;
 import android.project.models.ModelLogoScreen;
 import android.project.models.ModelMenuScreen;
-import android.util.Log;
 import android.view.MotionEvent;
 
 public class GameScreen extends Screen {

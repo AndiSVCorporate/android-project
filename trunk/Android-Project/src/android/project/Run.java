@@ -1,23 +1,10 @@
 package android.project;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.openfeint.api.OpenFeint;
-import com.openfeint.api.OpenFeintDelegate;
-import com.openfeint.api.OpenFeintSettings;
-import com.openfeint.api.resource.Achievement;
-import com.openfeint.api.resource.Leaderboard;
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;

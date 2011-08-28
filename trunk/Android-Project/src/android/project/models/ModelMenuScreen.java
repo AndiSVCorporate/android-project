@@ -2,7 +2,6 @@ package android.project.models;
 
 import android.project.Object2D;
 import android.project.Utils;
-import android.util.Log;
 import android.view.MotionEvent;
 
 public class ModelMenuScreen extends Object2D {

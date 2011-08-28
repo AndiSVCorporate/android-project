@@ -15,7 +15,6 @@ public abstract class Screen {
 	
 	public Screen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
 		_world = new World();
-		_world.setScreen(this);
 		_calculateThread = calculateThread;
 		_canvasRenderer = canvasRenderer;
 		_toCalculate = _world.getObjectsToCalculate();

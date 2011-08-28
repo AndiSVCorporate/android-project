@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.project.Object2D;
 import android.project.R;
 import android.project.Utils;
-import android.project.World;
 import android.project.bounds.BoundsCircle;
 
 public class FireFallingObject extends FallingObject {

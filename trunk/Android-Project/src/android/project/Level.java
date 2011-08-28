@@ -1,13 +1,8 @@
 package android.project;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
-import java.util.Vector;
-
-import android.R.integer;
-import android.graphics.AvoidXfermode;
 import android.project.Scheduler.Place;
 import android.project.models.BasicFallingObject;
 import android.project.models.FallingObject;

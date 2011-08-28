@@ -3,26 +3,17 @@ package android.project.models;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Random;
-import java.util.TreeMap;
 import java.util.Vector;
 
 import android.project.FireAchivement;
 import android.project.Level;
-import android.project.CanvasRenderer;
-import android.project.Constants;
 import android.project.Level.Bird;
 import android.project.Object2D;
 import android.project.Object2DBitmap;
 import android.project.R;
-import android.project.Scheduler;
-import android.project.Scheduler.Place;
 import android.project.Utils;
-import android.project.World;
 import android.project.screens.GameScreen;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -40,7 +31,6 @@ public class ModelPlayScreen extends Object2D {
 	private ModelCurrentLevel _curLevel;
 	private long _levelTime;
 	private List<FireAchivement> _toAchieve;
-	private Collection<ModelScoreFly> _fly;
 	public boolean onTouchEvent(MotionEvent event) {
 
 		int action = event.getActionMasked();
@@ -86,7 +76,7 @@ public class ModelPlayScreen extends Object2D {
 		generateAchievments();
 		_levelTime=0;
 		_life=new ModeLife(3);
-		_score=new ModelCurrentScore();
+		_score=new ModelCurrentScore(150);
 		_curLevel=new ModelCurrentLevel();
 		addObject(_score);
 		addObject(_life);

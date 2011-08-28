@@ -1,13 +1,8 @@
 package android.project.models;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.project.Constants;
 import android.project.Object2D;
 import android.project.Object2DBitmap;
 import android.project.R;
-import android.project.Utils;
 
 public class ModeLife extends Object2D {
 

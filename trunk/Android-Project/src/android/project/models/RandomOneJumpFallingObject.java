@@ -1,11 +1,8 @@
 package android.project.models;
 
-import java.util.Random;
-
 import android.project.Object2D;
 import android.project.R;
 import android.project.Scheduler.Place;
-import android.project.World;
 
 public class RandomOneJumpFallingObject extends FallingObject {
 	private int _jump;
@@ -15,13 +12,6 @@ public class RandomOneJumpFallingObject extends FallingObject {
 		_jump=0;
 		_floor=floor;
 		_ball.setY(_floor);
-		int r=0;
-		switch(p){
-		case LEFT: r=0; break;
-		case MIDDLE: r=1; break;
-		case RIGHT: r=2; break;
-		}
-//		_tFall=(1+2*r)*_tFall;
 		_only=p;
 	}
 	@Override
