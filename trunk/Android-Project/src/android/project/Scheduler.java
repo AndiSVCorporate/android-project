@@ -15,13 +15,13 @@ public class Scheduler {
 	private int _offset;
 	private long _timePass;
 	private float _v;
-
-	public Scheduler() {
+	private long _react;
+	public Scheduler(long react) {
 		_timeLine = new Place[Constants.TIME_CHUNKS];
 		_offset = 0;
 		_timePass = 0;
 		_v = 0;
-
+		_react=react;
 		for (int i = 0; i < Constants.TIME_CHUNKS; ++i)
 			_timeLine[i] = Place.NONE;
 		_indexList = new ArrayList<Integer>();
@@ -39,7 +39,7 @@ public class Scheduler {
 		_offset = (_offset + 1) % Constants.TIME_CHUNKS;
 	}
 
-	public boolean available(Place p){
+	public boolean available(Place p, Place not){
 		_v=0;
 		double r = Math.random();
 		if (r > 0.05)
@@ -47,8 +47,8 @@ public class Scheduler {
 		Collections.shuffle(_indexList);
 		for (int i = 0; i < 20; ++i) {
 			_v = 50 + _indexList.get(i) * 5;
-			if (propose(p)) {
-				accept(p);
+			if (propose(p, not)) {
+				accept(p, not);
 				return true;
 			}
 		}
@@ -61,7 +61,7 @@ public class Scheduler {
 	}
 
 
-	private boolean propose(Place only) {
+	private boolean propose(Place only, Place not) {
 		if (_v == 0)
 			return false;
 		float dx = Constants.SCREEN_PLAYER_MOVE_TOTAL_X / 2;
@@ -72,10 +72,13 @@ public class Scheduler {
 		int tChunkLeft = (int) (tLeft / Constants.TIME_CHUNK);
 		int tChunkMiddle = (int) (tMiddle / Constants.TIME_CHUNK);
 		int tChunkRight = (int) (tRight / Constants.TIME_CHUNK);
+		if(only!=Place.NONE || not!=Place.NONE){
+			tChunkMiddle=tChunkLeft;
+			tChunkRight=tChunkLeft;
+		}
+		int chunksToCheck = (int) (_react / Constants.TIME_CHUNK) + 1;
 
-		int chunksToCheck = (int) (Constants.TIME_REACT_TOTAL / Constants.TIME_CHUNK) + 1;
-
-		if(only==Place.LEFT || only==Place.NONE){
+		if((only==Place.LEFT || only==Place.NONE) && not!=Place.LEFT){
 			/* Check left */
 			for (int i = -2 * chunksToCheck; i < 2 * chunksToCheck + 1; ++i) {
 				int index = (_offset + Constants.TIME_CHUNKS + Constants.TIME_CHUNK_OFFSET + i + tChunkLeft) % Constants.TIME_CHUNKS;
@@ -88,7 +91,7 @@ public class Scheduler {
 					return false;
 			}
 		}
-		if(only==Place.MIDDLE || only==Place.NONE){
+		if((only==Place.MIDDLE || only==Place.NONE) && not!=Place.MIDDLE){
 			/* Check middle */
 			for (int i = -chunksToCheck; i < chunksToCheck + 1; ++i) {
 				int index = (_offset + Constants.TIME_CHUNKS + Constants.TIME_CHUNK_OFFSET + i + tChunkMiddle) % Constants.TIME_CHUNKS;
@@ -96,7 +99,7 @@ public class Scheduler {
 					return false;
 			}
 		}
-		if(only==Place.RIGHT || only==Place.NONE){
+		if((only==Place.RIGHT || only==Place.NONE) && not!=Place.RIGHT){
 			/* Check right */
 			for (int i = -2 * chunksToCheck; i < 2 * chunksToCheck + 1; ++i) {
 				int index = (_offset + Constants.TIME_CHUNKS + Constants.TIME_CHUNK_OFFSET + i + tChunkRight) % Constants.TIME_CHUNKS;
@@ -112,7 +115,7 @@ public class Scheduler {
 		return true;
 	}
 
-	private void accept(Place only) {
+	private void accept(Place only, Place not) {
 		if (_v == 0)
 			return;
 		float dx = Constants.SCREEN_PLAYER_MOVE_TOTAL_X / 2;
@@ -124,11 +127,16 @@ public class Scheduler {
 		int tChunkMiddle = (int) (tMiddle / Constants.TIME_CHUNK);
 		int tChunkRight = (int) (tRight / Constants.TIME_CHUNK);
 
-		if(only==Place.NONE || only==Place.LEFT)
+		if(only!=Place.NONE && not!=Place.NONE){
+			tChunkMiddle=tChunkLeft;
+			tChunkRight=tChunkLeft;
+		}
+
+		if((only==Place.NONE || only==Place.LEFT) && not!=Place.LEFT)
 			_timeLine[(_offset + Constants.TIME_CHUNK_OFFSET + tChunkLeft) % Constants.TIME_CHUNKS] = Place.LEFT;
-		if(only==Place.NONE || only==Place.MIDDLE)
+		if((only==Place.NONE || only==Place.MIDDLE) && not!=Place.MIDDLE)
 			_timeLine[(_offset + Constants.TIME_CHUNK_OFFSET + tChunkMiddle) % Constants.TIME_CHUNKS] = Place.MIDDLE;
-		if(only==Place.NONE || only==Place.RIGHT)
+		if((only==Place.NONE || only==Place.RIGHT) && not!=Place.RIGHT)
 			_timeLine[(_offset + Constants.TIME_CHUNK_OFFSET + tChunkRight) % Constants.TIME_CHUNKS] = Place.RIGHT;
 	}
 

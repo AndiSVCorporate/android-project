@@ -29,7 +29,7 @@ public class GamePlayScreen extends Screen {
 	public GamePlayScreen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
 		super(calculateThread, canvasRenderer);
 		_player = new ModelPlayer();
-		_scheduler = new Scheduler();
+		_scheduler = new Scheduler(500);
 		getWorld().addObject(new ModelBackground(0xffffffff));
 		//getWorld().addObject(new ModelBackground(0xffcc6600));
 		getWorld().addObject(_player);

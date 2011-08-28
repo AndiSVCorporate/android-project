@@ -10,7 +10,7 @@ import android.project.Utils;
 public class ModelPlayer extends Object2DBitmap {
 	
 	private float _playerDestination;
-	
+	private long _timeFromSuccess;
 	public ModelPlayer() {
 		super(R.drawable.player2,
 				new BoundsRect(Constants.SCREEN_PLAYER_WIDTH, Constants.SCREEN_PLAYER_HEIGHT),
@@ -18,12 +18,17 @@ public class ModelPlayer extends Object2DBitmap {
 				new Position(Constants.SCREEN_PLAYER_MIDDLE_X, Constants.SCREEN_PLAYER_MIDDLE_Y, 1, 1, 0),
 				false, false, false, null);
 		_playerDestination = Constants.SCREEN_PLAYER_MIDDLE_X;
+		_timeFromSuccess=1000;
 	}
 	
 	public void calculateThis(long timeDiff) {
 		//Log.d("WTTTTTTTTTTF", "WHDSKHDKASHDKJADHKD");
-		
-		setBitmap(R.drawable.player2);
+		if(_timeFromSuccess<100){
+			setBitmap(R.drawable.player2catch);
+			_timeFromSuccess+=timeDiff;
+		}
+		else
+			setBitmap(R.drawable.player2);
 		
 		float x = getRealX();
 
@@ -68,6 +73,10 @@ public class ModelPlayer extends Object2DBitmap {
 	@Override
 	public int depth() {
 		return Constants.DEPTH_PLAYER;
+	}
+	
+	public void goodJob(){
+		_timeFromSuccess=0;
 	}
 	
 }
