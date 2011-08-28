@@ -2,7 +2,6 @@ package android.project.models;
 
 import android.project.Object2D;
 import android.project.R;
-import android.project.World;
 
 public class BasicFallingObject extends FallingObject {
 	private int _jump;

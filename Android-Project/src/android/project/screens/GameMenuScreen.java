@@ -6,12 +6,9 @@ import android.project.CanvasRenderer;
 import android.project.Screen;
 import android.project.Utils;
 import android.project.models.ModelBackground;
-import android.project.models.ModelFlagBird;
 import android.project.models.ModelGameMenu;
 import android.project.models.ModelMoveObject;
-import android.project.models.ModelPlayer;
 import android.project.models.ModelRect;
-import android.project.models.ModelScaleObject;
 import android.project.models.ModelSideBird;
 import android.view.MotionEvent;
 

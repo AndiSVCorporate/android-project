@@ -3,7 +3,6 @@ package android.project.models;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.project.Constants;
 import android.project.Object2D;
 import android.project.Utils;
 

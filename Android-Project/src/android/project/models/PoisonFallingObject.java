@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.project.Object2D;
 import android.project.R;
-import android.project.World;
 import android.project.Scheduler.Place;
 import android.project.bounds.BoundsCircle;
 

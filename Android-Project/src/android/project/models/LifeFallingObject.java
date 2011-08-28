@@ -2,8 +2,6 @@ package android.project.models;
 
 import android.project.Object2D;
 import android.project.R;
-import android.project.World;
-import android.project.screens.GameScreen;
 
 public class LifeFallingObject extends FallingObject {
 	private int _jump;

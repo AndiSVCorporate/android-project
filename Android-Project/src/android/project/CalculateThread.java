@@ -1,7 +1,6 @@
 package android.project;
 
 import android.os.SystemClock;
-import android.util.Log;
 
 public class CalculateThread implements Runnable {
 

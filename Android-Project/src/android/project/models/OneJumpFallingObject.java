@@ -3,7 +3,6 @@ package android.project.models;
 import android.project.Object2D;
 import android.project.R;
 import android.project.Scheduler.Place;
-import android.project.World;
 
 public class OneJumpFallingObject extends FallingObject {
 	private int _jump;

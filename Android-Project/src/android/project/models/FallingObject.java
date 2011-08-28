@@ -2,9 +2,7 @@ package android.project.models;
 
 import android.project.Object2D;
 import android.project.Object2DBitmap;
-import android.project.R;
 import android.project.Scheduler.Place;
-import android.project.World;
 
 public abstract class FallingObject {
 	protected Object2D _ball;

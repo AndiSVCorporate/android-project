@@ -1,5 +1,6 @@
 package android.project.models;
 
+import com.openfeint.api.OpenFeint;
 import com.openfeint.api.ui.Dashboard;
 
 import android.graphics.Canvas;
@@ -270,9 +271,11 @@ public class ModelGameMenu extends Object2D {
 		} else if (_menu == Menu.SOCIAL) {
 			if (index == 0)
 				return Action.LOAD_MENU_PLAY;
-			else if (index ==3)
+			else if (index ==3){
+				if(!OpenFeint.isUserLoggedIn())
+					OpenFeint.login();
 				Dashboard.openLeaderboard("884267");
-			else if (index==2)
+			}else if (index==2)
 				Utils.navigateToFacebook();
 		} else if (_menu == Menu.PAUSE) {
 			Log.d("HI", "index"+index);

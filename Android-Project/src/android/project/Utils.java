@@ -16,15 +16,11 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Region.Op;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.webkit.WebView;
-import android.widget.Toast;
-
-import com.facebook.android.*;
-import com.facebook.android.Facebook.*;
 import com.openfeint.api.OpenFeint;
 import com.openfeint.api.OpenFeintDelegate;
 import com.openfeint.api.OpenFeintSettings;
