@@ -31,18 +31,22 @@ public class GameScreen extends Screen {
 
 	public GameScreen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
 		super(calculateThread, canvasRenderer);
+
+		Utils.initializeOpenfeint();
+		Utils.setVibration(true);
+
 		_currentScreen = CurrentScreen.LOAD;
 		_menu = new ModelMenuScreen();
 		_background = new ModelGameBackground();
 		//_play = new ModelPlayScreen();
-
 		getWorld().addObject(new ModelLogoScreen());
 		getWorld().addObject(_menu);
 		//getWorld().addObject(_play);
-
+				
 		_totalTime = 0;
 		_playing = false;
 		_gameAvailable = false;
+		
 	}
 
 	@Override
@@ -141,9 +145,9 @@ public class GameScreen extends Screen {
 	}
 	
 	public void GameOver() {
+		saveHighscore();
 		_playing = false;
 		_gameAvailable = false;
-		
 		_menu.gameOver();
 		_play.setDepthRecursive(-30000);
 		_background.setDepthRecursive(-30000);
@@ -152,7 +156,8 @@ public class GameScreen extends Screen {
 		_currentScreen = CurrentScreen.MENU;
 	}
 	
-	public void stopGame() {
+	public void stopGame(int score) {
+		saveHighscore();
 		_menu.stopGame();
 		_play.setDepthRecursive(-30000);
 		_background.setDepthRecursive(-30000);
@@ -165,8 +170,13 @@ public class GameScreen extends Screen {
 	public boolean isPlaying() {
 		return _playing;
 	}
-	
+	public ModelPlayScreen getPlay(){
+		return _play;
+	}
 	public boolean isGameAvailable() {
 		return _gameAvailable;
+	}
+	public int saveHighscore(){
+		return Utils.saveHighscore(_play.getScore());
 	}
 }

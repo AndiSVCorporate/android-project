@@ -7,7 +7,7 @@ import android.project.bounds.BoundsCircle;
 public class ModelTwitterButton extends Object2DBitmap {
 	
 	public ModelTwitterButton() {
-		super(R.drawable.twitter, new BoundsCircle(40), null, null, false, false, false, null);
+		super(R.drawable.openfeint, new BoundsCircle(40), null, null, false, false, false, null);
 		setDepth(70);
 	}
 }
