@@ -8,12 +8,32 @@
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
 		<activity android:name="Run" android:label="@string/app_name"
 			android:theme="@android:style/Theme.NoTitleBar"
-			android:screenOrientation="portrait">
+			android:configChanges="keyboardHidden|orientation"
+			android:screenOrientation="landscape">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-
+		
+		    
+        <activity android:name="com.openfeint.internal.ui.IntroFlow"
+                  android:label="IntroFlow"
+                  android:theme="@style/OFNestedWindow" />
+        <activity android:name="com.openfeint.api.ui.Dashboard"
+                  android:label="Dashboard"
+                  android:theme="@style/OFNestedWindow"/>
+        <activity android:name="com.openfeint.internal.ui.Settings"
+                  android:label="Settings"
+                  android:theme="@style/OFNestedWindow"/>
+        <activity android:name="com.openfeint.internal.ui.NativeBrowser"
+                  android:label="NativeBrowser"
+                  android:theme="@style/OFNestedWindow"/>
+ 		
 	</application>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 </manifest>
