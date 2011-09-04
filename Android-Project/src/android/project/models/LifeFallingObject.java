@@ -7,10 +7,13 @@ public class LifeFallingObject extends FallingObject {
 	private int _jump;
 	private float _floor;
 	public LifeFallingObject(long tf, float floor, Object2D w) {
-		super(R.drawable.heart, 50, tf, w);
+		super(R.drawable.heart, 0, tf, w);
 		_jump=0;
 		_floor=floor;
 		_ball.setY(_floor);
+		
+		scale();
+		addRotation();
 	}
 	@Override
 	public void jump() {
