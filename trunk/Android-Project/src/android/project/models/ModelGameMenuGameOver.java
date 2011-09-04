@@ -44,6 +44,7 @@ public class ModelGameMenuGameOver extends Object2D {
 	public void show(int score, int level, int place) {
 		if (_state != State.HIDDEN)
 			return;
+		Log.d("over", "show");
 		_score = score;
 		_state = State.SHOW;
 		_curWidth = 0;
@@ -75,12 +76,12 @@ public class ModelGameMenuGameOver extends Object2D {
 		_scoreTextStroke.setX(120);
 		_scoreTextStroke.getPaint().setStyle(Paint.Style.STROKE);
 		_scoreTextStroke.getPaint().setStrokeWidth(3);
-		
-		_bestScoreText = new ModelText("Best:  " + Utils.getScores()[0], 0xffffd737, 35);
+		Log.d("over",""+Utils.getScores()[0]);
+		_bestScoreText = new ModelText("Best:  " + Utils.getScores()[0].get_score(), 0xffffd737, 35);
 		_bestScoreText.setY(37);
 		_bestScoreText.setX(120);
 		
-		_bestScoreTextStroke = new ModelText("Best:  " + Utils.getScores()[0], Color.BLACK, 35);
+		_bestScoreTextStroke = new ModelText("Best:  " + Utils.getScores()[0].get_score(), Color.BLACK, 35);
 		_bestScoreTextStroke.setY(37);
 		_bestScoreTextStroke.setX(120);
 		_bestScoreTextStroke.getPaint().setStyle(Paint.Style.STROKE);
