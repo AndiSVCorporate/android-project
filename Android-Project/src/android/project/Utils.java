@@ -21,6 +21,8 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
+
 import com.openfeint.api.OpenFeint;
 import com.openfeint.api.OpenFeintDelegate;
 import com.openfeint.api.OpenFeintSettings;
@@ -289,27 +291,31 @@ public class Utils {
 		Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(page));
 		_activity.startActivity(viewIntent);
 	}
-	public static int saveHighscore(int score){
+	public static int saveHighscore(int score, int level){
 		postToOpenFeint(score);
 		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
 		int curScore=pref.getInt("Highscore5", 0);
-		int i=5;
-		while(i>0 && curScore<score){
-			--i;
+		int i;
+		for(i=5;i>0;i--){
 			curScore=pref.getInt("Highscore"+i, 0);
+			if(curScore>score)
+				break;
 		}
-		if(i==5)
+		if(i==5){
 			return -1;
+		}
 		Editor edit=pref.edit();
 		edit.putInt("Highscore"+(i+1), score);
+		edit.putInt("Level"+(i+1), level);
 		edit.commit();
 		return i+1;
 	}
-	public static int[] getScores(){
+	public static android.project.Score[] getScores(){
 		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
-		int[] ret=new int[5];
-		for(int i=0;i<5;i++)
-			ret[i]=pref.getInt("Higescore"+(i+1), 0);
+		android.project.Score[] ret=new android.project.Score[5];
+		for(int i=0;i<5;i++){
+			ret[i]=new android.project.Score(i+1);		
+		}
 		return ret;
 	}
 
@@ -338,12 +344,17 @@ public class Utils {
 			}});
 	}
 	public static void initializeOpenfeint(){
+		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
+		if(!pref.getBoolean("openFeint", false))
+			return;
 		Map<String, Object> options = new HashMap<String, Object>();
 		options.put(OpenFeintSettings.SettingCloudStorageCompressionStrategy, OpenFeintSettings.CloudStorageCompressionStrategyDefault);
 		// use the below line to set orientation
 		options.put(OpenFeintSettings.RequestedOrientation, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		OpenFeintSettings settings = new OpenFeintSettings(gameName, gameKey, gameSecret, gameID);        
-		OpenFeint.initializeWithoutLoggingIn(_activity, settings, new OpenFeintDelegate() { });
+		
+		OpenFeint.initialize(_activity, settings, new OpenFeintDelegate() { });
+		
 	}
 	
 	public static void vibrate(long duration){
@@ -358,5 +369,30 @@ public class Utils {
 
 	public static boolean getVibration(){
 		return _vibrator!=null;
+	}
+	
+	public static Activity getActivity(){
+		return _activity;
+	}
+	
+	public static void acceptOpenfeint(){
+		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
+		Editor edit=pref.edit();
+		edit.putBoolean("openFeint", true);
+		edit.commit();
+	}
+	
+	public static boolean isOpenfeint(){
+		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
+		return pref.getBoolean("openFeint", false);
+	}	
+	
+	public static boolean isFirstTime(){
+		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
+		boolean ret=pref.getBoolean("new", true);		
+		Editor edit=pref.edit();
+		edit.putBoolean("new", false);
+		edit.commit();
+		return ret;
 	}
 }
