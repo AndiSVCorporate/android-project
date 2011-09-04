@@ -99,7 +99,41 @@ public class ModelPlayScreen extends Object2D {
 		_ground = new ModelRect(800, 240, 800, 240, 0xff33cc66);
 		_ground.setDepth(-2000);
 		addObject(new ModelMoveObject(_ground, -800, 0, 1000));
+	}
+	
+	public void show2() {
+		_player = new ModelPlayer();
+		_player.setX(1000);
+		_player.setDepth(0);
+		Map<Level.Bird,Integer> l1=new HashMap<Level.Bird, Integer>();
+		l1.put(Bird.BASIC, 10);
+		l1.put(Bird.ONE_JUMP, 3);
+		
+		generateLevels();
+		generateAchievments();
+		_levelTime=0;
+		_life=new ModeLife(3);
+		_score=new ModelCurrentScore(150);
+		_curLevel=new ModelCurrentLevel();
+		addObject(_score);
+		addObject(_life);
+		addObject(_curLevel);
+		_life.setX(670);
+		_life.setY(40);
+		_life.setDepth(10000);
+		addObject(new ModelBackground(0xffffffff));
+		addObject(_player);
+		_building = new Object2DBitmap(R.drawable.building);
+		_building.setDepth(-500);
+		_building.setX(0);
 
+		_balls = new ArrayList<FallingObject>();
+		_sky = new ModelRect(800, 240, 0, 0, 0xff66ccff);
+		_sky.setDepth(-20000);
+		addObject(_sky);
+		_ground = new ModelRect(800, 240, 0, 240, 0xff33cc66);
+		_ground.setDepth(-2000);
+		addObject(_ground);
 	}
 
 	public void hide() {
@@ -170,6 +204,7 @@ public class ModelPlayScreen extends Object2D {
 		_sky.setDepthRecursive(-1);
 		_ground.setDepthRecursive(-1);
 	}
+	
 	public int getScore(){
 		return _score.getScore();
 	}

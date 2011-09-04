@@ -76,12 +76,22 @@ public class ModelMenuScreen extends Object2D {
 	}
 	
 	public void gameOver() {
-		stopGame();
+		pause();
 		_menu.gameOver();
+		/*
 		freeInnerObject(this, _menu);
 		ModelScaleObject scaleObject = new ModelScaleObject(_menu, 1, 2.5f, 500);
 		ModelMoveObject moveObject = new ModelMoveObject(scaleObject, -525, 270, 500);
 		addObject(moveObject);
+		*/
+	}
+	
+	public void restartGame() {
+		hideReturn();
+	}
+	
+	public void showStartScreen() {
+		// TODO
 	}
 
 	@Override
