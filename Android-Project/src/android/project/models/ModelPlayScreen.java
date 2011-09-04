@@ -33,6 +33,7 @@ public class ModelPlayScreen extends Object2D {
 	private long _levelTime;
 	private List<FireAchivement> _toAchieve;
 	private ModelFilterScreen _filter;
+	private boolean _end;
 	public boolean onTouchEvent(MotionEvent event) {
 
 		int action = event.getActionMasked();
@@ -65,75 +66,60 @@ public class ModelPlayScreen extends Object2D {
 	public void onBackPressed() {
 
 	}
-
-	public void show() {
+	public ModelPlayScreen(){
+		_end=false;
 		_player = new ModelPlayer();
 		_player.setX(1000);
 		_player.setDepth(0);
 		_filter=new ModelFilterScreen(0x00025dac);
-		addObject(_filter);
 		FreezeFallingObject.initialize();
 		generateLevels();
 		generateAchievments();
 		_levelTime=0;
 		_life=new ModeLife(3);
 		_score=new ModelCurrentScore(Utils.getScores()[0].get_score());
-		Toast.makeText(Utils.getActivity(), " "+Utils.getScores()[0], Toast.LENGTH_SHORT);
 		_curLevel=new ModelCurrentLevel();
+		_life.setX(670);
+		_life.setY(40);
+		_life.setDepth(10000);		
+		_balls = new ArrayList<FallingObject>();
+	}
+	public void show() {
+		addObject(_filter);
 		addObject(_score);
 		addObject(_life);
 		addObject(_curLevel);
-		_life.setX(670);
-		_life.setY(40);
-		_life.setDepth(10000);
 		addObject(new ModelBackground(0xffffffff));
 		addObject(_player);
 		_building = new Object2DBitmap(R.drawable.building);
 		_building.setDepth(-500);
 		_building.setX(-128);
 		addObject(new ModelMoveObject(_building, 128, 0, 300));
-
-		_balls = new ArrayList<FallingObject>();
 		_sky = new ModelRect(800, 240, -800, 0, 0xff66ccff);
 		_sky.setDepth(-20000);
-		addObject(new ModelMoveObject(_sky, 800, 0, 1000));
 		_ground = new ModelRect(800, 240, 800, 240, 0xff33cc66);
 		_ground.setDepth(-2000);
+
+		addObject(new ModelMoveObject(_sky, 800, 0, 1000));
 		addObject(new ModelMoveObject(_ground, -800, 0, 1000));
 	}
-	
+
 	public void show2() {
-		_player = new ModelPlayer();
-		_player.setX(1000);
-		_player.setDepth(0);
-		Map<Level.Bird,Integer> l1=new HashMap<Level.Bird, Integer>();
-		l1.put(Bird.BASIC, 10);
-		l1.put(Bird.ONE_JUMP, 3);
-		
-		generateLevels();
-		generateAchievments();
-		_levelTime=0;
-		_life=new ModeLife(3);
-		_score=new ModelCurrentScore(150);
-		_curLevel=new ModelCurrentLevel();
 		addObject(_score);
 		addObject(_life);
 		addObject(_curLevel);
-		_life.setX(670);
-		_life.setY(40);
-		_life.setDepth(10000);
 		addObject(new ModelBackground(0xffffffff));
 		addObject(_player);
+		_sky = new ModelRect(800, 240, 0, 0, 0xff66ccff);
+		_sky.setDepth(-20000);
+		_ground = new ModelRect(800, 240, 240, 240, 0xff33cc66);
+		_ground.setDepth(-2000);
 		_building = new Object2DBitmap(R.drawable.building);
 		_building.setDepth(-500);
 		_building.setX(0);
 		
-		_balls = new ArrayList<FallingObject>();
-		_sky = new ModelRect(800, 240, 0, 0, 0xff66ccff);
-		_sky.setDepth(-20000);
+		addObject(_building);
 		addObject(_sky);
-		_ground = new ModelRect(800, 240, 0, 240, 0xff33cc66);
-		_ground.setDepth(-2000);
 		addObject(_ground);
 	}
 
@@ -150,13 +136,21 @@ public class ModelPlayScreen extends Object2D {
 
 	@Override
 	public void calculateThis(long timeDiff) {
+		if(_end)
+			return;
+		//		Log.d("over","128");
 		if (!((GameScreen)getScreen()).isPlaying())
 			return;
+		//		Log.d("over","131");
 		if(!_life.isAlive()){
-			for(FallingObject b:_balls)
+			Log.d("over", ":"+this);
+			for(FallingObject b:_balls){
 				b.crash();
-					_balls.clear();
-					((GameScreen)getScreen()).GameOver();
+			}
+			_balls.clear();
+			_end=true;
+			((GameScreen)getScreen()).GameOver();
+			return;
 		}
 		if(_levels.get(_curLevel.getLevel()).LevelDone() && _curLevel.getLevel()<=_levels.size() && _balls.isEmpty()){
 			_curLevel.levelUp();
@@ -285,9 +279,9 @@ public class ModelPlayScreen extends Object2D {
 	public void filterOut(){
 		_filter.fadeOut();
 	}
-	
+
 	public int getLevel(){
 		return _curLevel.getLevel()+1;
 	}
-	
+
 }

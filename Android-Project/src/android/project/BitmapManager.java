@@ -98,12 +98,6 @@ public class BitmapManager {
 		_calibrations.put(R.drawable.icebird, new Position(-26.5f,-28.5f));
 		_calibrations.put(R.drawable.burnedbird, new Position(-26.5f,-26.5f));
 		_calibrations.put(R.drawable.colorbird, new Position(-26.5f,-39.5f));
-
-		
-		
-		
-		
-		_calibrations.put(R.drawable.treasure, new Position(-35f,-37f));
 		
 		_calibrations.put(R.drawable.epicfailgamingstudios, screenLogo);
 		_calibrations.put(R.drawable.game_screen, screenLogo);
@@ -138,14 +132,7 @@ public class BitmapManager {
 		loadBitmap(R.drawable.resume, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.replay, Bitmap.Config.ARGB_8888);
 
-		loadBitmap(R.drawable.vault2, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.bird1, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.bird2, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.bird3, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.android, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.duck, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.poison, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.treasure, Bitmap.Config.ARGB_8888);
 
 		loadBitmap(R.drawable.model_bird_1_falling, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.airbird, Bitmap.Config.ARGB_8888);

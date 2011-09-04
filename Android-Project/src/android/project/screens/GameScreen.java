@@ -148,9 +148,10 @@ public class GameScreen extends Screen {
 	}
 	
 	public void GameOver() {
+		Log.d("over", "sam is gay");
 		saveHighscore();
 		_playing = false;
-		_gameAvailable = false;
+		_gameAvailable = true;
 		_menu.gameOver();
 		_play.pause();
 		_currentScreen = CurrentScreen.MENU;
@@ -184,8 +185,10 @@ public class GameScreen extends Screen {
 	public void restartGame() {
 		_menu.restartGame();
 		getWorld().removeObject(_play);
+		Log.d("over", "x:"+_play.getRealX()+"y:"+_play.getRealY());
 		_play = new ModelPlayScreen();
 		getWorld().addObject(_play);
+		Log.d("over", "x:"+_play.getRealX()+"y:"+_play.getRealY());
 		_play.show2();
 		_gameAvailable = true;
 		_playing = true;

@@ -12,7 +12,6 @@ import android.project.models.LifeFallingObject;
 import android.project.models.OneJumpFallingObject;
 import android.project.models.PoisonFallingObject;
 import android.project.models.RandomOneJumpFallingObject;
-import android.project.models.VaultFallingObject;
 
 public class Level {
 
@@ -104,7 +103,6 @@ public class Level {
 			_toThrow.put(selected, _toThrow.get(selected)-1);
 			_timeFromLast=0;
 			switch(selected){
-			case VAULT: return new VaultFallingObject(tFall, temp, _screen);
 			case ONE_JUMP: return new OneJumpFallingObject(tFall, temp, _screen);
 			case BASIC: return new BasicFallingObject(tFall, temp, _screen);
 			case FIRE: return new FireFallingObject(tFall, Constants.SCREEN_FLOOR_THIRD, _screen);

@@ -346,6 +346,7 @@ public class ModelGameMenu extends Object2D {
 	}
 
 	public void gameOver() {
+		Log.d("over","gameOver2");
 		if (_menu == Menu.PAUSE)
 			_nextAction = Action.LOAD_MENU_GAME_OVER;
 	}
