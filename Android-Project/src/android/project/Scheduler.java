@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.util.Log;
+
 public class Scheduler {
 
 	public enum Place {
@@ -15,17 +17,19 @@ public class Scheduler {
 	private int _offset;
 	private long _timePass;
 	private float _v;
+	private float _basicV;
 	private long _react;
-	public Scheduler(long react) {
+	public Scheduler(long react, float v) {
 		_timeLine = new Place[Constants.TIME_CHUNKS];
 		_offset = 0;
 		_timePass = 0;
 		_v = 0;
+		_basicV=v;
 		_react=react;
 		for (int i = 0; i < Constants.TIME_CHUNKS; ++i)
 			_timeLine[i] = Place.NONE;
 		_indexList = new ArrayList<Integer>();
-		for (int i = 0; i < 20; ++i)
+		for (int i = 0; i < 10; ++i)
 			_indexList.add(i);
 	}
 
@@ -45,8 +49,8 @@ public class Scheduler {
 		if (r > 0.05)
 			return false;
 		Collections.shuffle(_indexList);
-		for (int i = 0; i < 20; ++i) {
-			_v = 50 + _indexList.get(i) * 5;
+		for (int i = 0; i < _indexList.size(); ++i) {
+			_v = _basicV + _indexList.get(i) * 5;
 			if (propose(p, not)) {
 				accept(p, not);
 				return true;
@@ -68,14 +72,16 @@ public class Scheduler {
 		float tLeft = (1000 * dx) / _v;
 		float tMiddle = 3 * tLeft;
 		float tRight = 5 * tLeft;
-
+		Log.d("POSITION", "ONLY:"+only+" NOT:"+not);
 		int tChunkLeft = (int) (tLeft / Constants.TIME_CHUNK);
 		int tChunkMiddle = (int) (tMiddle / Constants.TIME_CHUNK);
 		int tChunkRight = (int) (tRight / Constants.TIME_CHUNK);
 		if(only!=Place.NONE || not!=Place.NONE){
+			Log.d("POSITION", "in if 1");
 			tChunkMiddle=tChunkLeft;
 			tChunkRight=tChunkLeft;
 		}
+
 		int chunksToCheck = (int) (_react / Constants.TIME_CHUNK) + 1;
 
 		if((only==Place.LEFT || only==Place.NONE) && not!=Place.LEFT){
@@ -92,6 +98,7 @@ public class Scheduler {
 			}
 		}
 		if((only==Place.MIDDLE || only==Place.NONE) && not!=Place.MIDDLE){
+			Log.d("POSITION", "in if 2");
 			/* Check middle */
 			for (int i = -chunksToCheck; i < chunksToCheck + 1; ++i) {
 				int index = (_offset + Constants.TIME_CHUNKS + Constants.TIME_CHUNK_OFFSET + i + tChunkMiddle) % Constants.TIME_CHUNKS;
@@ -127,15 +134,18 @@ public class Scheduler {
 		int tChunkMiddle = (int) (tMiddle / Constants.TIME_CHUNK);
 		int tChunkRight = (int) (tRight / Constants.TIME_CHUNK);
 
-		if(only!=Place.NONE && not!=Place.NONE){
+		if(only!=Place.NONE || not!=Place.NONE){
+			Log.d("POSITION", "in if 3");
 			tChunkMiddle=tChunkLeft;
 			tChunkRight=tChunkLeft;
 		}
 
 		if((only==Place.NONE || only==Place.LEFT) && not!=Place.LEFT)
 			_timeLine[(_offset + Constants.TIME_CHUNK_OFFSET + tChunkLeft) % Constants.TIME_CHUNKS] = Place.LEFT;
-		if((only==Place.NONE || only==Place.MIDDLE) && not!=Place.MIDDLE)
+		if((only==Place.NONE || only==Place.MIDDLE) && not!=Place.MIDDLE){
 			_timeLine[(_offset + Constants.TIME_CHUNK_OFFSET + tChunkMiddle) % Constants.TIME_CHUNKS] = Place.MIDDLE;
+			Log.d("POSITION", "in if 4");
+		}
 		if((only==Place.NONE || only==Place.RIGHT) && not!=Place.RIGHT)
 			_timeLine[(_offset + Constants.TIME_CHUNK_OFFSET + tChunkRight) % Constants.TIME_CHUNKS] = Place.RIGHT;
 	}
