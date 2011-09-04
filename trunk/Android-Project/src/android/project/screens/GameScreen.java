@@ -1,5 +1,7 @@
 package android.project.screens;
 
+import com.facebook.android.Util;
+
 import android.graphics.Color;
 import android.project.CalculateThread;
 import android.project.CanvasRenderer;
@@ -9,7 +11,9 @@ import android.project.models.ModelGameBackground;
 import android.project.models.ModelPlayScreen;
 import android.project.models.ModelLogoScreen;
 import android.project.models.ModelMenuScreen;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 public class GameScreen extends Screen {
 
@@ -30,8 +34,9 @@ public class GameScreen extends Screen {
 
 	public GameScreen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
 		super(calculateThread, canvasRenderer);
-
-		Utils.initializeOpenfeint();
+		
+		if(Utils.isFirstTime() || Utils.isOpenfeint())
+			Utils.initializeOpenfeint();
 		Utils.setVibration(true);
 
 		_currentScreen = CurrentScreen.LOAD;
@@ -139,7 +144,6 @@ public class GameScreen extends Screen {
 		_playing = false;
 		_menu.pause();
 		_play.pause();
-
 		_currentScreen = CurrentScreen.MENU;
 	}
 	
@@ -173,7 +177,8 @@ public class GameScreen extends Screen {
 		return _gameAvailable;
 	}
 	public int saveHighscore(){
-		return Utils.saveHighscore(_play.getScore());
+		Log.d("Highscore", "*"+_play.getScore()+"*");
+		return Utils.saveHighscore(_play.getScore(),_play.getLevel());
 	}
 
 	public void restartGame() {
