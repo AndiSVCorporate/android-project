@@ -57,8 +57,6 @@ public class BitmapManager {
 		_calibrations.put(R.drawable.side_bird, sideBird);
 		_calibrations.put(R.drawable.flag_bird, flagBird);
 		_calibrations.put(R.drawable.heart, heart);
-		_calibrations.put(R.drawable.imavi, new Position(-40, -50));
-		_calibrations.put(R.drawable.arrow, new Position(10, -40));
 		
 		_calibrations.put(R.drawable.button_settings_big, bigButtonMiddle);
 		_calibrations.put(R.drawable.resume, new Position(-60, -50));
@@ -99,7 +97,6 @@ public class BitmapManager {
 		loadBitmap(R.drawable.vibe, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.resume, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.replay, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.arrow, Bitmap.Config.ARGB_8888);
 	}
 	
 	public Bitmap getBitmap(int bitmapId) {
