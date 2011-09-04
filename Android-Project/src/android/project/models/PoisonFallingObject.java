@@ -11,16 +11,14 @@ public class PoisonFallingObject extends FallingObject {
 	private int _jump;
 	private float _floor;
 	public PoisonFallingObject(Place not, long tf, float floor, Object2D w) {
-		super(R.drawable.model_bird_2_falling, 50, tf, w);
+		super(R.drawable.poison, 0, tf, w);
 		_jump=0;
 		_floor=floor;
 		_ball.setY(_floor);
-		Paint p=new Paint();
-		p.setColor(Color.BLACK);
-		_ball=new ModelCircle(30, 100, _floor,p);
-		BoundsCircle b=new BoundsCircle(30);
-		_ball.setBounds(b);
 		_only=not;
+		
+		scale();
+		addRotation();
 	}
 	@Override
 	public void jump() {
@@ -31,14 +29,14 @@ public class PoisonFallingObject extends FallingObject {
 		case RIGHT: x=550; break;
 		}		
 		if(_jump==0){
-			_world.addObject(new ModelJumpingObject(_ball, _tFall, x, 420 - _floor, _tFall));
+			_world.addObject(new ModelJumpingObject(_ball, _tFall, x, 430 - _floor, _tFall));
 		}
 		else{
 			ModelJumpingObject jmp = (ModelJumpingObject) _ball.getParent();
 			jmp.finalizePosition();
 			jmp.freeInnerObject(_ball);
 			_world.removeObject(jmp);
-			_world.addObject(new ModelJumpingObject(_ball, jmp.getTFall(), 400, 420 - _floor, jmp.getTime() - 2 * jmp.getTFall()));				
+			_world.addObject(new ModelJumpingObject(_ball, jmp.getTFall(), 400, 430 - _floor, jmp.getTime() - 2 * jmp.getTFall()));				
 			((ModelPlayScreen)_world).subLife();
 		}
 		++_jump;
@@ -56,9 +54,7 @@ public class PoisonFallingObject extends FallingObject {
 
 	@Override
 	public void crash() {
-		super.crash();
-		if(_ball.getX()<800)
-			((ModelPlayScreen)_world).addLife();
+		Object2D.freeInnerObject(_world,_ball);
 	}
 
 }

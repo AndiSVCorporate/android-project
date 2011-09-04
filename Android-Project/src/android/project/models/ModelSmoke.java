@@ -1,6 +1,7 @@
 package android.project.models;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.project.Constants;
 import android.project.Object2D;
@@ -9,11 +10,24 @@ import android.project.Position;
 public class ModelSmoke extends Object2D {
 	
 	private long _totalTime;
-	
-	public ModelSmoke(float x, float y) {
+	private static final Paint[] RED={new Paint(Constants.PAINT_WHITE),
+		new Paint(){{setColor(Color.RED);}},
+		new Paint(){{setColor(Color.YELLOW);}},
+		new Paint(){{setColor(0xffff6600);}}
+	};
+
+	private Paint[] _paints={new Paint(Constants.PAINT_WHITE),
+			new Paint(Constants.PAINT_LTGRAY),
+			new Paint(Constants.PAINT_DKGRAY),
+			new Paint(Constants.PAINT_GRAY)
+			};
+
+	public ModelSmoke(float x, float y, int color) {
 		super(null, null,
 				new Position(x, y, 1, 1, 0),
 				false, false, false, null);
+		if(color==1)
+			_paints=RED;
 		_totalTime = 0;
 	}
 	
@@ -26,7 +40,7 @@ public class ModelSmoke extends Object2D {
 		if (_totalTime < Constants.ANIMATION_SMOKE_INTERVAL)
 			return;
 		_totalTime -= Constants.ANIMATION_SMOKE_INTERVAL; 
-		ModelSmokeCircle smokeCircle = new ModelSmokeCircle(getRealX(), getRealY());
+		ModelSmokeCircle smokeCircle = new ModelSmokeCircle(getRealX(), getRealY(), _paints);
 		getWorld().addObject(smokeCircle);
 	}
 	
@@ -38,14 +52,14 @@ public class ModelSmoke extends Object2D {
 		private float _skew;
 		private float _maxRadius;
 		
-		private static final Paint[] _paints = {
+		private Paint[] _paints = {
 			new Paint(Constants.PAINT_WHITE),
 			new Paint(Constants.PAINT_LTGRAY),
 			new Paint(Constants.PAINT_DKGRAY),
 			new Paint(Constants.PAINT_GRAY)
 			};
 		
-		public ModelSmokeCircle(float x, float y) {
+		public ModelSmokeCircle(float x, float y, Paint[] p) {
 			super(null, null,
 					new Position(x, y, 1, 1, 0),
 					false, false, false, null);
@@ -58,6 +72,7 @@ public class ModelSmoke extends Object2D {
 			_alpha = 0xFF;
 			_radius = 0;
 			_maxRadius = Constants.ANIMATION_SMOKE_MIN_RADIUS + (float) Math.random() * Constants.ANIMATION_SMOKE_DIFF_RADIUS;
+			_paints=p;
 		}
 
 		@Override

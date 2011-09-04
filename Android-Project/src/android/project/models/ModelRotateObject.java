@@ -9,7 +9,7 @@ public class ModelRotateObject extends Object2D {
 	private long _time;
 	private float _sr;
 	private float _er;
-	
+	private static float _speedRatio=1;
 	public ModelRotateObject(Object2D object, float sr, float er, long time) {
 		super(object);
 		object.reset();
@@ -24,10 +24,14 @@ public class ModelRotateObject extends Object2D {
 		_innerObject.setAngle(sr);
 		addObject(_innerObject);
 	}
-	
+
+	public static void set_speedRatio(float _speedRatio) {
+		ModelRotateObject._speedRatio = _speedRatio;
+	}
+
 	@Override
 	public void calculateThis(long timeDiff) {
-		_totalTime += timeDiff;
+		_totalTime += (timeDiff*_speedRatio);
 		if (_totalTime > _time)
 			_totalTime = _time;
 		float m = ((float)_totalTime) / _time;
