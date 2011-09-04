@@ -7,10 +7,12 @@ import android.project.Scheduler.Place;
 import android.project.models.BasicFallingObject;
 import android.project.models.FallingObject;
 import android.project.models.FireFallingObject;
+import android.project.models.FreezeFallingObject;
 import android.project.models.LifeFallingObject;
 import android.project.models.OneJumpFallingObject;
 import android.project.models.PoisonFallingObject;
 import android.project.models.RandomOneJumpFallingObject;
+import android.project.models.VaultFallingObject;
 
 public class Level {
 
@@ -19,32 +21,34 @@ public class Level {
 	private Map<Bird,Integer> _toThrow;
 	private Object2D _screen;
 	private long _timeFromLast;
+	private static float SPEED_RATIO=1;
 	public enum Bird{
-		ONE_JUMP, BASIC, FIRE, LIFE, RANDOM_ONE_JUMP, POISON;
+		ONE_JUMP, BASIC, FIRE, LIFE, RANDOM_ONE_JUMP, POISON, VAULT, FREEZE;
 	}
 
-	public Level(Map<Bird, Integer> birds, long react, Object2D screen){
+	public Level(Map<Bird, Integer> birds, long react, Object2D screen, float basicV){
 		_toThrow=birds;
-		_sched=new Scheduler(react);
+		_sched=new Scheduler(react, basicV);
 		_screen=screen;
 		_timeFromLast=0;
 	}
-	public Level(Bird[] birdsKeys, int[] birdsNum, long react, Object2D screen){
+	public Level(Bird[] birdsKeys, int[] birdsNum, long react, Object2D screen, float basicV){
 		_toThrow=new HashMap<Level.Bird, Integer>();
 		for(int i=0;i<birdsKeys.length;i++)
 			_toThrow.put(birdsKeys[i], birdsNum[i]);
-		_sched=new Scheduler(react);
+		_sched=new Scheduler(react, basicV);
 		_screen=screen;
 		_timeFromLast=0;
 	}
 	
 	public void calculate(long timeDiff){
+		timeDiff*=SPEED_RATIO;
 		_sched.calculate(timeDiff);
 		_timeFromLast+=timeDiff;
 	}
 	
 	public FallingObject getNext(){
-		if(_timeFromLast<300)
+		if(_timeFromLast<500)
 			return null;
 		Iterator<Integer> numOfBirds=_toThrow.values().iterator();
 		int sum=0;
@@ -87,7 +91,6 @@ public class Level {
 			case 2: not=Place.RIGHT; break;
 			}			
 		}
-		
 		if(_sched.available(p,not)){
 			float v = _sched.getNext();
 			long tFall = (long) (100 * 1000 / v);
@@ -101,12 +104,14 @@ public class Level {
 			_toThrow.put(selected, _toThrow.get(selected)-1);
 			_timeFromLast=0;
 			switch(selected){
+			case VAULT: return new VaultFallingObject(tFall, temp, _screen);
 			case ONE_JUMP: return new OneJumpFallingObject(tFall, temp, _screen);
 			case BASIC: return new BasicFallingObject(tFall, temp, _screen);
 			case FIRE: return new FireFallingObject(tFall, Constants.SCREEN_FLOOR_THIRD, _screen);
 			case LIFE: return new LifeFallingObject(tFall, temp, _screen);
 			case RANDOM_ONE_JUMP: return new RandomOneJumpFallingObject(p,tFall, temp, _screen);
 			case POISON: return new PoisonFallingObject(not,tFall, temp, _screen);
+			case FREEZE: return new FreezeFallingObject(tFall, temp, _screen);
 			}
 		}
 		return null;
@@ -117,6 +122,9 @@ public class Level {
 		while(numOfBirds.hasNext())
 			sum+=numOfBirds.next();
 		return sum==0;
+	}
+	public static void setSPEED_RATIO(float sPEED_RATIO) {
+		SPEED_RATIO = sPEED_RATIO;
 	}
 	
 }
