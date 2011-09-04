@@ -14,17 +14,18 @@ import android.util.Log;
 public class ModelGameMenu extends Object2D {
 
 	private enum Menu {
-		PLAY, SETTINGS, SOCIAL, PAUSE, PAUSE_BIG
+		PLAY, SETTINGS, SOCIAL, PAUSE, RESUME, GAME_OVER
 	}
 
 	private enum Action {
-		LOAD_MENU_PLAY, LOAD_MENU_SETTINGS, LOAD_MENU_SOCIAL, LOAD_MENU_PAUSE, LOAD_MENU_PAUSE_BIG,
+		LOAD_MENU_PLAY, LOAD_MENU_SETTINGS, LOAD_MENU_SOCIAL, LOAD_MENU_PAUSE, LOAD_MENU_RESUME, LOAD_MENU_GAME_OVER,
 		LOAD_BUTTON_QUIT, LOAD_BUTTON_SOUND, LOAD_BUTTON_BACKGROUND, LOAD_BUTTON_VIBRATOR,
 		RELOAD_PLAY,
 		IDLE
 	}
 
 	private Menu _menu;
+	private ModelGameMenuGameOver _gameOver;
 	private Action _nextAction;
 	private Action _currentAction;
 	private Action _lastAction;
@@ -33,6 +34,7 @@ public class ModelGameMenu extends Object2D {
 	private Object2D[] _buttons;
 	private long _time;
 	int _pressingButton;
+	int _fadeOut;
 
 	public ModelGameMenu(float x, float y) {
 		super(null, null, new Position(x, y), false, false, false, null);
@@ -46,6 +48,11 @@ public class ModelGameMenu extends Object2D {
 		_finalizeButtons = null;
 		_pressingButton = -1;
 
+		_gameOver = new ModelGameMenuGameOver();
+		_fadeOut = 0;
+		
+		addObject(_gameOver);
+		
 		//anchor object, do not remove
 		addObject(new Object2D());
 	}
@@ -55,40 +62,42 @@ public class ModelGameMenu extends Object2D {
 
 	@Override
 	public void calculateThis(long timeDiff) {
+		_fadeOut -= timeDiff;
+		if (_fadeOut > 0) {
+			return;
+		}
+		
 		if (_nextAction != Action.IDLE) {
 			_time = 0;
 			_currentAction = _nextAction;
 			_nextAction = Action.IDLE;
-
+			
 			if (_currentAction == Action.LOAD_MENU_SETTINGS) {
 				changeMenu(getSettingsMenu(), Menu.SETTINGS);
 			} else if (_currentAction == Action.LOAD_MENU_PLAY) {
 				if (((GameScreen)getScreen()).isGameAvailable())
-					changeMenu(getPauseBigMenu(), Menu.PAUSE_BIG);
+					changeMenu(getResumeMenu(), Menu.RESUME);
 				else
 					changeMenu(getPlayMenu(), Menu.PLAY);
 			} else if (_currentAction == Action.LOAD_MENU_SOCIAL) {
 				changeMenu(getSocialMenu(), Menu.SOCIAL);
 			} else if (_currentAction == Action.LOAD_MENU_PAUSE) {
-				Log.d("BIE", "BIE");
+				if (_menu == Menu.GAME_OVER) {
+					((GameScreen)getScreen()).restartGame();
+				}
 				changeMenu(getPauseMenu(), Menu.PAUSE);
-				_buttons[0].setBounds(new BoundsCircle(40));
-			} else if (_currentAction == Action.LOAD_MENU_PAUSE_BIG) {
-				Log.d("HI", "HI");
-				_buttons[0].setBounds(new BoundsCircle(100));
-				changeButton(new ModelSettingsButton(), 1);
-				changeButton(new ModelSocialButton(), 2);
-				changeButton(new ModelStopButton(), 3);
+			} else if (_currentAction == Action.LOAD_MENU_RESUME) {
+				changeMenu(getResumeMenu(), Menu.RESUME);
 				((GameScreen)getScreen()).pauseGame();
-				//((GameScreen)getScreen()).GameOver();
-				_menu = Menu.PAUSE_BIG;
+			} else if (_currentAction == Action.LOAD_MENU_GAME_OVER) {
+				changeMenu(getGameOverMenu(), Menu.GAME_OVER);
 			} else if (_currentAction == Action.LOAD_BUTTON_QUIT) {
 				changeButton(new ModelQuitConfirmButton(), 3);
 			} else if (_currentAction == Action.LOAD_BUTTON_SOUND) {
 				changeButton((Utils.getSound() ? new ModelSoundOnButton() : new ModelSoundOffButton()), 1);
 			} else if (_currentAction == Action.LOAD_BUTTON_BACKGROUND) {
 				changeButton((Utils.getBackground() ? new ModelBackgroundOnButton() : new ModelBackgroundOffButton()), 2);
-			}else if(_currentAction == Action.LOAD_BUTTON_VIBRATOR){
+			} else if(_currentAction == Action.LOAD_BUTTON_VIBRATOR) {
 				changeButton((Utils.getVibration() ? new ModelVibeOnButton() : new ModelVibeOffButton()), 3);
 				if(Utils.getVibration())
 					Utils.vibrate(500);
@@ -102,15 +111,16 @@ public class ModelGameMenu extends Object2D {
 		if (_currentAction != Action.IDLE) {
 			_time += timeDiff;
 			if (_time > 300) {
-				if (_currentAction == Action.LOAD_MENU_SETTINGS ||
-						_currentAction == Action.LOAD_MENU_PLAY ||
-						_currentAction == Action.LOAD_MENU_SOCIAL ||
-						_currentAction == Action.LOAD_MENU_PAUSE)
 					finalizeMenu();
-				if (_currentAction == Action.RELOAD_PLAY)
 					finalizeButton();
 				_lastAction = _currentAction;
-				_currentAction = Action.IDLE;
+				if (_currentAction != Action.LOAD_MENU_GAME_OVER)
+					_currentAction = Action.IDLE;
+				else {
+					_gameOver.show(1000, 2, 1);
+					if (_time > 900)
+						_currentAction = Action.IDLE;	
+				}
 			}
 		}
 	}
@@ -147,7 +157,7 @@ public class ModelGameMenu extends Object2D {
 				new ModelSocialButtonBig(0, 0),
 				new ModelHighscoresButton(),
 				new ModelFacebookButton(),
-				new ModelTwitterButton()
+				new ModelOpenFeintButton()
 		};
 	}
 
@@ -157,6 +167,24 @@ public class ModelGameMenu extends Object2D {
 				new Object2D(),
 				new Object2D(),
 				new Object2D()
+		};
+	}
+	
+	private Object2D[] getResumeMenu() {
+		return new Object2D[] {
+				new ModelResumeButton(),
+				new ModelSettingsButton(),
+				new ModelSocialButton(),
+				new ModelStopButton()
+		};
+	}
+	
+	private Object2D[] getGameOverMenu() {
+		return new Object2D[] {
+				new ModelReplayButton(),
+				new ModelFacebookSubmitButton(),
+				new ModelOpenFeintSubmitButton(),
+				new ModelStopButton()
 		};
 	}
 
@@ -278,10 +306,9 @@ public class ModelGameMenu extends Object2D {
 			}else if (index==2)
 				Utils.navigateToFacebook();
 		} else if (_menu == Menu.PAUSE) {
-			Log.d("HI", "index"+index);
 			if (index == 0)
-				return Action.LOAD_MENU_PAUSE_BIG;
-		} else if (_menu == Menu.PAUSE_BIG) {
+				return Action.LOAD_MENU_RESUME;
+		} else if (_menu == Menu.RESUME) {
 			if (index == 0) {
 				((GameScreen)getScreen()).continueGame();
 				return Action.LOAD_MENU_PAUSE;
@@ -293,13 +320,19 @@ public class ModelGameMenu extends Object2D {
 				((GameScreen)getScreen()).stopGame(1);
 				return Action.RELOAD_PLAY;
 			}
+		} else if (_menu == Menu.GAME_OVER) {
+			if (index == 0) {
+				_gameOver.hide();
+				_fadeOut = 300;
+				return Action.LOAD_MENU_PAUSE;
+			}
 		}
 		return Action.IDLE;
 	}
 
 	public void gameOver() {
 		if (_menu == Menu.PAUSE)
-			_nextAction = Action.LOAD_MENU_PLAY;
+			_nextAction = Action.LOAD_MENU_GAME_OVER;
 	}
 
 	public void onBackPressed() {

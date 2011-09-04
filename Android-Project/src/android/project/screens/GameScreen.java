@@ -148,10 +148,7 @@ public class GameScreen extends Screen {
 		_playing = false;
 		_gameAvailable = false;
 		_menu.gameOver();
-		_play.setDepthRecursive(-30000);
-		_background.setDepthRecursive(-30000);
-		_play.stopGame();
-		_stopCalculate = true;
+		_play.pause();
 		_currentScreen = CurrentScreen.MENU;
 	}
 	
@@ -177,5 +174,16 @@ public class GameScreen extends Screen {
 	}
 	public int saveHighscore(){
 		return Utils.saveHighscore(_play.getScore());
+	}
+
+	public void restartGame() {
+		_menu.restartGame();
+		getWorld().removeObject(_play);
+		_play = new ModelPlayScreen();
+		getWorld().addObject(_play);
+		_play.show2();
+		_gameAvailable = true;
+		_playing = true;
+		_currentScreen = CurrentScreen.PLAY;
 	}
 }

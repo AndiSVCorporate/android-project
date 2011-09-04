@@ -39,30 +39,36 @@ public class BitmapManager {
 		_calibrations.put(R.drawable.player2catch, player);
 		
 		_calibrations.put(R.drawable.button_social_big, new Position(-70, -40));
-		_calibrations.put(R.drawable.facebook, new Position(-40, -40));
-		_calibrations.put(R.drawable.openfeint, new Position(-40, -40));		
+		_calibrations.put(R.drawable.replay, new Position(-86, -86));
+		_calibrations.put(R.drawable.facebook, new Position(-20.5f, -21));
+		_calibrations.put(R.drawable.facebook_green, new Position(-20.5f, -21));
+		_calibrations.put(R.drawable.openfeint, new Position(-21.5f, -22.5f));		
 		_calibrations.put(R.drawable.twitter, new Position(-40, -40));
-		_calibrations.put(R.drawable.highscore, new Position(-40, -40));
+		_calibrations.put(R.drawable.highscores, new Position(-20.5f, -22.5f));
 		_calibrations.put(R.drawable.background, new Position(-26.5f, -17.5f));
-		_calibrations.put(R.drawable.pause, new Position(-47.5f, -47.5f));
+		_calibrations.put(R.drawable.pause, new Position(-50, -50f));
 		_calibrations.put(R.drawable.stop, new Position(-15f, -14.5f));
 		_calibrations.put(R.drawable.button_play1, playButton);
 		_calibrations.put(R.drawable.button_settings_1, settingsButton);
 		_calibrations.put(R.drawable.button_social_1, socialButton);
 		_calibrations.put(R.drawable.button_quit2, quitConfirmButton);
 		_calibrations.put(R.drawable.sound_on2, soundOnButton);
-		_calibrations.put(R.drawable.vibe, new Position(-22,-20.5f));
+		_calibrations.put(R.drawable.vibe, new Position(-23,-22));
 		_calibrations.put(R.drawable.side_bird, sideBird);
 		_calibrations.put(R.drawable.flag_bird, flagBird);
 		_calibrations.put(R.drawable.heart, heart);
+		_calibrations.put(R.drawable.imavi, new Position(-40, -50));
+		_calibrations.put(R.drawable.arrow, new Position(10, -40));
 		
 		_calibrations.put(R.drawable.button_settings_big, bigButtonMiddle);
+		_calibrations.put(R.drawable.resume, new Position(-60, -50));
 		
 		_calibrations.put(R.drawable.model_bird_1_falling, fallingBird);
 		_calibrations.put(R.drawable.model_bird_2_falling, fallingBird);
 		
 		_calibrations.put(R.drawable.epicfailgamingstudios, screenLogo);
 		_calibrations.put(R.drawable.game_screen, screenLogo);
+		
 
 		loadBitmap(R.drawable.heart, Bitmap.Config.ARGB_4444);
 		loadBitmap(R.drawable.player2, Bitmap.Config.ARGB_4444);
@@ -82,14 +88,18 @@ public class BitmapManager {
 		loadBitmap(R.drawable.model_bird_2_falling, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.building, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.facebook, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.facebook_green, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.twitter, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.background, Bitmap.Config.ARGB_8888);
-		loadBitmap(R.drawable.highscore, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.highscores, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.button_social_big, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.pause, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.stop, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.openfeint, Bitmap.Config.ARGB_8888);
 		loadBitmap(R.drawable.vibe, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.resume, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.replay, Bitmap.Config.ARGB_8888);
+		loadBitmap(R.drawable.arrow, Bitmap.Config.ARGB_8888);
 	}
 	
 	public Bitmap getBitmap(int bitmapId) {
