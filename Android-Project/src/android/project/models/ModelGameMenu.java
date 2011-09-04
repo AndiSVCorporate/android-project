@@ -35,7 +35,7 @@ public class ModelGameMenu extends Object2D {
 	private long _time;
 	int _pressingButton;
 	int _fadeOut;
-
+	private ModelHighscore _highscore;
 	public ModelGameMenu(float x, float y) {
 		super(null, null, new Position(x, y), false, false, false, null);
 
@@ -44,6 +44,10 @@ public class ModelGameMenu extends Object2D {
 		_currentAction = Action.IDLE;
 		_lastAction = Action.IDLE;
 
+		_highscore=new ModelHighscore();
+		addObject(_highscore);
+		_highscore.setX(150);
+		_highscore.setY(-300);
 		_buttons = null;
 		_finalizeButtons = null;
 		_pressingButton = -1;
@@ -71,7 +75,7 @@ public class ModelGameMenu extends Object2D {
 			_time = 0;
 			_currentAction = _nextAction;
 			_nextAction = Action.IDLE;
-			
+
 			if (_currentAction == Action.LOAD_MENU_SETTINGS) {
 				changeMenu(getSettingsMenu(), Menu.SETTINGS);
 			} else if (_currentAction == Action.LOAD_MENU_PLAY) {
@@ -297,15 +301,26 @@ public class ModelGameMenu extends Object2D {
 				return Action.LOAD_BUTTON_VIBRATOR;
 			}
 		} else if (_menu == Menu.SOCIAL) {
-			if (index == 0)
+			if (index == 0){
+				_highscore.hide();
 				return Action.LOAD_MENU_PLAY;
+			}
+			else if(index==1){
+				if(_highscore.is_show())
+					_highscore.hide();
+				else
+					_highscore.show();			
+			}
 			else if (index ==3){
-				if(!OpenFeint.isUserLoggedIn())
-					OpenFeint.login();
+				if(!Utils.isOpenfeint()){
+					Utils.acceptOpenfeint();
+					Utils.initializeOpenfeint();
+				}
 				Dashboard.openLeaderboard("884267");
 			}else if (index==2)
 				Utils.navigateToFacebook();
 		} else if (_menu == Menu.PAUSE) {
+			Log.d("HI", "index"+index);
 			if (index == 0)
 				return Action.LOAD_MENU_RESUME;
 		} else if (_menu == Menu.RESUME) {
@@ -356,6 +371,7 @@ public class ModelGameMenu extends Object2D {
 	public void press(float x, float y) {
 		if (_currentAction != Action.IDLE || _nextAction != Action.IDLE)
 			return;
+		_highscore.press(x, y);
 		for (int i = 0; i < _buttons.length; ++i)
 			if (_buttons[i].isPointInside(x, y)) {
 				_pressingButton = i;
@@ -370,15 +386,18 @@ public class ModelGameMenu extends Object2D {
 			return;
 		if (_pressingButton == -1)
 			return;
+		_highscore.move(x, y);
 		for (int i = 0; i < _buttons.length; ++i)
 			if (_buttons[i].isPointInside(x, y))
 				if (i == _pressingButton)
 					return;
 		_buttons[_pressingButton].scale((1/1.2f));
 		_pressingButton = -1;
+
 	}
 
 	public void release(float x, float y) {
+		_highscore.release(x, y);
 		if (_currentAction != Action.IDLE || _nextAction != Action.IDLE)
 			return;
 		if (_pressingButton == -1)

@@ -27,7 +27,7 @@ public class ModelMenuScreen extends Object2D {
 		_sideBird = new ModelSideBird(1200, 480);
 		_sky = new ModelRect(800, 240, 0, -240, 0xffadd8c7) {{ setDepth(-20000); }};
 		_ground = new ModelRect(800, 240, 0, 480, 0xffcc6600) {{ setDepth(-2000); }};
-
+		
 		addObject(_menu);
 		addObject(new ModelMoveObject(_sideBird, -400, 0, 300));
 		addObject(new ModelMoveObject(_sky, 0, 240, 300));
