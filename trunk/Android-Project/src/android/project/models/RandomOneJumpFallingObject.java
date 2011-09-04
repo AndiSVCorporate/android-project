@@ -8,29 +8,32 @@ public class RandomOneJumpFallingObject extends FallingObject {
 	private int _jump;
 	private float _floor;
 	public RandomOneJumpFallingObject(Place p, long tf, float floor, Object2D w) {
-		super(R.drawable.model_bird_2_falling, 50, tf, w);
+		super(R.drawable.colorbird, 50, tf, w);
 		_jump=0;
 		_floor=floor;
 		_ball.setY(_floor);
 		_only=p;
+		
+		scale();
+		addRotation();
 	}
 	@Override
 	public void jump() {
 		int x=0;
 		switch(_only){
 		case LEFT: x=200; break;
-		case MIDDLE: x=350; break;
-		case RIGHT: x=550; break;
+		case MIDDLE: x=400; break;
+		case RIGHT: x=600; break;
 		}		
 		if(_jump==0){
-			_world.addObject(new ModelJumpingObject(_ball, _tFall, x, 420 - _floor, _tFall));
+			_world.addObject(new ModelJumpingObject(_ball, _tFall, x, 430 - _floor, _tFall));
 		}
 		else{
 			ModelJumpingObject jmp = (ModelJumpingObject) _ball.getParent();
 			jmp.finalizePosition();
 			jmp.freeInnerObject(_ball);
 			_world.removeObject(jmp);
-			_world.addObject(new ModelJumpingObject(_ball, jmp.getTFall(), 400, 420 - _floor, jmp.getTime() - 2 * jmp.getTFall()));				
+			_world.addObject(new ModelJumpingObject(_ball, jmp.getTFall(), 400, 430 - _floor, jmp.getTime() - 2 * jmp.getTFall()));				
 		}
 		++_jump;
 	}

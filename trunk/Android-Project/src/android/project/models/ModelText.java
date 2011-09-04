@@ -35,4 +35,8 @@ public class ModelText extends Object2D {
 		return _paint;
 	}
 	
+	public void setAlpha(int a){
+		_paint.setAlpha(a);
+	}
+	
 }

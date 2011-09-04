@@ -12,7 +12,7 @@ public class ModelJumpingObject extends Object2D {
 	private float _sY;
 	private float _a;
 	private long _timeOffset;
-	
+	private static float SPEED_RATIO=1;
 	public ModelJumpingObject(Object2D innerObject, long tFall, float xHalf, float dy, long timeOffset) {
 		super(innerObject);	
 		_innerObject = innerObject;
@@ -39,6 +39,7 @@ public class ModelJumpingObject extends Object2D {
 
 	@Override
 	public void calculateThis(long timeDiff) {
+		timeDiff*=SPEED_RATIO;
 		if(_innerObject == null)
 			return;
 		if(_totalTime >= 2 * _tFall)
@@ -76,6 +77,10 @@ public class ModelJumpingObject extends Object2D {
 
 	public long getTFall() {
 		return _tFall;
+	}
+
+	public static void setSPEED_RATIO(float sPEED_RATIO) {
+		SPEED_RATIO = sPEED_RATIO;
 	}
 	
 }

@@ -3,6 +3,7 @@ package android.project.models;
 import android.project.Object2D;
 import android.project.Object2DBitmap;
 import android.project.R;
+import android.project.Utils;
 
 public class ModeLife extends Object2D {
 
@@ -21,6 +22,8 @@ public class ModeLife extends Object2D {
 	}
 
 	public void addLife(){
+		if(_life==3)
+			return;
 		_life++;
 		Object2DBitmap cur=new Object2DBitmap(R.drawable.heart);
 		cur.scale((float) 0.5);
@@ -29,6 +32,9 @@ public class ModeLife extends Object2D {
 		_pos-=45;
 	}
 	public void fail(){
+		Utils.vibrate(300);
+		if(getObjects().size()==0)
+			return;
 		getObjects().remove(getObjects().size()-1);
 		_life--;
 		_pos+=45;

@@ -47,4 +47,12 @@ public class ModelRect extends Object2D {
 	public void drawThis(Canvas c) {
 		c.drawRect(0, 0, _w, _h, _p);
 	}
+	
+	public void setHeight(float h){
+		_h=h;
+	}
+	
+	public float getHeight(){
+		return _h;
+	}
 }
