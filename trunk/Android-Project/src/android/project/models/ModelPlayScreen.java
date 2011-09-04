@@ -17,6 +17,7 @@ import android.project.Utils;
 import android.project.screens.GameScreen;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 public class ModelPlayScreen extends Object2D {
 
@@ -31,6 +32,7 @@ public class ModelPlayScreen extends Object2D {
 	private ModelCurrentLevel _curLevel;
 	private long _levelTime;
 	private List<FireAchivement> _toAchieve;
+	private ModelFilterScreen _filter;
 	public boolean onTouchEvent(MotionEvent event) {
 
 		int action = event.getActionMasked();
@@ -68,15 +70,15 @@ public class ModelPlayScreen extends Object2D {
 		_player = new ModelPlayer();
 		_player.setX(1000);
 		_player.setDepth(0);
-		Map<Level.Bird,Integer> l1=new HashMap<Level.Bird, Integer>();
-		l1.put(Bird.BASIC, 10);
-		l1.put(Bird.ONE_JUMP, 3);
-		
+		_filter=new ModelFilterScreen(0x00025dac);
+		addObject(_filter);
+		FreezeFallingObject.initialize();
 		generateLevels();
 		generateAchievments();
 		_levelTime=0;
 		_life=new ModeLife(3);
-		_score=new ModelCurrentScore(150);
+		_score=new ModelCurrentScore(Utils.getScores()[0].get_score());
+		Toast.makeText(Utils.getActivity(), " "+Utils.getScores()[0], Toast.LENGTH_SHORT);
 		_curLevel=new ModelCurrentLevel();
 		addObject(_score);
 		addObject(_life);
@@ -89,7 +91,6 @@ public class ModelPlayScreen extends Object2D {
 		_building = new Object2DBitmap(R.drawable.building);
 		_building.setDepth(-500);
 		_building.setX(-128);
-		
 		addObject(new ModelMoveObject(_building, 128, 0, 300));
 
 		_balls = new ArrayList<FallingObject>();
@@ -126,7 +127,7 @@ public class ModelPlayScreen extends Object2D {
 		_building = new Object2DBitmap(R.drawable.building);
 		_building.setDepth(-500);
 		_building.setX(0);
-
+		
 		_balls = new ArrayList<FallingObject>();
 		_sky = new ModelRect(800, 240, 0, 0, 0xff66ccff);
 		_sky.setDepth(-20000);
@@ -154,8 +155,8 @@ public class ModelPlayScreen extends Object2D {
 		if(!_life.isAlive()){
 			for(FallingObject b:_balls)
 				b.crash();
-			_balls.clear();
-			((GameScreen)getScreen()).GameOver();
+					_balls.clear();
+					((GameScreen)getScreen()).GameOver();
 		}
 		if(_levels.get(_curLevel.getLevel()).LevelDone() && _curLevel.getLevel()<=_levels.size() && _balls.isEmpty()){
 			_curLevel.levelUp();
@@ -171,8 +172,11 @@ public class ModelPlayScreen extends Object2D {
 			f.jump();
 			_balls.add(f);
 		}
-
+		if(_balls==null)
+			return;
 		for(FallingObject ball:_balls){
+			if(ball==null)
+				continue;
 			if(!ball.isFinished())
 				continue;
 			if(Math.abs(ball.getRealX() - _player.getRealX()) < 80 && ball.readyToJump()){
@@ -182,8 +186,6 @@ public class ModelPlayScreen extends Object2D {
 				_score.addScore(ball.getScore());
 				addObject(new ModelScoreFly(ball.getScore(), _player.getRealX()));
 			} else if(!ball.jobDone()){
-				Utils.vibrate(300);
-				_life.fail();
 				ball.crash();
 				toRemove.add(ball);
 			}
@@ -194,50 +196,52 @@ public class ModelPlayScreen extends Object2D {
 		}
 		checkAchivement();
 		_balls.removeAll(toRemove);
+		toRemove.clear();
 	}
 	@Override
 	public boolean isCalculateChildren() {
 		return ((GameScreen)getScreen()).isPlaying();
 	}
-	
+
 	public void stopGame(){
 		_sky.setDepthRecursive(-1);
 		_ground.setDepthRecursive(-1);
 	}
-	
 	public int getScore(){
 		return _score.getScore();
 	}
 	private void generateLevels(){
 		_levels=new Vector<Level>();
-		Bird[] b={Bird.BASIC,Bird.ONE_JUMP,Bird.FIRE,Bird.LIFE,Bird.RANDOM_ONE_JUMP, Bird.POISON};
-		int[] l1={5,0,0,0,0,0};
-		int[] l2={7,3,0,1,0,0};
-		int[] l3={5,5,0,0,0,0};
-		int[] l4={8,6,0,1,1,0};
-		int[] l5={8,3,0,0,3,0};
-		int[] l6={20,5,1,1,2,0};
-		int[] l7={30,10,2,0,1,0};
-		int[] l8={20,20,1,0,0,0};
-		int[] l9={20,15,2,0,2,0};
-		int[] l10={40,15,3,1,5,0};
-		int[] l11={20,20,1,0,0,1};
-		int[] l12={20,15,2,0,2,3};
-		int[] l13={40,15,3,1,5,5};
+		Bird[] b={Bird.BASIC,Bird.ONE_JUMP,Bird.FIRE,Bird.LIFE,Bird.RANDOM_ONE_JUMP, Bird.POISON, Bird.FREEZE};
+		int[] l1={4,0,0,0,0,0,0};
+		int[] l2={7,3,0,1,0,0,0};
+		int[] l3={10,5,0,0,0,0,0};
+		int[] l4={12,6,0,0,0,0,1};
+		int[] l5={16,2,0,0,2,0,0};
+		int[] l6={24,5,1,1,2,0,1};
+		int[] l7={30,7,1,0,1,0,0};
+		int[] l8={30,10,1,0,0,0,0};
+		int[] l9={34,13,0,0,3,0,1};
+		int[] l10={38,15,0,1,2,1,0};
+		int[] l11={42,15,0,0,3,0,0};
+		int[] l12={40,15,0,0,2,1,1};
+		int[] l13={40,15,1,1,3,0,0};
 
-		_levels.add(new Level(b,l1,5000,this));
-		_levels.add(new Level(b,l2,2000,this));
-		_levels.add(new Level(b,l3,1000,this));
-		_levels.add(new Level(b,l4,500,this));
-		_levels.add(new Level(b,l5,400,this));
-		_levels.add(new Level(b,l6,200,this));
-		_levels.add(new Level(b,l7,100,this));
-		_levels.add(new Level(b,l8,50,this));
-		_levels.add(new Level(b,l9,10,this));
-		_levels.add(new Level(b,l10,0,this));
-		_levels.add(new Level(b,l11,0,this));
-		_levels.add(new Level(b,l12,0,this));
-		_levels.add(new Level(b,l13,0,this));
+		int[] l0={5,0,0,0,0,0,5};
+		_levels.add(new Level(b,l0,100,this,40));		
+		_levels.add(new Level(b,l1,5000,this,40));
+		_levels.add(new Level(b,l2,2000,this,40));
+		_levels.add(new Level(b,l3,1000,this,45));
+		_levels.add(new Level(b,l4,750,this,45));
+		_levels.add(new Level(b,l5,500,this,50));
+		_levels.add(new Level(b,l6,400,this,50));
+		_levels.add(new Level(b,l7,350,this,50));
+		_levels.add(new Level(b,l8,350,this,55));
+		_levels.add(new Level(b,l9,330,this,58));
+		_levels.add(new Level(b,l10,330,this,60));
+		_levels.add(new Level(b,l11,310,this,60));
+		_levels.add(new Level(b,l12,290,this,30));
+		_levels.add(new Level(b,l13,210,this,25));
 
 	}
 	public void addLife(){
@@ -246,7 +250,7 @@ public class ModelPlayScreen extends Object2D {
 	public void subLife(){
 		_life.fail();
 	}
-	
+
 	private void generateAchievments(){
 		_toAchieve=new Vector<FireAchivement>();
 		_toAchieve.add(new FireAchivement("1193712") {
@@ -255,7 +259,7 @@ public class ModelPlayScreen extends Object2D {
 				if(_curLevel.getLevel()==6)
 					reach();
 				return isReached();
-				
+
 			}
 		});
 		_toAchieve.add(new FireAchivement("1194042") {
@@ -264,10 +268,10 @@ public class ModelPlayScreen extends Object2D {
 				if(_score.getScore()>10000)
 					reach();
 				return isReached();
-				
+
 			}
 		});
-		
+
 	}
 	private void checkAchivement(){
 		for(int i=0;i<_toAchieve.size();i++){
@@ -275,4 +279,15 @@ public class ModelPlayScreen extends Object2D {
 				_toAchieve.remove(i--);
 		}
 	}
+	public void filterIn(){
+		_filter.fadeIn();
+	}
+	public void filterOut(){
+		_filter.fadeOut();
+	}
+	
+	public int getLevel(){
+		return _curLevel.getLevel()+1;
+	}
+	
 }
