@@ -7,7 +7,7 @@ import android.graphics.Paint;
 public class Object2DBitmap extends Object2D {
 
 	private int _bitmapId;
-
+	private Paint _p;
 	public Object2DBitmap(int id) {
 		this(id, null, null, null, false, false, false, null);
 	}
@@ -18,6 +18,7 @@ public class Object2DBitmap extends Object2D {
 			boolean isAbsolute, boolean drawCenter, boolean drawBorders, Object2D parent) {
 		super(bounds, calibrationData, position, isAbsolute, drawCenter, drawBorders, parent);
 		_bitmapId = id;
+		_p=new Paint() {{setDither(false);setFilterBitmap(true);}};
 	}
 
 	@Override
@@ -36,8 +37,7 @@ public class Object2DBitmap extends Object2D {
 		}
 		
 		//long start = System.nanoTime();
-		c.drawBitmap(bitmap, 0.0f, 0.0f, new Paint() {{setDither(true); setFilterBitmap(true); }});
-		
+		c.drawBitmap(bitmap, 0.0f, 0.0f, _p);
 		//long end = System.nanoTime();
 		//Log.d("draw", this.getClass().getName() + " " + (float) ((end - start) / 1000000));
 		if (calibrationData != null)
@@ -51,5 +51,8 @@ public class Object2DBitmap extends Object2D {
 	public int getBitmap() {
 		return _bitmapId;
 	}
-
+	
+	public void setAlpha(int a){
+		_p.setAlpha(a);
+	}
 }
