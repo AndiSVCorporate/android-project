@@ -2,6 +2,7 @@ package android.project.models;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.project.Constants;
 import android.project.Object2D;
 import android.project.Utils;
 import android.project.screens.GameScreen;
@@ -69,7 +70,18 @@ public class ModelGameMenuGameOver extends Object2D {
 		//_lvlText.setY(-75);
 		//_lvlText.setX(120);
 		
-		_scoreText = new ModelText("Score: " + score, Color.WHITE, 35);
+		int color = Color.WHITE;
+		android.project.Score[] scores = Utils.getScores();
+		if (scores != null && scores.length == 3) {
+			if (scores[0].get_score() == score)
+				color = Constants.COLOR_GOLD;
+			else if (scores[0].get_score() == score)
+				color = Constants.COLOR_SILVER;
+			else if (scores[0].get_score() == score)
+				color = Constants.COLOR_BRONZE;
+		}
+		
+		_scoreText = new ModelText("Score: " + score, color, 35);
 		_scoreText.setY(-2);
 		_scoreText.setX(120);
 		
