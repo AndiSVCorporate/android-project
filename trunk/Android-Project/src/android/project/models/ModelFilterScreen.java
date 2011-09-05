@@ -16,7 +16,7 @@ public class ModelFilterScreen extends Object2D{
 		_opacity=0;
 		_rect=new ModelRect(800, 480,_color);
 		addObject(_rect);
-		_rect.setDepth(5000);
+		_rect.setDepth(40);
 	}
 	
 	@Override

@@ -23,7 +23,9 @@ public class ModelCurrentScore extends Object2D {
 		paint.setColor(Color.WHITE);
 		paint.setTypeface(Utils.getTypeface());
 		paint.setTextSize(30);
-	    c.drawText("Score: " + _score, 200, 60, paint);	    
+		String sc="000000";
+		sc=sc.concat(String.valueOf(_score));
+	    c.drawText("Score: " + sc.substring(sc.length()-6), 150, 60, paint);	    
 	    if(_timeFromBest<500){
 	    	paint.setColor(Color.RED);
 	    	paint.setTextSize(50);
