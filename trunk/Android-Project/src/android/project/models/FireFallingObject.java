@@ -16,7 +16,7 @@ public class FireFallingObject extends FallingObject {
 	private ModelSmoke _fire2;
 	private ModelSmoke _fire3;
 	public FireFallingObject(long tf, float floor, Object2D w) {
-		super(R.drawable.burnedbird, 75, tf, w);
+		super(R.drawable.burnedbird, 50, tf, w);
 		_jump=0;
 		_floor=floor;
 		_ball.setY(_floor);
@@ -40,7 +40,7 @@ public class FireFallingObject extends FallingObject {
 	@Override
 	public void jump() {
 		if(_jump==0){
-			_world.addObject(new ModelJumpingObject(_ball, _tFall, 200, 430 - _floor, _tFall));
+			_world.addObject(new ModelJumpingObject(_ball, _tFall, 150, 430 - _floor, _tFall));
 		}
 		else{
 			ModelJumpingObject jmp = (ModelJumpingObject) _ball.getParent();

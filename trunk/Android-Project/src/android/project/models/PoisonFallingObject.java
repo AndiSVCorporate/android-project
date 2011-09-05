@@ -25,8 +25,8 @@ public class PoisonFallingObject extends FallingObject {
 		int x=0;
 		switch(_only){
 		case LEFT: x=200; break;
-		case MIDDLE: x=400; break;
-		case RIGHT: x=600; break;
+		case MIDDLE: x=350; break;
+		case RIGHT: x=550; break;
 		}		
 		if(_jump==0){
 			_world.addObject(new ModelJumpingObject(_ball, _tFall, x, 430 - _floor, _tFall));

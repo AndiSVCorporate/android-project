@@ -61,7 +61,7 @@ public class ModelHighscore extends Object2D {
 		_totlaTime=0;
 		_show=true;
 		_scores=Utils.getScores();
-		int[] colors={0xffeaba52,Color.GRAY,0xffcc622e};
+		int[] colors={0xffeaba52,0xffb7ccd4,0xffcc622e};
 		for(int i=0;i<3;i++){
 			_lines[i]=new Line(_scores[i], i, colors[i]);
 			_lines[i].setY(80+(90*(i+1)));
@@ -188,7 +188,7 @@ public class ModelHighscore extends Object2D {
 	private class Line extends Object2D{
 		private Score _s;
 		private ModelText _text;
-		private ModelFacebookSubmitButtonSmall  _fb;
+		private ModelFacebookButton _fb;
 		private Object2DBitmap _of;
 		private static final long SHOW_LENGTH=200;
 		private boolean _showLine;
@@ -198,10 +198,11 @@ public class ModelHighscore extends Object2D {
 			_text=new ModelText((i+1)+". "+_s.get_level()+"   "+_s.get_score(),color,20);
 			_text.setX(0);
 			_text.setDepth(45000);
-			_fb=new ModelFacebookSubmitButtonSmall();
+			_fb=new ModelFacebookButton();
 			_of=new Object2DBitmap(R.drawable.openfeint2);
 			_fb.setX(300);
 			_of.setX(350);
+			_fb.setDepth(45000);
 			_of.setDepth(45000);
 			Bounds b1=new BoundsCircle(40);
 			Bounds b2=new BoundsCircle(40);

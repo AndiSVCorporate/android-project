@@ -11,7 +11,7 @@ public class FreezeFallingObject extends FallingObject {
 	private static int FREEZED=0;
 	
 	public FreezeFallingObject(long tf, float floor, Object2D w) {
-		super(R.drawable.icebird, 25, tf, w);
+		super(R.drawable.icebird, 50, tf, w);
 		_jump=0;
 		_floor=floor;
 		_ball.setY(_floor);

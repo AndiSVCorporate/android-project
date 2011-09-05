@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Vector;
 
 import android.project.FireAchivement;
@@ -13,6 +14,7 @@ import android.project.Level.Bird;
 import android.project.Object2D;
 import android.project.Object2DBitmap;
 import android.project.R;
+import android.project.SoundManager;
 import android.project.Utils;
 import android.project.screens.GameScreen;
 import android.util.Log;
@@ -34,6 +36,7 @@ public class ModelPlayScreen extends Object2D {
 	private List<FireAchivement> _toAchieve;
 	private ModelFilterScreen _filter;
 	private boolean _end;
+	Random _generator;
 	public boolean onTouchEvent(MotionEvent event) {
 
 		int action = event.getActionMasked();
@@ -70,7 +73,7 @@ public class ModelPlayScreen extends Object2D {
 		_end=false;
 		_player = new ModelPlayer();
 		_player.setX(1000);
-		_player.setDepth(46);
+		_player.setDepth(0);
 		_filter=new ModelFilterScreen(0x00025dac);
 		FreezeFallingObject.initialize();
 		generateLevels();
@@ -83,6 +86,7 @@ public class ModelPlayScreen extends Object2D {
 		_life.setY(40);
 		_life.setDepth(10000);		
 		_balls = new ArrayList<FallingObject>();
+		_generator =  new Random();
 	}
 	public void show() {
 		addObject(_filter);
@@ -105,7 +109,6 @@ public class ModelPlayScreen extends Object2D {
 	}
 
 	public void show2() {
-		addObject(_filter);
 		addObject(_score);
 		addObject(_life);
 		addObject(_curLevel);
@@ -128,13 +131,13 @@ public class ModelPlayScreen extends Object2D {
 	}
 
 	public void pause() {
-		Utils.set_lastScore(getScore());
+
 	}
 
 	public void resume() {
 
 	}
-
+	private boolean _levelStart=true;
 	@Override
 	public void calculateThis(long timeDiff) {
 		if(_end)
@@ -150,21 +153,34 @@ public class ModelPlayScreen extends Object2D {
 			}
 			_balls.clear();
 			_end=true;
-			Utils.set_lastScore(getScore());
 			((GameScreen)getScreen()).GameOver();
 			return;
 		}
 		if(_levels.get(_curLevel.getLevel()).LevelDone() && _curLevel.getLevel()<=_levels.size() && _balls.isEmpty()){
 			_curLevel.levelUp();
 			_levelTime=0;
+			_levelStart=true;
 		}
 		_levelTime+=timeDiff;
 		_levels.get(_curLevel.getLevel()).calculate(timeDiff);
 		Collection<FallingObject> toRemove=new ArrayList<FallingObject>(); 
 		FallingObject f=null;
-		if(_levelTime>2000)
+		if(_levelTime>2000 && _levelStart){
+			SoundManager.playNextSong(_curLevel.getLevel());
+			_levelStart=false;
+		}
+		if(_levelTime>2000){
 			f=_levels.get(_curLevel.getLevel()).getNext();
+			
+		}
 		if (f!=null) {
+			int randomNum = _generator.nextInt(100);
+			if(randomNum > 50)
+				SoundManager.playFX(SoundManager.NEW_BIRD1);
+			else if(randomNum > 30)
+				SoundManager.playFX(SoundManager.NEW_BIRD2);
+			else if(randomNum > 0)
+				SoundManager.playFX(SoundManager.NEW_BIRD3);
 			f.jump();
 			_balls.add(f);
 		}
@@ -177,11 +193,13 @@ public class ModelPlayScreen extends Object2D {
 				continue;
 			if(Math.abs(ball.getRealX() - _player.getRealX()) < 80 && ball.readyToJump()){
 				Utils.vibrate(50);
+				SoundManager.playFX(SoundManager.JUMP);
 				ball.jump();
 				_player.goodJob();
 				_score.addScore(ball.getScore());
 				addObject(new ModelScoreFly(ball.getScore(), _player.getRealX()));
 			} else if(!ball.jobDone()){
+				SoundManager.playFX(SoundManager.DEAD);
 				ball.crash();
 				toRemove.add(ball);
 			}
@@ -222,9 +240,6 @@ public class ModelPlayScreen extends Object2D {
 		int[] l11={42,15,0,0,3,0,0};
 		int[] l12={40,15,0,0,2,1,1};
 		int[] l13={40,15,1,1,3,0,0};
-
-		int[] l0={1,1,1,1,1,1,1};
-		_levels.add(new Level(b,l0,500,this,40));
 
 		_levels.add(new Level(b,l1,5000,this,40));
 		_levels.add(new Level(b,l2,2000,this,40));
@@ -286,8 +301,5 @@ public class ModelPlayScreen extends Object2D {
 	public int getLevel(){
 		return _curLevel.getLevel()+1;
 	}
-	public void hideScore(){
-		removeObject(_curLevel);
-		removeObject(_score);
-	}
+
 }

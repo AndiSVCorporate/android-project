@@ -16,7 +16,7 @@
 			</intent-filter>
 		</activity>
 		
-		    
+ 	    
         <activity android:name="com.openfeint.internal.ui.IntroFlow"
                   android:label="IntroFlow"
                   android:theme="@style/OFNestedWindow" />
@@ -29,7 +29,7 @@
         <activity android:name="com.openfeint.internal.ui.NativeBrowser"
                   android:label="NativeBrowser"
                   android:theme="@style/OFNestedWindow"/>
- 		
+ 	
 	</application>
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>

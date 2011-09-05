@@ -29,7 +29,6 @@ import com.openfeint.api.OpenFeintSettings;
 import com.openfeint.api.resource.Achievement;
 import com.openfeint.api.resource.Leaderboard;
 import com.openfeint.api.resource.Score;
-import com.openfeint.api.ui.Dashboard;
 
 public class Utils {
 
@@ -63,8 +62,6 @@ public class Utils {
 	private static 	Facebook _facebook = new Facebook("124575674305461");
 	private static boolean _backgroundOn = true;
 
-	private static int _lastScore;
-	
 	private static Vibrator _vibrator=null;
 	/* Global getters and setters to avoid passing endless arguments. */
 
@@ -270,7 +267,7 @@ public class Utils {
 	public static void postHighscore(int highScore){
 		Bundle b=new Bundle();
 		b.putString("picture", "https://fbcdn-photos-a.akamaihd.net/photos-ak-snc1/v43/141/124575674305461/app_1_124575674305461_1992.gif");
-		b.putString("description", "I saved the birds from the fire and scored "+highScore+" points!");
+		b.putString("description", "I saved the birds from the fire and score "+highScore+" points!");
 		b.putString("name", "FireBirds!");
 		b.putString("caption", "Save the birds from the fire. FAST!");
 		_facebook.dialog(_activity, "feed", b,
@@ -295,6 +292,7 @@ public class Utils {
 		_activity.startActivity(viewIntent);
 	}
 	public static int saveHighscore(int score, int level){
+		postToOpenFeint(score);
 		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
 		int curScore=pref.getInt("Highscore5", 0);
 		int i;
@@ -322,10 +320,8 @@ public class Utils {
 	}
 
 	public static void postToOpenFeint(int score){
-		if(!OpenFeint.isNetworkConnected())
-			return;
 		if(!OpenFeint.isUserLoggedIn())
-			OpenFeint.login();
+			return;
 		String mLeaderboardID = "884267";//this.getIntent().getExtras().getString("leaderboard_id");
 		final Score s = new Score(score);
 		Leaderboard l = new Leaderboard(mLeaderboardID);
@@ -336,10 +332,8 @@ public class Utils {
 			}	});
 	}
 	public static void reachAchivement(String id){
-		if(!OpenFeint.isNetworkConnected())
-			return;
 		if(!OpenFeint.isUserLoggedIn())
-			OpenFeint.login();
+			return;
 		final Achievement a = new Achievement(id);
 		a.unlock(new Achievement.UnlockCB () {
 
@@ -349,28 +343,17 @@ public class Utils {
 
 			}});
 	}
-	public static void navigateToOpenfeint(){
-		if(!OpenFeint.isNetworkConnected())
-			return;
-		if(!OpenFeint.isUserLoggedIn())
-			OpenFeint.login();
-		Dashboard.openLeaderboard("884267");
-	}
-
 	public static void initializeOpenfeint(){
+		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
+		if(!pref.getBoolean("openFeint", false))
+			return;
 		Map<String, Object> options = new HashMap<String, Object>();
 		options.put(OpenFeintSettings.SettingCloudStorageCompressionStrategy, OpenFeintSettings.CloudStorageCompressionStrategyDefault);
 		// use the below line to set orientation
 		options.put(OpenFeintSettings.RequestedOrientation, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		OpenFeintSettings settings = new OpenFeintSettings(gameName, gameKey, gameSecret, gameID);        
-		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
-		if(pref.getBoolean("first", true)){
-			Editor edit=pref.edit();
-			edit.putBoolean("first", false);
-			edit.commit();
-			OpenFeint.initialize(_activity, settings, new OpenFeintDelegate() { });
-		}
-		OpenFeint.initializeWithoutLoggingIn(_activity, settings, new OpenFeintDelegate() { });
+		
+		OpenFeint.initialize(_activity, settings, new OpenFeintDelegate() { });
 		
 	}
 	
@@ -392,12 +375,24 @@ public class Utils {
 		return _activity;
 	}
 	
-	
-	public static int get_lastScore() {
-		return _lastScore;
+	public static void acceptOpenfeint(){
+		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
+		Editor edit=pref.edit();
+		edit.putBoolean("openFeint", true);
+		edit.commit();
 	}
-
-	public static void set_lastScore(int lastScore) {
-		_lastScore = lastScore;
+	
+	public static boolean isOpenfeint(){
+		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
+		return pref.getBoolean("openFeint", false);
+	}	
+	
+	public static boolean isFirstTime(){
+		SharedPreferences pref=_activity.getPreferences(Context.MODE_PRIVATE);
+		boolean ret=pref.getBoolean("new", true);		
+		Editor edit=pref.edit();
+		edit.putBoolean("new", false);
+		edit.commit();
+		return ret;
 	}
 }
