@@ -76,4 +76,7 @@ public class Constants {
 	public static final Paint PAINT_DKGRAY = new Paint() {{ setColor(Color.DKGRAY); }};
 	public static final Paint PAINT_WHITE = new Paint() {{ setColor(Color.WHITE); }};
 	
+	public static final int COLOR_GOLD = 0xffffd737;
+	public static final int COLOR_SILVER = 0xffe02e01;
+	public static final int COLOR_BRONZE = 0xffbbbbbb;
 }
