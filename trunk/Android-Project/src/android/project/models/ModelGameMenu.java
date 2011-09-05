@@ -121,7 +121,7 @@ public class ModelGameMenu extends Object2D {
 				if (_currentAction != Action.LOAD_MENU_GAME_OVER)
 					_currentAction = Action.IDLE;
 				else {
-					_gameOver.show(1000, 2, 1);
+					_gameOver.show(Utils.get_lastScore(), 2, 1);
 					if (_time > 900)
 						_currentAction = Action.IDLE;	
 				}
@@ -312,11 +312,7 @@ public class ModelGameMenu extends Object2D {
 					_highscore.show();			
 			}
 			else if (index ==3){
-				if(!Utils.isOpenfeint()){
-					Utils.acceptOpenfeint();
-					Utils.initializeOpenfeint();
-				}
-				Dashboard.openLeaderboard("884267");
+				Utils.navigateToOpenfeint();
 			}else if (index==2)
 				Utils.navigateToFacebook();
 		} else if (_menu == Menu.PAUSE) {
@@ -332,7 +328,6 @@ public class ModelGameMenu extends Object2D {
 			else if (index == 2)
 				return Action.LOAD_MENU_SOCIAL;
 			else {
-				//((GameScreen)getScreen()).stopGame(1);
 				return Action.LOAD_MENU_GAME_OVER;
 			}
 		} else if (_menu == Menu.GAME_OVER) {
@@ -345,6 +340,12 @@ public class ModelGameMenu extends Object2D {
 				_gameOver.hide();
 				_fadeOut = 300;
 				return Action.LOAD_MENU_PLAY;
+			}
+			if(index==1){
+				Utils.postHighscore(Utils.get_lastScore());
+			}
+			if(index==2){
+				Utils.postToOpenFeint(Utils.get_lastScore());
 			}
 		}
 		return Action.IDLE;

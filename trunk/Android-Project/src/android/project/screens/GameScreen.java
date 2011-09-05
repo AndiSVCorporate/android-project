@@ -35,8 +35,6 @@ public class GameScreen extends Screen {
 	public GameScreen(CalculateThread calculateThread, CanvasRenderer canvasRenderer) {
 		super(calculateThread, canvasRenderer);
 		
-		if(Utils.isFirstTime() || Utils.isOpenfeint())
-			Utils.initializeOpenfeint();
 		Utils.setVibration(true);
 
 		_currentScreen = CurrentScreen.LOAD;
@@ -44,13 +42,14 @@ public class GameScreen extends Screen {
 		_background = new ModelGameBackground();
 		//_play = new ModelPlayScreen();
 		getWorld().addObject(new ModelLogoScreen());
+		Utils.initializeOpenfeint();
 		getWorld().addObject(_menu);
 		//getWorld().addObject(_play);
-				
+			
 		_totalTime = 0;
 		_playing = false;
 		_gameAvailable = false;
-		
+
 	}
 
 	@Override
@@ -193,5 +192,9 @@ public class GameScreen extends Screen {
 		_gameAvailable = true;
 		_playing = true;
 		_currentScreen = CurrentScreen.PLAY;
+	}
+	
+	public void hideScore(){
+		_play.hideScore();
 	}
 }

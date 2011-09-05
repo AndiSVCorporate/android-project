@@ -31,6 +31,7 @@ public class Run extends Activity {
         
         _canvasRenderer = new CanvasRenderer(this, rWidth, rHeight);    
         setContentView(_canvasRenderer);
+    
     }
     
     private long _backPressedTime = 0;

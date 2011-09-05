@@ -8,7 +8,7 @@ public class RandomOneJumpFallingObject extends FallingObject {
 	private int _jump;
 	private float _floor;
 	public RandomOneJumpFallingObject(Place p, long tf, float floor, Object2D w) {
-		super(R.drawable.colorbird, 50, tf, w);
+		super(R.drawable.colorbird, 200, tf, w);
 		_jump=0;
 		_floor=floor;
 		_ball.setY(_floor);

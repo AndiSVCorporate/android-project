@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.project.Object2D;
 import android.project.Utils;
+import android.project.screens.GameScreen;
 import android.util.Log;
 
 public class ModelGameMenuGameOver extends Object2D {
@@ -42,6 +43,7 @@ public class ModelGameMenuGameOver extends Object2D {
 	}
 	
 	public void show(int score, int level, int place) {
+		((GameScreen)getScreen()).hideScore();
 		if (_state != State.HIDDEN)
 			return;
 		Log.d("over", "show");
