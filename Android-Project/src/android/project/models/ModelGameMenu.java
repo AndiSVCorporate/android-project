@@ -332,14 +332,19 @@ public class ModelGameMenu extends Object2D {
 			else if (index == 2)
 				return Action.LOAD_MENU_SOCIAL;
 			else {
-				((GameScreen)getScreen()).stopGame(1);
-				return Action.RELOAD_PLAY;
+				//((GameScreen)getScreen()).stopGame(1);
+				return Action.LOAD_MENU_GAME_OVER;
 			}
 		} else if (_menu == Menu.GAME_OVER) {
 			if (index == 0) {
 				_gameOver.hide();
 				_fadeOut = 300;
 				return Action.LOAD_MENU_PAUSE;
+			} else if (index == 3) {
+				((GameScreen)getScreen()).stopGame(1);
+				_gameOver.hide();
+				_fadeOut = 300;
+				return Action.LOAD_MENU_PLAY;
 			}
 		}
 		return Action.IDLE;
