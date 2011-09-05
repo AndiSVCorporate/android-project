@@ -8,7 +8,7 @@ public class OneJumpFallingObject extends FallingObject {
 	private int _jump;
 	private float _floor;
 	public OneJumpFallingObject(long tf, float floor, Object2D w) {
-		super(R.drawable.airbird, 100, tf, w);
+		super(R.drawable.airbird, 50, tf, w);
 		_jump=0;
 		_floor=floor;
 		_ball.setY(_floor);

@@ -19,6 +19,7 @@ public class Run extends Activity {
         super.onCreate(savedInstanceState);
 
         Utils.setActivity(this);
+        SoundManager.initialize();
         
         getWindow().setFormat(PixelFormat.RGBA_8888);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -31,7 +32,6 @@ public class Run extends Activity {
         
         _canvasRenderer = new CanvasRenderer(this, rWidth, rHeight);    
         setContentView(_canvasRenderer);
-    
     }
     
     private long _backPressedTime = 0;
@@ -48,18 +48,21 @@ public class Run extends Activity {
     
     @Override
     protected void onPause() {
+    	SoundManager.pause();
     	_canvasRenderer.onPause();
     	super.onPause();
     }
     
     @Override
     protected void onStop() {
+    	SoundManager.pause();
     	_canvasRenderer.onPause();
     	super.onStop();
     }
     
     @Override
     protected void onResume() {
+    	SoundManager.resume();
     	_canvasRenderer.onResume();
     	super.onResume();
     }

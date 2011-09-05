@@ -33,7 +33,7 @@ public class BitmapManager {
 		Position bigButtonMiddle = new Position(-60, -60);
 		Position fallingBird = new Position(-26.5f, -32.5f);
 		
-		Position heart = new Position(-26.5f, -26.5f);
+		Position heart = new Position(-32f, -32f);
 		
 		_calibrations.put(R.drawable.player2, player);
 		_calibrations.put(R.drawable.player2pu, player);
