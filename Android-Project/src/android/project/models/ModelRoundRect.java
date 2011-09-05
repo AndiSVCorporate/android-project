@@ -57,7 +57,7 @@ public class ModelRoundRect extends Object2D {
 //		_p.setColor(0xffa40778);
 		_p.setColor(Color.WHITE);
 		_p.setAlpha(230);
-		c.drawRoundRect(new RectF(7,7,_w-7,_h-7),40, 40,_p);
+		c.drawRoundRect(new RectF(0,0,_w,_h),40, 40,_p);
 	}
 	
 	public void setHeight(float h){

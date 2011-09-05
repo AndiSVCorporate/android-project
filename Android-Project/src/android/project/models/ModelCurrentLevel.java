@@ -21,7 +21,7 @@ public class ModelCurrentLevel extends Object2D {
 		paint.setColor(Color.GRAY);
 		paint.setTypeface(Utils.getTypeface());
 		paint.setTextSize(20);
-	    c.drawText("Level " + (_level+1), 200, 25, paint);
+	    c.drawText("Level " + (_level+1), 150, 25, paint);
 	    if(_timeFromChange<500){
 			paint.setColor(Color.WHITE);
 	    	paint.setTextSize(40);
