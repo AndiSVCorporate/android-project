@@ -31,8 +31,8 @@ public class Constants {
 	public static final float SCREEN_PLAYER_SPEED_PPS = 1000;
 	public static final float SCREEN_TRAMPOLINE_HEIGHT = 450;	
 
-	public static final float SCREEN_FLOOR_THIRD = 50;
-	public static final float SCREEN_FLOOR_SECOND = 150;
+	public static final float SCREEN_FLOOR_THIRD = 70;
+	public static final float SCREEN_FLOOR_SECOND = 170;
 	public static final float SCREEN_FLOOR_FIRST = 250;
 	
 	/* TIME CONSTANTS */
@@ -76,4 +76,7 @@ public class Constants {
 	public static final Paint PAINT_DKGRAY = new Paint() {{ setColor(Color.DKGRAY); }};
 	public static final Paint PAINT_WHITE = new Paint() {{ setColor(Color.WHITE); }};
 	
+	public static final int COLOR_GOLD = 0xffffd737;
+	public static final int COLOR_BRONZE = 0xffe02e01;
+	public static final int COLOR_SILVER = 0xffbbbbbb;
 }
