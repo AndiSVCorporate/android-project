@@ -70,7 +70,7 @@ public class ModelPlayScreen extends Object2D {
 		_end=false;
 		_player = new ModelPlayer();
 		_player.setX(1000);
-		_player.setDepth(0);
+		_player.setDepth(46);
 		_filter=new ModelFilterScreen(0x00025dac);
 		FreezeFallingObject.initialize();
 		generateLevels();
@@ -105,6 +105,7 @@ public class ModelPlayScreen extends Object2D {
 	}
 
 	public void show2() {
+		addObject(_filter);
 		addObject(_score);
 		addObject(_life);
 		addObject(_curLevel);
@@ -112,7 +113,7 @@ public class ModelPlayScreen extends Object2D {
 		addObject(_player);
 		_sky = new ModelRect(800, 240, 0, 0, 0xff66ccff);
 		_sky.setDepth(-20000);
-		_ground = new ModelRect(800, 240, 240, 240, 0xff33cc66);
+		_ground = new ModelRect(800, 240, 0, 240, 0xff33cc66);
 		_ground.setDepth(-2000);
 		_building = new Object2DBitmap(R.drawable.building);
 		_building.setDepth(-500);
@@ -127,7 +128,7 @@ public class ModelPlayScreen extends Object2D {
 	}
 
 	public void pause() {
-
+		Utils.set_lastScore(getScore());
 	}
 
 	public void resume() {
@@ -149,6 +150,7 @@ public class ModelPlayScreen extends Object2D {
 			}
 			_balls.clear();
 			_end=true;
+			Utils.set_lastScore(getScore());
 			((GameScreen)getScreen()).GameOver();
 			return;
 		}
@@ -221,8 +223,9 @@ public class ModelPlayScreen extends Object2D {
 		int[] l12={40,15,0,0,2,1,1};
 		int[] l13={40,15,1,1,3,0,0};
 
-		int[] l0={5,0,0,0,0,0,5};
-		_levels.add(new Level(b,l0,100,this,40));		
+		int[] l0={1,1,1,1,1,1,1};
+		_levels.add(new Level(b,l0,500,this,40));
+
 		_levels.add(new Level(b,l1,5000,this,40));
 		_levels.add(new Level(b,l2,2000,this,40));
 		_levels.add(new Level(b,l3,1000,this,45));
@@ -283,5 +286,8 @@ public class ModelPlayScreen extends Object2D {
 	public int getLevel(){
 		return _curLevel.getLevel()+1;
 	}
-
+	public void hideScore(){
+		removeObject(_curLevel);
+		removeObject(_score);
+	}
 }
