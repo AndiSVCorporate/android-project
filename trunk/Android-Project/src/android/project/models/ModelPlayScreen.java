@@ -73,7 +73,7 @@ public class ModelPlayScreen extends Object2D {
 		_end=false;
 		_player = new ModelPlayer();
 		_player.setX(1000);
-		_player.setDepth(0);
+		_player.setDepth(46);
 		_filter=new ModelFilterScreen(0x00025dac);
 		FreezeFallingObject.initialize();
 		generateLevels();
@@ -109,6 +109,7 @@ public class ModelPlayScreen extends Object2D {
 	}
 
 	public void show2() {
+		addObject(_filter);
 		addObject(_score);
 		addObject(_life);
 		addObject(_curLevel);
@@ -131,7 +132,7 @@ public class ModelPlayScreen extends Object2D {
 	}
 
 	public void pause() {
-
+		Utils.set_lastScore(getScore());
 	}
 
 	public void resume() {
@@ -153,6 +154,7 @@ public class ModelPlayScreen extends Object2D {
 			}
 			_balls.clear();
 			_end=true;
+			Utils.set_lastScore(getScore());
 			((GameScreen)getScreen()).GameOver();
 			return;
 		}
@@ -227,33 +229,48 @@ public class ModelPlayScreen extends Object2D {
 	private void generateLevels(){
 		_levels=new Vector<Level>();
 		Bird[] b={Bird.BASIC,Bird.ONE_JUMP,Bird.FIRE,Bird.LIFE,Bird.RANDOM_ONE_JUMP, Bird.POISON, Bird.FREEZE};
+//		int[] l1={4,0,0,0,0,0,0};
+//		int[] l2={7,3,0,1,0,0,0};
+//		int[] l3={10,5,0,0,0,0,0};
+//		int[] l4={12,6,0,0,0,0,1};
+//		int[] l5={16,2,0,0,2,0,0};
+//		int[] l6={24,5,1,1,2,0,1};
+//		int[] l7={30,7,1,0,1,0,0};
+//		int[] l8={30,10,1,0,0,0,0};
+//		int[] l9={34,13,0,0,3,0,1};
+//		int[] l10={38,15,0,1,2,1,0};
+//		int[] l11={42,15,0,0,3,0,0};
+//		int[] l12={40,15,0,0,2,1,1};
+//		int[] l13={40,15,1,1,3,0,0};
+
 		int[] l1={4,0,0,0,0,0,0};
 		int[] l2={7,3,0,1,0,0,0};
-		int[] l3={10,5,0,0,0,0,0};
-		int[] l4={12,6,0,0,0,0,1};
-		int[] l5={16,2,0,0,2,0,0};
-		int[] l6={24,5,1,1,2,0,1};
-		int[] l7={30,7,1,0,1,0,0};
-		int[] l8={30,10,1,0,0,0,0};
-		int[] l9={34,13,0,0,3,0,1};
-		int[] l10={38,15,0,1,2,1,0};
-		int[] l11={42,15,0,0,3,0,0};
-		int[] l12={40,15,0,0,2,1,1};
-		int[] l13={40,15,1,1,3,0,0};
+		int[] l3={7,3,0,0,2,0,0};
+		int[] l4={20,2,1,0,0,0,0};
+		int[] l5={20,2,1,0,0,0,1};
+		int[] l6={30,10,1,1,1,1,1};
 
 		_levels.add(new Level(b,l1,5000,this,40));
-		_levels.add(new Level(b,l2,2000,this,40));
-		_levels.add(new Level(b,l3,1000,this,45));
-		_levels.add(new Level(b,l4,750,this,45));
-		_levels.add(new Level(b,l5,500,this,50));
-		_levels.add(new Level(b,l6,400,this,50));
-		_levels.add(new Level(b,l7,350,this,50));
-		_levels.add(new Level(b,l8,350,this,55));
-		_levels.add(new Level(b,l9,330,this,58));
-		_levels.add(new Level(b,l10,330,this,60));
-		_levels.add(new Level(b,l11,310,this,60));
-		_levels.add(new Level(b,l12,290,this,30));
-		_levels.add(new Level(b,l13,210,this,25));
+		_levels.add(new Level(b,l2,750,this,40));
+		_levels.add(new Level(b,l3,500,this,30));
+		_levels.add(new Level(b,l4,300,this,30));
+		_levels.add(new Level(b,l5,200,this,30));
+		for(int i=0;i<100;i++)
+			_levels.add(new Level(b,l6,200,this,50));
+		
+//		_levels.add(new Level(b,l1,5000,this,40));
+//		_levels.add(new Level(b,l2,2000,this,40));
+//		_levels.add(new Level(b,l3,1000,this,45));
+//		_levels.add(new Level(b,l4,750,this,45));
+//		_levels.add(new Level(b,l5,500,this,50));
+//		_levels.add(new Level(b,l6,400,this,50));
+//		_levels.add(new Level(b,l7,350,this,50));
+//		_levels.add(new Level(b,l8,350,this,55));
+//		_levels.add(new Level(b,l9,330,this,58));
+//		_levels.add(new Level(b,l10,330,this,60));
+//		_levels.add(new Level(b,l11,310,this,60));
+//		_levels.add(new Level(b,l12,290,this,30));
+//		_levels.add(new Level(b,l13,210,this,25));
 
 	}
 	public void addLife(){
@@ -301,5 +318,8 @@ public class ModelPlayScreen extends Object2D {
 	public int getLevel(){
 		return _curLevel.getLevel()+1;
 	}
-
+	public void hideScore(){
+		removeObject(_curLevel);
+		removeObject(_score);
+	}
 }
