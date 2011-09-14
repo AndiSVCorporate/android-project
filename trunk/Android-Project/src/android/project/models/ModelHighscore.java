@@ -31,7 +31,7 @@ public class ModelHighscore extends Object2D {
 	private Object2D[] _buttons;
 
 	public ModelHighscore() {
-//		_scores=Utils.getScores();
+		//		_scores=Utils.getScores();
 		_lines=new Line[3];
 		Paint p=new Paint();
 		p.setColor(Color.BLUE);
@@ -67,7 +67,7 @@ public class ModelHighscore extends Object2D {
 			_lines[i].setY(80+(90*(i+1)));
 			_lines[i].setX(20);
 			addObject(_lines[i]);
-//			_lines[i].show();
+			//			_lines[i].show();
 		}
 		_buttons=getButtons();		
 	}
@@ -90,7 +90,7 @@ public class ModelHighscore extends Object2D {
 				_lines[1].show();
 			if(_totlaTime>OPEN_TIME+3*FADE_TIME && !_lines[2]._showLine)
 				_lines[2].show();
-			
+
 		}
 		else if(_lines[0]!=null){
 			_totlaTime+=timeDiff;
@@ -122,7 +122,6 @@ public class ModelHighscore extends Object2D {
 			}
 			if(_totlaTime>4*FADE_TIME && _background.getHeight()>0)
 				_background.setHeight(420-420*(_totlaTime-4*FADE_TIME)/OPEN_TIME);
-
 		}
 	}
 
@@ -130,7 +129,7 @@ public class ModelHighscore extends Object2D {
 		_show=false;
 		_totlaTime=0;
 	}
-	
+
 	private int _pressingButton;
 	public void press(float x, float y) {
 		Log.d("POST",":::");
@@ -167,7 +166,7 @@ public class ModelHighscore extends Object2D {
 			return;
 		if (_pressingButton == -1)
 			return;
-		
+
 		for (int i = 0; i < _buttons.length; ++i)
 			if (_buttons[i].isPointInside(x, y))
 				if (i == _pressingButton) {
@@ -188,16 +187,16 @@ public class ModelHighscore extends Object2D {
 		}
 		return ret;
 	}
-	
+
 	private void postToFacebook(int i){
 		Log.d("POST",":"+i+":");
 		Utils.postHighscore(_scores[i].get_score());
-		
+
 	}
 	private void postToOpenfeint(int i){
 		Utils.postToOpenFeint(_scores[i].get_score());
 	}
-	
+
 	private class Line extends Object2D{
 		private Score _s;
 		private ModelText _text;
@@ -229,39 +228,30 @@ public class ModelHighscore extends Object2D {
 			addObject(_fb);
 			addObject(_of);
 			_showLine=false;
+			_myTotalTime=0;
 		}
 		public void show(){
 			_showLine=true;
-			_myTotalTime=0;
 		}
 		public void hide(){
 			_showLine=false;
-			_myTotalTime=0;
 		}
 		public boolean isShow(){
 			return _text.getAlpha()!=0;
 		}
 		@Override
 		public void calculateThis(long timeDiff) {
-			_myTotalTime+=timeDiff;
+			if(_showLine)
+				_myTotalTime=Math.min(_myTotalTime+timeDiff,SHOW_LENGTH);
+			else
+				_myTotalTime=Math.max(_myTotalTime-timeDiff,0);
 			float ratio=(float)_myTotalTime/SHOW_LENGTH;
+			
 			ratio=Math.min(1, ratio);
 			ratio=Math.max(0, ratio);
-			if(_showLine){
-				if(_text.getPaint().getAlpha()<255){
-					_text.setAlpha((int) (255*ratio));
-					_fb.setAlpha((int) (255*ratio));
-					_of.setAlpha((int) (255*ratio));
-				}
-			}
-			else{
-				if(_text.getPaint().getAlpha()>0){
-					_text.setAlpha((int) (255-255*ratio));
-					_fb.setAlpha((int) (255-255*ratio));
-					_of.setAlpha((int) (255-255*ratio));
-				}
-				
-			}
+			_text.setAlpha((int) (255*ratio));
+			_fb.setAlpha((int) (255*ratio));
+			_of.setAlpha((int) (255*ratio));
 		}
 	}
 }
