@@ -32,6 +32,7 @@ public class ModelHighscore extends Object2D {
 
 	public ModelHighscore() {
 		//		_scores=Utils.getScores();
+		_totlaTime=0;
 		_lines=new Line[3];
 		Paint p=new Paint();
 		p.setColor(Color.BLUE);
@@ -58,7 +59,7 @@ public class ModelHighscore extends Object2D {
 		return _show;
 	}
 	public void show(){
-		_totlaTime=0;
+		_totlaTime=OPEN_TIME+4*FADE_TIME-_totlaTime;
 		_show=true;
 		_scores=Utils.getScores();
 		int[] colors={0xffeaba52,Color.GRAY,0xffcc622e};
@@ -127,7 +128,7 @@ public class ModelHighscore extends Object2D {
 
 	public void hide(){
 		_show=false;
-		_totlaTime=0;
+		_totlaTime=OPEN_TIME+4*FADE_TIME-_totlaTime;
 	}
 
 	private int _pressingButton;
