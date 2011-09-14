@@ -62,10 +62,7 @@ public class ModelGameMenu extends Object2D {
 		//anchor object, do not remove
 		addObject(new Object2D());
 	}
-
-	@Override
-	public void drawThis(Canvas c) { }
-
+	
 	@Override
 	public void calculateThis(long timeDiff) {
 		_fadeOut -= timeDiff;
@@ -137,15 +134,6 @@ public class ModelGameMenu extends Object2D {
 				new ModelSettingsButton(),
 				new ModelSocialButton(),
 				new ModelQuitButton()
-		};
-	}
-
-	private Object2D[] getPauseBigMenu() {
-		return new Object2D[] {
-				new ModelPauseButtonBig(),
-				new ModelSettingsButton(),
-				new ModelSocialButton(),
-				new ModelStopButton()
 		};
 	}
 
@@ -364,6 +352,7 @@ public class ModelGameMenu extends Object2D {
 
 	public void gameOver() {
 		Log.d("over","gameOver2");
+		SoundManager.stopSong();
 		if (_menu == Menu.PAUSE)
 			_nextAction = Action.LOAD_MENU_GAME_OVER;
 	}
