@@ -185,7 +185,7 @@ public class ModelHighscore extends Object2D {
 		Utils.postToOpenFeint(_scores[i].get_score());
 	}
 	
-	private class Line extends Object2D{
+	private class Line extends Object2D {
 		private Score _s;
 		private ModelText _text;
 		private ModelFacebookSubmitButtonSmall  _fb;
