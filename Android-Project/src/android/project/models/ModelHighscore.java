@@ -85,7 +85,9 @@ public class ModelHighscore extends Object2D {
 				_title.setAlpha((int) (255*(_totlaTime-OPEN_TIME)/FADE_TIME));
 				_tableTitle.setAlpha((int) (255*(_totlaTime-OPEN_TIME)/FADE_TIME));
 			}
-			if(_totlaTime>OPEN_TIME+FADE_TIME &&_lines[0]!=null && !_lines[0]._showLine)
+			if(_lines[0]==null)
+				return;
+			if(_totlaTime>OPEN_TIME+FADE_TIME && !_lines[0]._showLine)
 				_lines[0].show();
 			if(_totlaTime>OPEN_TIME+2*FADE_TIME && !_lines[1]._showLine)
 				_lines[1].show();
