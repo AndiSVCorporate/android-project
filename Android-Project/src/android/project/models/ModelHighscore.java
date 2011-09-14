@@ -239,7 +239,7 @@ public class ModelHighscore extends Object2D {
 			_myTotalTime=0;
 		}
 		public boolean isShow(){
-			return _text.getAlpha()==0;
+			return _text.getAlpha()!=0;
 		}
 		@Override
 		public void calculateThis(long timeDiff) {
