@@ -94,12 +94,25 @@ public class ModelHighscore extends Object2D {
 		}
 		else if(_lines[0]!=null){
 			_totlaTime+=timeDiff;
-			if(_lines[2]._showLine)
+			if(_lines[2]._showLine){
 				_lines[2].hide();
-			if(_totlaTime>FADE_TIME && _lines[1]._showLine)
+			}
+			if(_totlaTime>FADE_TIME && _lines[1]._showLine){
 				_lines[1].hide();
-			if(_totlaTime>2*FADE_TIME && _lines[0]._showLine)
+			}
+			if(_totlaTime>2*FADE_TIME && _lines[0]._showLine){
 				_lines[0].hide();
+			}
+			if(_lines[0]!=null && !_lines[0].isShow()){
+				removeObject(_lines[0]);
+			}
+			if(_lines[1]!=null && !_lines[1].isShow()){
+				removeObject(_lines[1]);
+			}
+			if(_lines[2]!=null && !_lines[2].isShow()){
+				removeObject(_lines[2]);
+			}
+
 			float ratio=(float)(_totlaTime-3*FADE_TIME)/FADE_TIME;
 			ratio=Math.min(1, ratio);
 			ratio=Math.max(0, ratio);
@@ -185,7 +198,7 @@ public class ModelHighscore extends Object2D {
 		Utils.postToOpenFeint(_scores[i].get_score());
 	}
 	
-	private class Line extends Object2D {
+	private class Line extends Object2D{
 		private Score _s;
 		private ModelText _text;
 		private ModelFacebookSubmitButtonSmall  _fb;
@@ -224,6 +237,9 @@ public class ModelHighscore extends Object2D {
 		public void hide(){
 			_showLine=false;
 			_myTotalTime=0;
+		}
+		public boolean isShow(){
+			return _text.getAlpha()==0;
 		}
 		@Override
 		public void calculateThis(long timeDiff) {
