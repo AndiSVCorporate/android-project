@@ -60,7 +60,6 @@ public class ModelHighscore extends Object2D {
 	}
 	public void show(){
 		_totlaTime=OPEN_TIME+4*FADE_TIME-_totlaTime;
-		_show=true;
 		_scores=Utils.getScores();
 		int[] colors={0xffeaba52,Color.GRAY,0xffcc622e};
 		for(int i=0;i<3;i++){
@@ -71,6 +70,7 @@ public class ModelHighscore extends Object2D {
 			//			_lines[i].show();
 		}
 		_buttons=getButtons();		
+		_show=true;
 	}
 
 	@Override
