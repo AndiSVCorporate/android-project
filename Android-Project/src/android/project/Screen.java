@@ -36,7 +36,9 @@ public abstract class Screen {
 			object.calculateThis(timeDiff);
 		}
 		
-		_toCalculate = _world.getObjectsToCalculate();
+		synchronized (_calculateThread.getLock()) {
+			_toCalculate = _world.getObjectsToCalculate();
+		}
 	}
 	
 	public void onBackPressed() { }

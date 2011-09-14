@@ -1,11 +1,9 @@
 package android.project.models;
 
-import java.util.Vector;
-
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.project.Bounds;
+import android.project.Constants;
 import android.project.Object2D;
 import android.project.Object2DBitmap;
 import android.project.R;
@@ -13,31 +11,23 @@ import android.project.Score;
 import android.project.Utils;
 import android.project.bounds.BoundsCircle;
 import android.util.Log;
-import android.view.MotionEvent;
 
 public class ModelHighscore extends Object2D {
-	private Score[] _scores;
 	private ModelRoundRect _background;
 	private ModelText _title;
 	private ModelText _tableTitle;
-	private ModelText[] _scoresText;
-	private long _totlaTime;
+	private long _totalTime;
 	private boolean _show=false;
-	private final long OPEN_TIME=500;
-	private final long SCORES_START_TIME=500;
-	private final long FADE_TIME=200;
+	private static final long OPEN_TIME = 500;
+	
 	private Line[] _lines;
-	private ModelFacebookButton[] _fbButtons;
-	private Object2D[] _buttons;
 
+	private Object2D[] _buttons;
+	
 	public ModelHighscore() {
 		//		_scores=Utils.getScores();
-		_totlaTime=0;
-		_lines=new Line[3];
-		Paint p=new Paint();
-		p.setColor(Color.BLUE);
-		p.setAlpha(200);
-		_background=new ModelRoundRect(400, 0,0,0,p);
+		_totalTime = 0;
+		_background = new ModelRoundRect(400, 0, 0, 0, new Paint());
 		_background.setDepth(40000);
 		addObject(_background);
 		_title=new ModelText("Highscores",Color.BLACK,35);
@@ -45,92 +35,71 @@ public class ModelHighscore extends Object2D {
 		_title.setX(30);
 		_title.setDepth(45000);
 
-		_tableTitle=new ModelText("  LVL  SCORE  POST",Color.BLACK,20);
+		_tableTitle=new ModelText("  LVL  SCORE  POST", Color.BLACK, 20);
 		_tableTitle.setY(120);
 		_tableTitle.setX(20);
 		_tableTitle.setDepth(45000);
 		_title.setAlpha(0);
 		_tableTitle.setAlpha(0);
+		
+		_lines = new Line[3];
+		
+		int[] colors = new int[] { Constants.COLOR_GOLD, Constants.COLOR_SILVER, Constants.COLOR_BRONZE };
+		
+		for(int i=0;i<3;i++){
+			_lines[i]=new Line(i, colors[i]);
+			_lines[i].setY(80+(90*(i+1)));
+			_lines[i].setX(20);
+			addObject(_lines[i]);
+		}
 
+		_buttons = getButtons();
+		
 		addObject(_title);
 		addObject(_tableTitle);
 	}
 	public boolean is_show() {
 		return _show;
 	}
-	public void show(){
-		_totlaTime=OPEN_TIME+4*FADE_TIME-_totlaTime;
-		_scores=Utils.getScores();
-		int[] colors={0xffeaba52,Color.GRAY,0xffcc622e};
-		for(int i=0;i<3;i++){
-			_lines[i]=new Line(_scores[i], i, colors[i]);
-			_lines[i].setY(80+(90*(i+1)));
-			_lines[i].setX(20);
-			addObject(_lines[i]);
-			//			_lines[i].show();
-		}
-		_buttons=getButtons();		
-		_show=true;
+	public void show() {
+		_show = true;
 	}
 
 	@Override
 	public void calculateThis(long timeDiff) {
-		if(_show){
-			_totlaTime+=timeDiff;
-			if(_background.getHeight()<420)
-				_background.setHeight(420*_totlaTime/OPEN_TIME);
-			if(_background.getHeight()>=420){		
-			}
-			if(_totlaTime>OPEN_TIME && _totlaTime<OPEN_TIME+FADE_TIME){
-				_title.setAlpha((int) (255*(_totlaTime-OPEN_TIME)/FADE_TIME));
-				_tableTitle.setAlpha((int) (255*(_totlaTime-OPEN_TIME)/FADE_TIME));
-			}
-			if(_lines[0]==null)
-				return;
-			if(_totlaTime>OPEN_TIME+FADE_TIME && !_lines[0]._showLine)
-				_lines[0].show();
-			if(_totlaTime>OPEN_TIME+2*FADE_TIME && !_lines[1]._showLine)
-				_lines[1].show();
-			if(_totlaTime>OPEN_TIME+3*FADE_TIME && !_lines[2]._showLine)
-				_lines[2].show();
+		if (_show)
+			_totalTime +=  timeDiff;
+		else
+			_totalTime -= timeDiff;
+		_totalTime = Math.min(_totalTime, OPEN_TIME);
+		_totalTime = Math.max(_totalTime, 0);
+		
+		
+		float heightFloat = progress(_totalTime, 0, 500);
 
-		}
-		else if(_lines[0]!=null){
-			_totlaTime+=timeDiff;
-			if(_lines[2]._showLine){
-				_lines[2].hide();
-			}
-			if(_totlaTime>FADE_TIME && _lines[1]._showLine){
-				_lines[1].hide();
-			}
-			if(_totlaTime>2*FADE_TIME && _lines[0]._showLine){
-				_lines[0].hide();
-			}
-			if(_lines[0]!=null && !_lines[0].isShow()){
-				removeObject(_lines[0]);
-			}
-			if(_lines[1]!=null && !_lines[1].isShow()){
-				removeObject(_lines[1]);
-			}
-			if(_lines[2]!=null && !_lines[2].isShow()){
-				removeObject(_lines[2]);
-			}
-
-			float ratio=(float)(_totlaTime-3*FADE_TIME)/FADE_TIME;
-			ratio=Math.min(1, ratio);
-			ratio=Math.max(0, ratio);
-			if(_totlaTime>3*FADE_TIME && _title.getPaint().getAlpha()>0){
-				_title.setAlpha((int) (255-255*ratio));
-				_tableTitle.setAlpha((int) (255-255*ratio));
-			}
-			if(_totlaTime>4*FADE_TIME && _background.getHeight()>0)
-				_background.setHeight(420-420*(_totlaTime-4*FADE_TIME)/OPEN_TIME);
-		}
+		_background.setHeight(420 * heightFloat);
+	
+		float titleOpenFloat = progress(_totalTime, 100, 200);
+		
+		_title.setAlpha((int) (255 * titleOpenFloat));
+		_tableTitle.setAlpha((int) (255 * titleOpenFloat));
+		
+		_lines[0].setAlpha(progress(_totalTime, 200, 300));
+		_lines[1].setAlpha(progress(_totalTime, 300, 400));
+		_lines[2].setAlpha(progress(_totalTime, 400, 500));
+		
 	}
 
 	public void hide(){
-		_show=false;
-		_totlaTime=OPEN_TIME+4*FADE_TIME-_totlaTime;
+		_show = false;
+	}
+	
+	private float progress(long totalTime, long startTime, long endTime) {
+		if (totalTime < startTime)
+			return 0;
+		if (totalTime > endTime)
+			return 1;
+		return (float) (totalTime - startTime) / (endTime - startTime);
 	}
 
 	private int _pressingButton;
@@ -139,7 +108,8 @@ public class ModelHighscore extends Object2D {
 
 		if(!_show)
 			return;
-		for (int i = 0; i < _buttons.length; ++i)
+		
+		for (int i = 0; i < _lines.length; ++i)
 			if (_buttons[i].isPointInside(x, y)) {
 				_pressingButton = i;
 				_buttons[i].scale(1.2f);
@@ -193,24 +163,22 @@ public class ModelHighscore extends Object2D {
 
 	private void postToFacebook(int i){
 		Log.d("POST",":"+i+":");
-		Utils.postHighscore(_scores[i].get_score());
+		Utils.postHighscore(Utils.getScores()[i].get_score());
 
 	}
 	private void postToOpenfeint(int i){
-		Utils.postToOpenFeint(_scores[i].get_score());
+		Utils.postToOpenFeint(Utils.getScores()[i].get_score());
 	}
 
 	private class Line extends Object2D{
-		private Score _s;
+		
 		private ModelText _text;
 		private ModelFacebookSubmitButtonSmall  _fb;
 		private Object2DBitmap _of;
-		private static final long SHOW_LENGTH=200;
-		private boolean _showLine;
-		private long _myTotalTime;
-		private Line(Score s, int i, int color){
-			_s=s;
-			_text=new ModelText((i+1)+". "+_s.get_level()+"   "+_s.get_score(),color,20);
+		private int _i;
+		private Line(int i, int color){
+			_i = i;
+			_text= new ModelText("" , color, 20);
 			_text.setX(0);
 			_text.setDepth(45000);
 			_fb=new ModelFacebookSubmitButtonSmall();
@@ -230,31 +198,18 @@ public class ModelHighscore extends Object2D {
 			addObject(_text);
 			addObject(_fb);
 			addObject(_of);
-			_showLine=false;
-			_myTotalTime=0;
 		}
-		public void show(){
-			_showLine=true;
+		
+		public void setAlpha(float f) {
+			_text.setAlpha((int) (255 * f));
+			_fb.setAlpha((int) (255 * f));
+			_of.setAlpha((int) (255 * f));	
 		}
-		public void hide(){
-			_showLine=false;
-		}
-		public boolean isShow(){
-			return _text.getAlpha()!=0;
-		}
+		
 		@Override
 		public void calculateThis(long timeDiff) {
-			if(_showLine)
-				_myTotalTime=Math.min(_myTotalTime+timeDiff,SHOW_LENGTH);
-			else
-				_myTotalTime=Math.max(_myTotalTime-timeDiff,0);
-			float ratio=(float)_myTotalTime/SHOW_LENGTH;
-			
-			ratio=Math.min(1, ratio);
-			ratio=Math.max(0, ratio);
-			_text.setAlpha((int) (255*ratio));
-			_fb.setAlpha((int) (255*ratio));
-			_of.setAlpha((int) (255*ratio));
+			Score s = Utils.getScores()[_i];
+			_text.setText((_i+1)+". "+s.get_level()+"   "+s.get_score());
 		}
 	}
 }
