@@ -80,7 +80,13 @@ public class SoundManager {
 	public static void playFX(int res){
 		_soundPool.play(_soundPoolMap.get(res), _volume, _volume, 1, 0, 1f); 
 	}
+	
+	private static boolean _initialized = false;
+	
 	public static void initialize(){
+		if (_initialized)
+			return;
+		_initialized = true;
 		_curSongIndex = -1;
 		_context = Utils.getActivity();
 
