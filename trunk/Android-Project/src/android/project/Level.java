@@ -73,7 +73,7 @@ public class Level {
 		if(selected==Bird.ONE_JUMP)
 			p=Place.MIDDLE;
 
-		if(selected==Bird.RANDOM_ONE_JUMP){
+		if(selected==Bird.RANDOM_ONE_JUMP || selected==Bird.FIRE){
 			int r2=new Random().nextInt(3);
 			switch(r2){
 			case 0: p=Place.LEFT; break;
@@ -105,7 +105,7 @@ public class Level {
 			switch(selected){
 			case ONE_JUMP: return new OneJumpFallingObject(tFall, temp, _screen);
 			case BASIC: return new BasicFallingObject(tFall, temp, _screen);
-			case FIRE: return new FireFallingObject(tFall, Constants.SCREEN_FLOOR_THIRD, _screen);
+			case FIRE: return new FireFallingObject(p,tFall, Constants.SCREEN_FLOOR_THIRD, _screen);
 			case LIFE: return new LifeFallingObject(tFall, temp, _screen);
 			case RANDOM_ONE_JUMP: return new RandomOneJumpFallingObject(p,tFall, temp, _screen);
 			case POISON: return new PoisonFallingObject(not,tFall, temp, _screen);
