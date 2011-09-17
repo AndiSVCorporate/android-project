@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.project.Object2D;
 import android.project.R;
 import android.project.Utils;
+import android.project.Scheduler.Place;
 import android.project.bounds.BoundsCircle;
 import android.util.Log;
 
@@ -15,7 +16,7 @@ public class FireFallingObject extends FallingObject {
 	private ModelSmoke _fire1;
 	private ModelSmoke _fire2;
 	private ModelSmoke _fire3;
-	public FireFallingObject(long tf, float floor, Object2D w) {
+	public FireFallingObject(Place p, long tf, float floor, Object2D w) {
 		super(R.drawable.burnedbird, 75, tf, w);
 		_jump=0;
 		_floor=floor;
@@ -25,6 +26,7 @@ public class FireFallingObject extends FallingObject {
 		_fire1=new ModelSmoke(0, 0, 0);
 		_fire2=new ModelSmoke(0, 0, 0);
 		_fire3=new ModelSmoke(0, 0, 0);
+		_only=p;
 
 		scale();
 		addRotation();
@@ -39,15 +41,21 @@ public class FireFallingObject extends FallingObject {
 	}
 	@Override
 	public void jump() {
+		int x=0;
+		switch(_only){
+		case LEFT: x=200; break;
+		case MIDDLE: x=400; break;
+		case RIGHT: x=600; break;
+		}
 		if(_jump==0){
-			_world.addObject(new ModelJumpingObject(_ball, _tFall, 200, 430 - _floor, _tFall));
+			_world.addObject(new ModelJumpingObject(_ball, _tFall, x, 430 - _floor, _tFall));
 		}
 		else{
 			ModelJumpingObject jmp = (ModelJumpingObject) _ball.getParent();
 			jmp.finalizePosition();
 			jmp.freeInnerObject(_ball);
 			_world.removeObject(jmp);
-			_world.addObject(new ModelJumpingObject(_ball, jmp.getTFall(), 100, 430 - _floor, jmp.getTime() - 2 * jmp.getTFall()));				
+			_world.addObject(new ModelJumpingObject(_ball, jmp.getTFall(), 400, 430 - _floor, jmp.getTime() - 2 * jmp.getTFall()));				
 		}
 		++_jump;
 	}
