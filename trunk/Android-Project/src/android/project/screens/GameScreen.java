@@ -69,9 +69,10 @@ public class GameScreen extends Screen {
 	public void onBackPressed() {
 		if (_currentScreen == CurrentScreen.MENU)
 			_menu.onBackPressed();
-		else if (_currentScreen == CurrentScreen.PLAY)
+		else if (_currentScreen == CurrentScreen.PLAY) {
+			_menu.onBackPressed();
 			_play.onBackPressed();
-		else if (_currentScreen == CurrentScreen.LOAD)
+		} else if (_currentScreen == CurrentScreen.LOAD)
 			_menu.onBackPressed();
 	}
 
