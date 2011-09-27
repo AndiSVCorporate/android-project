@@ -326,6 +326,7 @@ public class ModelGameMenu extends Object2D {
 			else if (index == 2)
 				return Action.LOAD_MENU_SOCIAL;
 			else {
+				SoundManager.stopSong();
 				((GameScreen)getScreen()).saveHighscore();
 				return Action.LOAD_MENU_GAME_OVER;
 			}
@@ -364,21 +365,47 @@ public class ModelGameMenu extends Object2D {
 			_buttons[_pressingButton].scale((1/1.2f));
 			_pressingButton = -1;
 		}
-		if (_menu == Menu.PLAY)
+		Log.d("BACKPRESS", "" + _menu.toString());
+		Log.d("BACKPRESS", "" + _menu.toString());
+		Log.d("BACKPRESS", "" + _menu.toString());
+		Log.d("BACKPRESS", "" + _menu.toString());
+		Log.d("BACKPRESS", "" + _menu.toString());
+		
+		if (_menu == Menu.PLAY) {
 			if (_lastAction == Action.LOAD_BUTTON_QUIT)
 				Utils.quit();
 			else
 				_nextAction = Action.LOAD_BUTTON_QUIT;
-		else if (_menu == Menu.SETTINGS)
+		} else if (_menu == Menu.SETTINGS) {
 			_nextAction = Action.LOAD_MENU_PLAY;
-		else if (_menu == Menu.SOCIAL)
+		} else if (_menu == Menu.SOCIAL) {
+			_highscore.hide();
 			_nextAction = Action.LOAD_MENU_PLAY;
-		else if (_menu == Menu.PAUSE)
+		} else if (_menu == Menu.PAUSE) {
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			Log.d("what the fuck", "seriously");
+			
 			_nextAction = Action.LOAD_MENU_RESUME;
-		else if (_menu == Menu.RESUME)
-			_nextAction = Action.LOAD_MENU_GAME_OVER;
-		else if (_menu == Menu.GAME_OVER)
+		} else if (_menu == Menu.RESUME) {
+			((GameScreen)getScreen()).continueGame();
+			_nextAction = Action.LOAD_MENU_PAUSE;
+		} else if (_menu == Menu.GAME_OVER) {
+			((GameScreen)getScreen()).stopGame(1);
+			_gameOver.hide();
+			_fadeOut = 300;
 			_nextAction = Action.LOAD_MENU_PLAY;
+		}
 	}
 
 	public void press(float x, float y) {

@@ -1,12 +1,10 @@
 package android.project;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.project.R;
-import android.util.Log;
 import android.content.Context;
 
 public class SoundManager {
@@ -35,7 +33,7 @@ public class SoundManager {
 	static HashMap<Integer, Integer> _soundPoolMap;
 	static Integer[] _songs={EASY1,EASY2,EASY3,MEDIUM1,MEDIUM2,HARD1};
 	static Integer[] _alternatePoints={0,1,4,6,7,10};
-	static int _curSongIndex;
+	static int _curSongIndex = -1;
 
 	public static void pause(){
 		Iterator<Sound> it = _sounds.values().iterator();
@@ -48,26 +46,24 @@ public class SoundManager {
 		_soundPool.autoPause();
 	}
 	public static void resume(){
-		/*Iterator<Sound> it = _sounds.values().iterator();
-		Sound sound;
-		while(it.hasNext()){
-			sound = it.next();
-			if(!sound.isCompleted())
-				sound.getMp().start();
-		}
-		//_soundPool.autoResume();
-		 * */
 		if(_curSongIndex >= 0){
 			_sounds.get(_songs[_curSongIndex]).getMp().start();
-			fadeIn();
 		}
 	}
-	public static void stopSong(){
+	
+	public static void pauseSong(){
 		if(_curSongIndex >= 0){
 			_sounds.get(_songs[_curSongIndex]).getMp().pause();
 		}
-
 	}
+	
+	public static void stopSong(){
+		if(_curSongIndex >= 0){
+			_sounds.get(_songs[_curSongIndex]).getMp().pause();
+			_curSongIndex = -1;
+		}
+	}
+	
 	public static void playSong(int res){
 		if(Utils.getSound() == false)
 			return;
@@ -75,7 +71,6 @@ public class SoundManager {
 		sound.getMp().seekTo(0);
 		sound.getMp().start();
 		sound.setNotCompleted();
-		fadeIn();
 	}
 	public static void playFX(int res){
 		_soundPool.play(_soundPoolMap.get(res), _volume, _volume, 1, 0, 1f); 
@@ -84,8 +79,10 @@ public class SoundManager {
 	private static boolean _initialized = false;
 	
 	public static void initialize(){
-		if (_initialized)
+		if (_initialized) {
+			SoundManager.stopSong();
 			return;
+		}
 		_initialized = true;
 		_curSongIndex = -1;
 		_context = Utils.getActivity();
@@ -99,13 +96,6 @@ public class SoundManager {
 		_soundPoolMap.put(NEW_BIRD1, _soundPool.load(_context, NEW_BIRD1, 1));
 		_soundPoolMap.put(NEW_BIRD2, _soundPool.load(_context, NEW_BIRD2, 1));
 		_soundPoolMap.put(NEW_BIRD3, _soundPool.load(_context, NEW_BIRD3, 1));
-		/*_soundPoolMap.put(EASY1, _soundPool.load(_context, EASY1, 1));
-		_soundPoolMap.put(EASY2, _soundPool.load(_context, EASY2, 1));
-		_soundPoolMap.put(EASY3, _soundPool.load(_context, EASY3, 1));
-		_soundPoolMap.put(MEDIUM1, _soundPool.load(_context, MEDIUM1, 1));
-		_soundPoolMap.put(MEDIUM2, _soundPool.load(_context, MEDIUM2, 1));
-		_soundPoolMap.put(HARD1, _soundPool.load(_context, HARD1, 1));
-		 */
 
 		AudioManager mgr = (AudioManager)_context.getSystemService(Context.AUDIO_SERVICE);
 		float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
@@ -120,65 +110,24 @@ public class SoundManager {
 		_sounds.put(MEDIUM1, new Sound(_context,MEDIUM1,true));
 		_sounds.put(MEDIUM2, new Sound(_context,MEDIUM2,true));
 		_sounds.put(HARD1, new Sound(_context,HARD1,true));
-		SoundManager.stopSong();
+		SoundManager.pauseSong();
 	}
+	
 	public static void mute(boolean isOn) {
 		if(!isOn){
-			/*Iterator<Integer> it = _sounds.keySet().iterator();
-			while(it.hasNext()){
-				stopSong(it.next());
-			}
-			 */
-			stopSong();
+			pauseSong();
 			Iterator<Integer> it = _soundPoolMap.keySet().iterator();
 			while(it.hasNext()){
 				_soundPool.stop(it.next());
 			}
 		}
 	}
-	public static void fadeOut(){
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while(volume > 0){
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					_sounds.get(_songs[_curSongIndex]).getMp().setVolume(volume, volume);
-					volume -= speed;
-				}				
-			}
-		}).start();
-	}
-	public static void fadeIn()
-	{
-		volume = 0;
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				_sounds.get(_songs[_curSongIndex]).getMp().setVolume(volume, volume);
-				while(volume < 1){
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					_sounds.get(_songs[_curSongIndex]).getMp().setVolume(volume, volume);
-					volume += speed;
-				}
-			}
-		}).start();
-
-	}
 
 	public static void playNextSong(int level) {
 		if(level == _alternatePoints[_curSongIndex + 1]){
-			stopSong();
+			pauseSong();
 			++_curSongIndex;
 			playSong(_songs[_curSongIndex]);
-			fadeIn();
 		}
 	}
 }
